@@ -390,4 +390,1488 @@ main { padding:18px 20px; max-width:1440px; margin:0 auto; }
 .ou-btn:hover { border-color:var(--accent); color:var(--accent); }
 .ou-btn.sel { border-color:var(--accent); color:var(--accent); background:var(--adim); }
 .ou-line-label {
-  font-family:var(--mono); font-size
+  font-family:var(--mono); font-size:9px; color:var(--text3); letter-spacing:1.5px;
+  text-transform:uppercase; margin-bottom:7px; display:block;
+}
+.ou-num-chips { display:flex; gap:5px; flex-wrap:wrap; margin-bottom:8px; }
+.num-chip {
+  padding:6px 11px; background:var(--bg3); border:1px solid var(--border); border-radius:5px;
+  color:var(--text2); font-family:var(--mono); font-size:11px; font-weight:500;
+  cursor:pointer; transition:all .15s;
+}
+.num-chip:hover { border-color:var(--accent); color:var(--accent); }
+.num-chip.sel { border-color:var(--accent); color:var(--accent); background:var(--adim); }
+.ou-custom-row { display:flex; gap:7px; align-items:center; margin-bottom:10px; }
+.ou-custom-row .wiz-input { margin-bottom:0; flex:1; }
+
+/* ADDED CONDITIONS */
+.added-cond-list { margin-bottom:8px; }
+.ac-chip {
+  display:flex; align-items:center; gap:8px; padding:8px 11px; background:var(--card2);
+  border:1px solid var(--border2); border-radius:6px; margin-bottom:4px;
+}
+.ac-chip-info { flex:1; }
+.ac-chip-name { font-family:var(--head); font-size:12px; font-weight:700; color:var(--text); }
+.ac-chip-pick { font-family:var(--mono); font-size:10px; color:var(--text3); margin-top:1px; letter-spacing:.3px; }
+.ac-rm { color:var(--text3); cursor:pointer; font-size:14px; transition:color .2s; line-height:1; font-family:var(--mono); }
+.ac-rm:hover { color:var(--red); }
+
+.btn-add-cond {
+  width:100%; padding:9px; background:var(--gdim); border:1px solid rgba(0,229,160,.2);
+  border-radius:6px; color:var(--green); font-family:var(--mono); font-size:10px;
+  letter-spacing:1.5px; cursor:pointer; transition:all .2s; text-transform:uppercase; margin-bottom:8px;
+}
+.btn-add-cond:hover { background:var(--gbright); }
+.btn-save-bet {
+  width:100%; padding:11px; background:var(--accent); color:var(--bg); font-family:var(--head);
+  font-size:14px; font-weight:800; letter-spacing:2px; border:none; border-radius:7px;
+  cursor:pointer; transition:opacity .2s; text-transform:uppercase;
+}
+.btn-save-bet:hover { opacity:.85; }
+
+/* BET SAVED POPUP */
+.bet-saved-popup {
+  background:var(--card2); border:1px solid var(--border2); border-radius:12px;
+  padding:14px 16px; box-shadow:0 10px 40px rgba(0,0,0,.5);
+  animation:slideIn .35s cubic-bezier(.34,1.56,.64,1);
+  cursor:pointer; position:relative; min-width:250px;
+  border-top:2px solid var(--accent);
+}
+.bsp-tag { font-family:var(--mono); font-size:9px; font-weight:500; letter-spacing:2px;
+  text-transform:uppercase; color:var(--accent); margin-bottom:5px; }
+.bsp-match { font-family:var(--head); font-size:15px; font-weight:800; color:var(--text); margin-bottom:4px; }
+.bsp-score { font-family:var(--head); font-size:30px; font-weight:900; color:var(--text);
+  line-height:1; margin-bottom:3px; }
+.bsp-meta { font-family:var(--mono); font-size:9px; color:var(--text3); letter-spacing:.5px; }
+.bsp-conds { margin-top:9px; border-top:1px solid var(--border); padding-top:9px;
+  display:flex; flex-direction:column; gap:4px; }
+.bsp-cond { display:flex; align-items:center; gap:6px; font-family:var(--head);
+  font-size:11px; font-weight:600; color:var(--text2); }
+.bsp-dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+.bsp-dot.ok { background:var(--green); }
+.bsp-dot.pending { background:var(--yellow); }
+.bsp-dot.fail { background:var(--red); }
+.bsp-overall { display:inline-flex; margin-top:8px; padding:3px 10px; border-radius:3px;
+  font-family:var(--mono); font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; }
+.bsp-overall.won { background:var(--gdim); color:var(--green); border:1px solid rgba(0,229,160,.2); }
+.bsp-overall.lost { background:var(--rdim); color:var(--red); }
+.bsp-overall.pending { background:var(--ydim); color:var(--yellow); }
+.bsp-overall.partial { background:var(--adim); color:var(--accent); }
+.bsp-x { position:absolute; top:9px; right:11px; color:var(--text3); font-size:14px;
+  font-family:var(--mono); line-height:1; cursor:pointer; }
+.bsp-x:hover { color:var(--text); }
+.btn-sm-row { display:flex; gap:6px; margin-top:10px; }
+.btn-sm {
+  padding:7px 13px; background:none; border:1px solid var(--border); border-radius:5px;
+  color:var(--text2); font-family:var(--mono); font-size:10px; letter-spacing:1px; cursor:pointer;
+  transition:all .2s; text-transform:uppercase;
+}
+.btn-sm.g:hover { border-color:var(--green); color:var(--green); }
+.btn-sm.r:hover { border-color:var(--red); color:var(--red); }
+.btn-sm.b:hover { border-color:var(--accent); color:var(--accent); }
+
+/* ═══════════════════════ BET LIST ═══════════════════════ */
+.sum-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:18px; }
+.sum-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:14px 16px; }
+.sum-val { font-family:var(--head); font-size:28px; font-weight:800; line-height:1; }
+.sum-val.g { color:var(--green); }
+.sum-val.r { color:var(--red); }
+.sum-val.a { color:var(--accent); }
+.sum-lbl { font-family:var(--mono); font-size:9px; color:var(--text3); letter-spacing:2px; text-transform:uppercase; margin-top:5px; }
+
+.acard { background:var(--card); border:1px solid var(--border); border-radius:10px; margin-bottom:8px; overflow:hidden; transition:border-color .2s; }
+.acard.won { border-left:3px solid var(--green); }
+.acard.lost { border-left:3px solid var(--red); }
+.acard.pending { border-left:3px solid var(--yellow); }
+.acard.partial { border-left:3px solid var(--accent); }
+.acard-h { padding:12px 16px; display:flex; align-items:center; justify-content:space-between; cursor:pointer; }
+.amatch { font-family:var(--head); font-size:17px; font-weight:800; }
+.ameta { font-family:var(--mono); font-size:10px; color:var(--text3); letter-spacing:.5px; margin-top:2px; }
+.acard-b { display:none; padding:0 16px 14px; }
+.acard-b.open { display:block; }
+
+/* FILTER TABS */
+.ftabs { display:flex; gap:4px; margin-bottom:12px; }
+.ftab {
+  padding:6px 13px; background:var(--card); border:1px solid var(--border); border-radius:5px;
+  color:var(--text3); font-family:var(--mono); font-size:10px; font-weight:500; cursor:pointer;
+  transition:all .2s; letter-spacing:1px; text-transform:uppercase;
+}
+.ftab.active, .ftab:hover { border-color:var(--accent); color:var(--accent); background:var(--adim); }
+
+/* ═══════════════════════ UPCOMING ═══════════════════════ */
+.urow {
+  display:flex; align-items:center; gap:14px; padding:12px 16px; background:var(--card);
+  border:1px solid var(--border); border-radius:10px; margin-bottom:8px;
+  cursor:pointer; transition:border-color .2s, background .2s;
+}
+.urow:hover { border-color:var(--border2); background:var(--card2); }
+.uteams { font-family:var(--head); font-size:17px; font-weight:800; }
+.umeta { font-family:var(--mono); font-size:9px; color:var(--text3); letter-spacing:1px; text-transform:uppercase; margin-top:3px; }
+.utime-big { font-family:var(--mono); font-size:17px; font-weight:500; color:var(--accent); text-align:right; }
+.utime-date { font-family:var(--mono); font-size:9px; color:var(--text3); letter-spacing:.5px; margin-top:2px; text-align:right; }
+.btn-track {
+  padding:6px 12px; background:var(--adim); border:1px solid rgba(0,212,255,.2); color:var(--accent);
+  border-radius:5px; font-family:var(--mono); font-size:9px; font-weight:500; cursor:pointer;
+  transition:all .2s; letter-spacing:1px; text-transform:uppercase; white-space:nowrap;
+}
+.btn-track:hover { background:var(--accent); color:var(--bg); }
+
+/* ═══════════════════════ ADD TEAM MODAL ═══════════════════════ */
+.ats { display:flex; align-items:center; gap:10px; padding:8px 10px; border-radius:7px; cursor:pointer; transition:background .15s; }
+.ats:hover { background:var(--bg3); }
+.ats.sel { background:var(--adim); }
+.ats-check { margin-left:auto; font-family:var(--mono); font-size:12px; color:var(--accent); display:none; }
+.ats.sel .ats-check { display:block; }
+
+/* ═══════════════════════ POPUPS ═══════════════════════ */
+.popup-wrap { position:fixed; bottom:16px; right:16px; z-index:300; display:flex; flex-direction:column; gap:8px; max-width:300px; }
+.popup {
+  background:var(--card2); border:1px solid var(--border2); border-radius:10px;
+  padding:12px 14px; box-shadow:0 8px 32px rgba(0,0,0,.5); cursor:pointer; position:relative;
+  animation:slideIn .3s ease;
+}
+@keyframes slideIn { from{transform:translateX(110%);opacity:0} to{transform:translateX(0);opacity:1} }
+.popup.live-p { border-color:rgba(255,69,96,.4); }
+.popup-tag { font-family:var(--mono); font-size:9px; font-weight:500; letter-spacing:2px; text-transform:uppercase; margin-bottom:3px; }
+.popup.live-p .popup-tag { color:var(--red); }
+.popup-tag.g { color:var(--green); }
+.popup-match { font-family:var(--head); font-size:15px; font-weight:800; }
+.popup-detail { font-family:var(--mono); font-size:10px; color:var(--text3); margin-top:3px; letter-spacing:.5px; }
+.popup-x { position:absolute; top:8px; right:10px; color:var(--text3); font-size:14px; font-family:var(--mono); line-height:1; }
+.toast {
+  position:fixed; bottom:16px; left:50%; transform:translateX(-50%);
+  background:var(--card2); border:1px solid var(--border2); padding:10px 20px;
+  border-radius:7px; font-family:var(--mono); font-size:11px; z-index:9000;
+  animation:slideIn .3s ease; box-shadow:0 4px 20px rgba(0,0,0,.5); letter-spacing:.5px;
+}
+
+/* LOADING */
+.loading-spinner {
+  display:inline-block; width:14px; height:14px; border:2px solid var(--border);
+  border-top-color:var(--accent); border-radius:50%; animation:spin .8s linear infinite;
+}
+@keyframes spin { to{transform:rotate(360deg)} }
+.empty-state { padding:40px 20px; text-align:center; color:var(--text3); font-family:var(--mono); font-size:11px; letter-spacing:1px; }
+
+@media(max-width:760px){
+  .grid2 { grid-template-columns:1fr; }
+  .sum-grid { grid-template-columns:repeat(2,1fr); }
+  .mcard-stats { grid-template-columns:repeat(3,1fr); }
+  nav { padding:0 10px; }
+  .ntab { padding:5px 8px; font-size:10px; }
+  main { padding:12px; }
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-wrap">
+    <div class="login-logo">STATS<span>BET</span></div>
+    <div class="login-tagline">Tracker de Apuestas · Estadísticas</div>
+    <div class="login-box">
+      <label class="fl">Usuario</label>
+      <input class="fi" id="lu" value="Dilan" placeholder="Usuario">
+      <label class="fl">Contrasena</label>
+      <input type="password" class="fi" id="lp" value="1234" placeholder="Contrasena">
+      <button class="btn-login" onclick="doLogin()">ENTRAR</button>
+      <div class="login-hint">demo: cualquier usuario / contrasena</div>
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+<nav>
+  <div class="nav-logo">STATS<span>BET</span></div>
+  <div class="nav-tabs">
+    <button class="ntab active" onclick="goSec('dashboard',this)">Partidos</button>
+    <button class="ntab" onclick="goSec('proximos',this)">Proximos</button>
+    <button class="ntab" onclick="goSec('apuestas',this)">Mis Apuestas</button>
+  </div>
+  <div class="nav-r">
+    <div class="nav-user">Hola, <b id="nuser">Senor</b></div>
+    <button class="btn-out" onclick="doLogout()">Salir</button>
+  </div>
+</nav>
+
+<!-- API BAR -->
+<div class="api-bar">
+  <div class="api-dot" id="apiDot"></div>
+  <span id="apiStatus">Sin conexion — suba la web a GitHub Pages primero (ver instrucciones)</span>
+  <input class="api-key-input" id="apiKeyInput" placeholder="Pegue su API key de football-data.org..." title="API Key football-data.org">
+  <button class="btn-api" onclick="connectAPI()">Conectar</button>
+</div>
+
+<main>
+  <!-- DASHBOARD -->
+  <div class="sec active" id="sec-dashboard">
+    <div class="grid2">
+      <div class="sidebar">
+        <div class="scard">
+          <div class="scard-h">
+            <div class="scard-title">Mis Equipos</div>
+            <span style="font-family:var(--mono);font-size:10px;color:var(--text3)" id="tc">0</span>
+          </div>
+          <div class="scard-b" id="favList"></div>
+        </div>
+        <div class="scard" id="teamDetailCard" style="display:none">
+          <div class="scard-h"><div class="scard-title" id="tdTitle">Estadisticas</div></div>
+          <div id="tdBody"></div>
+        </div>
+      </div>
+      <div class="mcol">
+        <div class="sh">En Vivo</div>
+        <div id="liveDiv"></div>
+        <div class="sh" style="margin-top:4px">Hoy</div>
+        <div id="todayDiv"></div>
+        <div class="sh" style="margin-top:4px">Finalizados Recientes</div>
+        <div id="finishedDiv"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROXIMOS -->
+  <div class="sec" id="sec-proximos">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+      <div class="sh" style="margin:0;flex:1">Partidos Proximos</div>
+      <div class="ftabs" style="margin:0">
+        <button class="ftab active" onclick="filterUp('all',this)">Todos</button>
+        <button class="ftab" onclick="filterUp('fav',this)">Mis Equipos</button>
+        <button class="ftab" onclick="filterUp('laliga',this)">LaLiga</button>
+        <button class="ftab" onclick="filterUp('epl',this)">Premier</button>
+        <button class="ftab" onclick="filterUp('ucl',this)">Champions</button>
+        <button class="ftab" onclick="filterUp('bun',this)">Bundesliga</button>
+      </div>
+    </div>
+    <div id="upcomingDiv"></div>
+  </div>
+
+  <!-- APUESTAS -->
+  <div class="sec" id="sec-apuestas">
+    <div class="sum-grid" id="sumDiv"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+      <div class="ftabs" style="margin:0">
+        <button class="ftab active" onclick="filterBets('all',this)">Todas</button>
+        <button class="ftab" onclick="filterBets('pending',this)">Pendientes</button>
+        <button class="ftab" onclick="filterBets('won',this)">Acertadas</button>
+        <button class="ftab" onclick="filterBets('lost',this)">Fallidas</button>
+      </div>
+    </div>
+    <div id="betsDiv"></div>
+  </div>
+</main>
+</div>
+
+<!-- MODAL PARTIDO -->
+<div class="modal-ov" id="matchModal">
+<div class="modal">
+  <div class="modal-h">
+    <div class="modal-title" id="mmTitle">Partido</div>
+    <button class="mclose" onclick="closeModal('matchModal')">x</button>
+  </div>
+  <div class="modal-b" id="mmBody"></div>
+</div>
+</div>
+
+<!-- MODAL ADD TEAM -->
+<div class="modal-ov" id="addTeamModal">
+<div class="modal" style="max-width:420px">
+  <div class="modal-h">
+    <div class="modal-title">Agregar Equipos</div>
+    <button class="mclose" onclick="closeModal('addTeamModal')">x</button>
+  </div>
+  <div class="modal-b">
+    <input class="fi" id="tsearch" placeholder="Buscar equipo o liga..." oninput="renderTeamSearch()" style="margin-bottom:12px">
+    <div id="tslist"></div>
+    <button class="btn-save-bet" style="margin-top:14px" onclick="confirmTeams()">Confirmar Seleccion</button>
+  </div>
+</div>
+</div>
+
+<div class="popup-wrap" id="popups"></div>
+
+<script>
+// ═══════════════════════════════════════════════
+// MARKETS DEFINITION — todos los mercados
+// ═══════════════════════════════════════════════
+const MARKETS = [
+  // TIEMPO REGLAMENTARIO
+  { id:'result',      cat:'Tiempo Reglamentario', name:'Resultado 1X2',         sub:'Victoria local, empate o visitante', type:'result' },
+  { id:'btts',        cat:'Tiempo Reglamentario', name:'Ambos Marcan',           sub:'Si / No', type:'btts' },
+  { id:'double_chance',cat:'Tiempo Reglamentario',name:'Doble Oportunidad',      sub:'1X, X2 o 12', type:'dc' },
+  { id:'clean_sheet_h',cat:'Tiempo Reglamentario',name:'Porteria en 0 (Local)',  sub:'Si / No', type:'yn' },
+  { id:'clean_sheet_a',cat:'Tiempo Reglamentario',name:'Porteria en 0 (Visit.)', sub:'Si / No', type:'yn' },
+  { id:'1st_goal',    cat:'Tiempo Reglamentario', name:'Primer Gol',             sub:'Local, empate sin goles o visitante', type:'result' },
+  { id:'ht_ft',       cat:'Tiempo Reglamentario', name:'Resultado Descanso / Final', sub:'Combinacion HT-FT', type:'htft' },
+
+  // GOLES
+  { id:'goals_total', cat:'Goles',                name:'Goles Totales',          sub:'Over / Under (ej: 2.5)', type:'ou', stat:'goals_total' },
+  { id:'goals_home',  cat:'Goles',                name:'Goles Local',            sub:'Over / Under', type:'ou', stat:'goals_home' },
+  { id:'goals_away',  cat:'Goles',                name:'Goles Visitante',        sub:'Over / Under', type:'ou', stat:'goals_away' },
+  { id:'goals_ht',    cat:'Medio Tiempo',         name:'Goles en 1er Tiempo',    sub:'Over / Under', type:'ou', stat:'ht_goals' },
+  { id:'goals_2h',    cat:'Medio Tiempo',         name:'Goles en 2do Tiempo',    sub:'Over / Under', type:'ou', stat:'2h_goals' },
+
+  // CORNERS
+  { id:'corners_total',cat:'Tiros de Esquina',    name:'Corners Totales',        sub:'Over / Under (ej: 9.5)', type:'ou', stat:'corners_total' },
+  { id:'corners_home', cat:'Tiros de Esquina',    name:'Corners Local',          sub:'Over / Under', type:'ou', stat:'corners_home' },
+  { id:'corners_away', cat:'Tiros de Esquina',    name:'Corners Visitante',      sub:'Over / Under', type:'ou', stat:'corners_away' },
+  { id:'corners_ht',   cat:'Tiros de Esquina',    name:'Corners 1er Tiempo',     sub:'Over / Under', type:'ou', stat:'ht_corners' },
+  { id:'corners_hcap', cat:'Tiros de Esquina',    name:'Handicap Corners',       sub:'Local -X / Visitante +X', type:'hcap' },
+
+  // TARJETAS
+  { id:'cards_total',  cat:'Tarjetas',             name:'Tarjetas Totales',       sub:'Over / Under (ej: 3.5)', type:'ou', stat:'cards_total' },
+  { id:'cards_home',   cat:'Tarjetas',             name:'Tarjetas Local',         sub:'Over / Under', type:'ou', stat:'cards_home' },
+  { id:'cards_away',   cat:'Tarjetas',             name:'Tarjetas Visitante',     sub:'Over / Under', type:'ou', stat:'cards_away' },
+  { id:'red_card',     cat:'Tarjetas',             name:'Tarjeta Roja en Partido',sub:'Si / No', type:'yn' },
+  { id:'cards_ht',     cat:'Tarjetas',             name:'Tarjetas 1er Tiempo',    sub:'Over / Under', type:'ou', stat:'ht_cards' },
+
+  // DISPAROS
+  { id:'shots_total',  cat:'Disparos',             name:'Disparos Totales',       sub:'Over / Under', type:'ou', stat:'shots_total' },
+  { id:'shots_ht_h',   cat:'Disparos',             name:'Disparos a Puerta Local',sub:'Over / Under', type:'ou', stat:'shots_on_h' },
+  { id:'shots_ht_a',   cat:'Disparos',             name:'Disparos a Puerta Visit.',sub:'Over / Under', type:'ou', stat:'shots_on_a' },
+  { id:'shots_on_total',cat:'Disparos',            name:'Disparos a Puerta Totales',sub:'Over / Under', type:'ou', stat:'shots_on_total' },
+
+  // JUGADOR
+  { id:'player_goals', cat:'Goles del Jugador',    name:'Goles por Jugador',      sub:'1, 2 o mas goles', type:'player_ou', stat:'player_goals' },
+  { id:'player_shots', cat:'Tiros a Puerta Jugador',name:'Tiros a Puerta Jugador',sub:'Over / Under', type:'player_ou', stat:'player_shots' },
+  { id:'player_assist',cat:'Asistencias Jugador',  name:'Asistencias por Jugador',sub:'Over / Under', type:'player_ou', stat:'player_assists' },
+  { id:'player_saves', cat:'Paradas del Portero',  name:'Paradas del Portero',    sub:'Over / Under', type:'player_ou', stat:'player_saves' },
+  { id:'player_spec',  cat:'Especiales Jugador',   name:'Especiales de Jugador',  sub:'Primero en marcar, hat-trick', type:'player_spec' },
+  { id:'goleador',     cat:'Goleador',             name:'Goleador del Partido',   sub:'Jugador anotador', type:'player_spec' },
+
+  // HANDICAP
+  { id:'hcap_3way',    cat:'Handicap 3-Way',       name:'Handicap 3-Way',         sub:'Con ventaja/desventaja', type:'hcap' },
+  { id:'asian_hcap',   cat:'Lineas Asiaticas',     name:'Handicap Asiatico',      sub:'Linea asiatica', type:'hcap' },
+  { id:'asian_ou',     cat:'Lineas Asiaticas',     name:'Total Asiatico',         sub:'Over / Under asiatico', type:'ou', stat:'goals_total' },
+
+  // OFFSIDES / FOULS
+  { id:'offsides_total',cat:'Fueras de Juego',     name:'Fueras de Juego Totales',sub:'Over / Under', type:'ou', stat:'offsides_total' },
+  { id:'fouls_total',  cat:'Faltas',               name:'Faltas Totales',         sub:'Over / Under', type:'ou', stat:'fouls_total' },
+
+  // POSESION / xG
+  { id:'possession_h', cat:'Estadisticas Avanzadas',name:'Posesion Local %',      sub:'Over / Under', type:'ou', stat:'possession_h' },
+  { id:'xg_total',     cat:'Estadisticas Avanzadas',name:'xG Total del Partido',  sub:'Over / Under', type:'ou', stat:'xg_total' },
+  { id:'xg_home',      cat:'Estadisticas Avanzadas',name:'xG Local',              sub:'Over / Under', type:'ou', stat:'xg_home' },
+
+  // PARTIDO Y EQUIPO
+  { id:'team_shots_h', cat:'Partido y Tiros Equipo',name:'Tiros Totales Local',   sub:'Over / Under', type:'ou', stat:'shots_total_h' },
+  { id:'team_shots_a', cat:'Partido y Tiros Equipo',name:'Tiros Totales Visitante',sub:'Over / Under', type:'ou', stat:'shots_total_a' },
+];
+
+const OU_SUGGESTIONS = {
+  goals_total:['0.5','1.5','2.5','3.5','4.5'],
+  goals_home:['0.5','1.5','2.5'],
+  goals_away:['0.5','1.5','2.5'],
+  corners_total:['7.5','8.5','9.5','10.5','11.5','12.5'],
+  corners_home:['3.5','4.5','5.5','6.5'],
+  corners_away:['2.5','3.5','4.5'],
+  cards_total:['1.5','2.5','3.5','4.5','5.5'],
+  cards_home:['0.5','1.5','2.5'],
+  cards_away:['0.5','1.5','2.5'],
+  shots_on_total:['4.5','5.5','6.5','7.5','8.5'],
+  default:['0.5','1.5','2.5','3.5','4.5'],
+};
+
+// ═══════════════════════════════════════════════
+// TEAMS DATA (demo + real)
+// ═══════════════════════════════════════════════
+const TEAMS = [
+  {id:1, name:'Real Madrid',    abbr:'RMA', lg:'LaLiga',    liga:'laliga', apiId:86,
+   stats:{xg:2.1, pos:62, shots:18, shotsT:7, corners:6.8, cards:1.8, goals:2.1, form:['W','W','D','W','L']}},
+  {id:2, name:'Barcelona',      abbr:'BAR', lg:'LaLiga',    liga:'laliga', apiId:81,
+   stats:{xg:1.9, pos:58, shots:16, shotsT:6, corners:5.5, cards:2.2, goals:1.8, form:['W','D','W','W','L']}},
+  {id:3, name:'Atletico Madrid',abbr:'ATM', lg:'LaLiga',    liga:'laliga', apiId:78,
+   stats:{xg:1.4, pos:44, shots:13, shotsT:5, corners:4.3, cards:2.8, goals:1.3, form:['D','W','W','D','W']}},
+  {id:4, name:'Man City',       abbr:'MCI', lg:'Premier',   liga:'epl',    apiId:65,
+   stats:{xg:2.2, pos:65, shots:19, shotsT:8, corners:6.5, cards:1.7, goals:2.0, form:['W','W','W','L','W']}},
+  {id:5, name:'Arsenal',        abbr:'ARS', lg:'Premier',   liga:'epl',    apiId:57,
+   stats:{xg:1.8, pos:55, shots:15, shotsT:6, corners:5.8, cards:2.0, goals:1.7, form:['W','D','W','W','W']}},
+  {id:6, name:'Liverpool',      abbr:'LIV', lg:'Premier',   liga:'epl',    apiId:64,
+   stats:{xg:2.3, pos:59, shots:18, shotsT:8, corners:5.6, cards:1.9, goals:2.2, form:['W','W','W','D','W']}},
+  {id:7, name:'Bayern Munich',  abbr:'BAY', lg:'Bundesliga', liga:'bun',   apiId:5,
+   stats:{xg:2.5, pos:67, shots:21, shotsT:9, corners:7.2, cards:2.1, goals:2.4, form:['W','W','L','W','W']}},
+  {id:8, name:'Dortmund',       abbr:'BVB', lg:'Bundesliga', liga:'bun',   apiId:4,
+   stats:{xg:1.6, pos:49, shots:14, shotsT:5, corners:5.1, cards:2.5, goals:1.5, form:['L','W','D','W','L']}},
+  {id:9, name:'PSG',            abbr:'PSG', lg:'Ligue 1',   liga:'ligue1', apiId:85,
+   stats:{xg:2.6, pos:68, shots:22, shotsT:10, corners:7.0, cards:2.0, goals:2.5, form:['W','W','W','W','D']}},
+  {id:10,name:'Nacional',       abbr:'NAL', lg:'Liga BetPlay',liga:'betplay',apiId:null,
+   stats:{xg:1.2, pos:52, shots:13, shotsT:5, corners:4.0, cards:3.2, goals:1.1, form:['D','W','L','W','W']}},
+  {id:11,name:'Millonarios',    abbr:'MIL', lg:'Liga BetPlay',liga:'betplay',apiId:null,
+   stats:{xg:1.3, pos:50, shots:12, shotsT:4, corners:3.9, cards:2.8, goals:1.2, form:['W','W','D','L','W']}},
+  {id:12,name:'Girona',         abbr:'GIR', lg:'LaLiga',    liga:'laliga', apiId:547,
+   stats:{xg:1.1, pos:41, shots:11, shotsT:4, corners:3.8, cards:2.1, goals:1.0, form:['L','D','W','L','D']}},
+];
+
+// DEMO MATCHES (usados cuando no hay API)
+const DEMO_MATCHES = [
+  {id:'m1',h:'Real Madrid',a:'Girona',hl:1,al:12,lg:'LaLiga',liga:'laliga',
+   status:'finished',time:'14:00',date:'10.04.2026',
+   score:{h:1,a:1},ht:{h:1,a:0},
+   stats:{xg:{h:2.22,a:0.52},pos:{h:61,a:39},shots:{h:22,a:10},shotsT:{h:9,a:2},
+          bigChances:{h:2,a:0},corners:{h:10,a:1},
+          passes:{hPct:'92',hAbs:'552/601',aPct:'87',aAbs:'341/390'},
+          cards:{h:2,a:1},fouls:{h:14,a:18},offsides:{h:3,a:1}}},
+  {id:'m2',h:'Bayern Munich',a:'Dortmund',hl:7,al:8,lg:'Bundesliga',liga:'bun',
+   status:'live',time:"58'",date:'10.04.2026',
+   score:{h:3,a:0},ht:{h:1,a:0},
+   stats:{xg:{h:2.8,a:0.4},pos:{h:66,a:34},shots:{h:18,a:6},shotsT:{h:9,a:1},
+          bigChances:{h:4,a:0},corners:{h:8,a:2},
+          passes:{hPct:'89',hAbs:'412/462',aPct:'79',aAbs:'201/254'},
+          cards:{h:1,a:4},fouls:{h:9,a:17},offsides:{h:2,a:3}}},
+  {id:'m3',h:'Arsenal',a:'Liverpool',hl:5,al:6,lg:'Premier League',liga:'epl',
+   status:'today',time:'18:30',date:'10.04.2026',score:null,stats:null},
+  {id:'m4',h:'Nacional',a:'Millonarios',hl:10,al:11,lg:'Liga BetPlay',liga:'betplay',
+   status:'today',time:'20:00',date:'10.04.2026',score:null,stats:null},
+];
+
+const DEMO_UPCOMING = [
+  {id:'u1',h:'Man City',a:'Arsenal',lg:'Premier League',liga:'epl',date:'Sab 12 Abr',time:'17:30',fav:true},
+  {id:'u2',h:'Real Madrid',a:'Barcelona',lg:'LaLiga',liga:'laliga',date:'Sab 12 Abr',time:'21:00',fav:true},
+  {id:'u3',h:'PSG',a:'Bayern Munich',lg:'Champions League',liga:'ucl',date:'Mar 15 Abr',time:'21:00',fav:true},
+  {id:'u4',h:'Liverpool',a:'Chelsea',lg:'Premier League',liga:'epl',date:'Dom 13 Abr',time:'16:30',fav:false},
+  {id:'u5',h:'Atletico Madrid',a:'Villarreal',lg:'LaLiga',liga:'laliga',date:'Dom 13 Abr',time:'18:30',fav:true},
+  {id:'u6',h:'Dortmund',a:'Bayer Leverkusen',lg:'Bundesliga',liga:'bun',date:'Sab 12 Abr',time:'15:30',fav:true},
+  {id:'u7',h:'Nacional',a:'Santa Fe',lg:'Liga BetPlay',liga:'betplay',date:'Sab 12 Abr',time:'18:00',fav:true},
+  {id:'u8',h:'Millonarios',a:'Cali',lg:'Liga BetPlay',liga:'betplay',date:'Dom 13 Abr',time:'16:00',fav:true},
+];
+
+// ═══════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════
+let favIds = [1,5,6,7,10];
+let tempTeams = [];
+let matches = [...DEMO_MATCHES];
+let upcomingList = [...DEMO_UPCOMING];
+let bets = [
+  {id:'b1',matchId:'m1',h:'Real Madrid',a:'Girona',lg:'LaLiga',date:'10.04.2026',
+   desc:'Apuesta combinada',
+   conditions:[
+     {mktId:'result',mktName:'Resultado 1X2',dir:'result_home',dirLabel:'Real Madrid gana',target:1,current:1,stat:'result'},
+     {mktId:'goals_total',mktName:'Goles Totales',dir:'over',dirLabel:'Over',target:2,current:2,stat:'goals_total'},
+     {mktId:'corners_total',mktName:'Corners Totales',dir:'over',dirLabel:'Over',target:10,current:11,stat:'corners_total'},
+   ]},
+  {id:'b2',matchId:'m2',h:'Bayern Munich',a:'Dortmund',lg:'Bundesliga',date:'10.04.2026',
+   desc:'Bayern dominancia',
+   conditions:[
+     {mktId:'result',mktName:'Resultado 1X2',dir:'result_home',dirLabel:'Bayern gana',target:1,current:1,stat:'result'},
+     {mktId:'cards_total',mktName:'Tarjetas Totales',dir:'over',dirLabel:'Over',target:4,current:5,stat:'cards_total'},
+   ]},
+];
+let apiKey = '';
+let currentBetFilter = 'all';
+let currentUpFilter = 'all';
+let wizardState = {};
+
+// ═══════════════════════════════════════════════
+// AUTH
+// ═══════════════════════════════════════════════
+function doLogin() {
+  const u = document.getElementById('lu').value.trim() || 'Senor';
+  document.getElementById('loginScreen').style.opacity = '0';
+  setTimeout(()=>{
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    document.getElementById('nuser').textContent = u;
+    init();
+  }, 400);
+}
+function doLogout() {
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('loginScreen').style.opacity = '1';
+  document.getElementById('loginScreen').style.display = 'flex';
+}
+document.getElementById('lp').addEventListener('keydown', e=>{ if(e.key==='Enter') doLogin(); });
+
+// ═══════════════════════════════════════════════
+// API FOOTBALL-DATA.ORG
+// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════════════
+// API — football-data.org v4
+// Header: X-Auth-Token
+// Plan gratuito: CL, BL1, PD, FL1, SA, PL (las 6 ligas disponibles)
+// IMPORTANTE: solo funciona desde https:// — no desde archivo local
+// ═══════════════════════════════════════════════
+
+// PROXY — redirige llamadas a football-data.org sin bloqueo CORS
+// Despliegue el proxy en Vercel y actualice esta URL
+let FD_PROXY = 'https://stasts-proxy.vercel.app/api/football';
+
+const FD_COMPS = [
+  { code:'PL',  liga:'epl',    name:'Premier League' },
+  { code:'PD',  liga:'laliga', name:'LaLiga' },
+  { code:'BL1', liga:'bun',    name:'Bundesliga' },
+  { code:'SA',  liga:'seriea', name:'Serie A' },
+  { code:'FL1', liga:'ligue1', name:'Ligue 1' },
+  { code:'CL',  liga:'ucl',    name:'Champions League' },
+];
+
+async function connectAPI() {
+  const key = document.getElementById('apiKeyInput').value.trim();
+  if(!key) { toast('Ingrese su API key'); return; }
+  apiKey = key;
+  setApiStatus('loading', 'Conectando...');
+
+  if(location.protocol === 'file:' || location.protocol === 'content:') {
+    setApiStatus('err', 'Abra la web desde https://dilansinho.github.io/Statss');
+    showCorsHelp();
+    return;
+  }
+
+  try {
+    // Intento directo primero (football-data.org a veces permite CORS desde https)
+    const data = await apiFetchDirect('competitions/PL/matches?status=SCHEDULED&dateFrom=' + today() + '&dateTo=' + today());
+    if(data && data.matches !== undefined) {
+      setApiStatus('live', 'Conectado -- football-data.org');
+      toast('Conectado. Cargando partidos...');
+      await loadRealMatches();
+      return;
+    }
+  } catch(e) {
+    console.log('Directo fallo, intentando proxy...', e.message);
+  }
+
+  try {
+    // Fallback: proxy Vercel
+    const data = await apiFetch('competitions/PL/matches?status=SCHEDULED&dateFrom=' + today() + '&dateTo=' + today());
+    if(data && data.matches !== undefined) {
+      setApiStatus('live', 'Conectado via proxy -- football-data.org');
+      toast('Conectado. Cargando partidos...');
+      await loadRealMatches();
+    } else {
+      setApiStatus('err', data.message || 'Key invalida');
+      toast('Error: ' + (data.message || 'Key invalida'));
+    }
+  } catch(e2) {
+    setApiStatus('err', 'Error: necesita proxy Vercel. Ver instrucciones.');
+    showCorsHelp();
+  }
+}
+
+async function apiFetch(path) {
+  // Via proxy Vercel (evita CORS)
+  const url = FD_PROXY + '?path=' + encodeURIComponent(path) + '&token=' + encodeURIComponent(apiKey);
+  const res = await fetch(url);
+  if(!res.ok) {
+    const err = await res.json().catch(()=>({}));
+    throw new Error(err.error || err.message || 'HTTP ' + res.status);
+  }
+  return res.json();
+}
+
+async function apiFetchDirect(path) {
+  // Llamada directa sin proxy
+  const res = await fetch('https://api.football-data.org/v4/' + path, {
+    headers: { 'X-Auth-Token': apiKey }
+  });
+  if(!res.ok) {
+    const err = await res.json().catch(()=>({}));
+    throw new Error(err.message || 'HTTP ' + res.status);
+  }
+  return res.json();
+}
+
+function showCorsHelp() {
+  // Muestra banner explicativo dentro de la app
+  const existing = document.getElementById('corsHelp');
+  if(existing) return;
+  const div = document.createElement('div');
+  div.id = 'corsHelp';
+  div.style.cssText = `
+    background:var(--card2); border:1px solid var(--border2); border-top:2px solid var(--yellow);
+    padding:14px 18px; margin:12px 0; border-radius:10px; font-family:var(--body); font-size:13px;
+    color:var(--text2); line-height:1.7;
+  `;
+  div.innerHTML = `
+    <div style="font-family:var(--head);font-size:15px;font-weight:800;color:var(--yellow);margin-bottom:8px">
+      Por que falla la conexion
+    </div>
+    <p>La web esta abierta como <b style="color:var(--text)">archivo local</b> en su telefono. Los navegadores
+    bloquean llamadas a APIs externas desde archivos locales por seguridad (politica CORS).</p>
+    <p style="margin-top:8px"><b style="color:var(--text)">Solucion — GitHub Pages (gratis, 5 minutos):</b></p>
+    <ol style="margin:8px 0 0 16px;display:flex;flex-direction:column;gap:5px">
+      <li>Entre a <b>github.com</b> y cree una cuenta gratuita</li>
+      <li>Clic en <b>New repository</b> — nombre: <b>statsbet</b> — marque <b>Public</b></li>
+      <li>Clic en <b>uploading an existing file</b> — suba el archivo <b>statsbet-v4.html</b></li>
+      <li>Renombre el archivo a <b>index.html</b> antes de subir</li>
+      <li>Vaya a <b>Settings → Pages → Source: main / root</b> → Save</li>
+      <li>Su URL sera: <b>https://[usuario].github.io/statsbet</b></li>
+    </ol>
+    <p style="margin-top:10px;color:var(--text3);font-size:11px;font-family:var(--mono)">
+      Una vez en esa URL, pegue su API key y conecte normalmente.
+    </p>`;
+  // Insertar despues de la barra de API
+  const apiBar = document.querySelector('.api-bar');
+  if(apiBar) apiBar.insertAdjacentElement('afterend', div);
+}
+
+function today() {
+  return new Date().toISOString().split('T')[0];
+}
+
+function nxtWeek() {
+  const d = new Date(); d.setDate(d.getDate() + 7);
+  return d.toISOString().split('T')[0];
+}
+
+function setApiStatus(state, msg) {
+  const dot = document.getElementById('apiDot');
+  const st  = document.getElementById('apiStatus');
+  dot.className = 'api-dot' + (state==='live'?' live': state==='err'?' err':'');
+  st.textContent = msg;
+  if(state === 'loading') st.innerHTML = msg + ' <span style="display:inline-block;width:10px;height:10px;border:2px solid rgba(0,212,255,.2);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle"></span>';
+}
+
+async function loadRealMatches() {
+  const t = today();
+  const allMatches = [];
+  const fetcher = async (path) => { try { return await apiFetchDirect(path); } catch(e) { return await apiFetch(path); } };
+  await Promise.all(FD_COMPS.map(async ({ code, liga }) => {
+    try {
+      const data = await fetcher(`competitions/${code}/matches?dateFrom=${t}&dateTo=${t}`);
+      if(data.matches) allMatches.push(...data.matches.map(m => ({...m, _liga: liga})));
+    } catch(e) { console.warn('Error liga', code, e.message); }
+  }));
+  matches = allMatches.map(mapFD).filter(Boolean);
+  renderMatchesByStatus();
+  await loadUpcoming();
+}
+
+async function loadUpcoming() {
+  const from = today(), to = nxtWeek();
+  const all = [];
+  await Promise.all(FD_COMPS.map(async ({ code, liga }) => {
+    try {
+      const data = await apiFetch(`competitions/${code}/matches?status=SCHEDULED&dateFrom=${from}&dateTo=${to}`);
+      if(data.matches) all.push(...data.matches.map(m => ({...m, _liga: liga})));
+    } catch(e) {}
+  }));
+  upcomingList = all.slice(0,50).map(m => ({
+    id:   'u' + m.id,
+    h:    m.homeTeam.shortName || m.homeTeam.name,
+    a:    m.awayTeam.shortName || m.awayTeam.name,
+    lg:   m.competition.name,
+    liga: m._liga || 'other',
+    date: fmtDate(m.utcDate),
+    time: fmtTime(m.utcDate),
+    fav:  false,
+  }));
+  renderUpcoming();
+}
+
+function mapFD(m) {
+  const status = mapStatusFD(m.status);
+  const sc = m.score.fullTime;
+  const ht = m.score.halfTime;
+  return {
+    id:     'fd' + m.id,
+    h:      m.homeTeam.shortName || m.homeTeam.name,
+    a:      m.awayTeam.shortName || m.awayTeam.name,
+    lg:     m.competition.name,
+    liga:   m._liga || 'other',
+    status,
+    time:   status === 'live' ? (m.minute ? m.minute + "'" : 'EN VIVO') : fmtTime(m.utcDate),
+    date:   fmtDate(m.utcDate),
+    score:  sc.home !== null ? { h: sc.home, a: sc.away } : null,
+    ht:     ht.home !== null ? { h: ht.home, a: ht.away } : null,
+    stats:  null, // estadisticas detalladas requieren plan de pago
+  };
+}
+
+function mapStatusFD(s) {
+  if(['IN_PLAY','PAUSED','LIVE'].includes(s)) return 'live';
+  if(s === 'FINISHED') return 'finished';
+  return 'today';
+}
+
+function fmtTime(utc) {
+  if(!utc) return '--:--';
+  return new Date(utc).toLocaleTimeString('es-CO', { hour:'2-digit', minute:'2-digit', timeZone:'America/Bogota' });
+}
+
+function fmtDate(utc) {
+  if(!utc) return '';
+  const d = new Date(utc);
+  const days   = ['Dom','Lun','Mar','Mie','Jue','Vie','Sab'];
+  const months = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  return `${days[d.getDay()]} ${d.getDate()} ${months[d.getMonth()]}`;
+}
+
+// ═══════════════════════════════════════════════
+// NAV
+// ═══════════════════════════════════════════════
+function goSec(id,btn) {
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  document.querySelectorAll('.ntab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+// ═══════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════
+function init() {
+  renderFavTeams();
+  renderMatchesByStatus();
+  renderUpcoming();
+  renderBets();
+  renderSummary();
+  setTimeout(showPopups, 1200);
+}
+
+// ═══════════════════════════════════════════════
+// FAV TEAMS
+// ═══════════════════════════════════════════════
+function renderFavTeams() {
+  document.getElementById('tc').textContent = favIds.length+'/12';
+  document.getElementById('favList').innerHTML =
+    TEAMS.filter(t=>favIds.includes(t.id)).map(t=>`
+      <div class="titem" onclick="showTeamDetail(${t.id})">
+        <div class="ti-abbr">${t.abbr}</div>
+        <div>
+          <div class="ti-name">${t.name}</div>
+          <div class="ti-lg">${t.lg}</div>
+          <div class="ti-form">${t.stats.form.map(f=>`<div class="fb ${f}">${f}</div>`).join('')}</div>
+        </div>
+      </div>
+    `).join('') + `<button class="btn-addteam" onclick="openAddTeam()">+ Agregar Equipo</button>`;
+}
+
+function showTeamDetail(id) {
+  const t = TEAMS.find(x=>x.id===id);
+  document.getElementById('teamDetailCard').style.display = 'block';
+  document.getElementById('tdTitle').textContent = t.abbr + ' — ' + t.name;
+  document.getElementById('tdBody').innerHTML = `
+    <div class="ts-row"><span class="ts-lbl">xG Promedio</span><span class="ts-val a">${t.stats.xg}</span></div>
+    <div class="ts-row"><span class="ts-lbl">Posesion %</span><span class="ts-val a">${t.stats.pos}%</span></div>
+    <div class="ts-row"><span class="ts-lbl">Disparos Totales</span><span class="ts-val">${t.stats.shots}</span></div>
+    <div class="ts-row"><span class="ts-lbl">Disparos Puerta</span><span class="ts-val">${t.stats.shotsT}</span></div>
+    <div class="ts-row"><span class="ts-lbl">Corners / Partido</span><span class="ts-val a">${t.stats.corners}</span></div>
+    <div class="ts-row"><span class="ts-lbl">Tarjetas / Partido</span><span class="ts-val y">${t.stats.cards}</span></div>
+    <div class="ts-row"><span class="ts-lbl">Goles / Partido</span><span class="ts-val g">${t.stats.goals}</span></div>
+    <div style="padding:10px 14px">
+      <div class="ts-lbl" style="margin-bottom:6px">Forma Reciente</div>
+      <div class="ti-form">${t.stats.form.map(f=>`<div class="fb ${f}" style="width:20px;height:20px;font-size:10px;border-radius:4px">${f}</div>`).join('')}</div>
+    </div>
+  `;
+}
+
+// ═══════════════════════════════════════════════
+// MATCHES
+// ═══════════════════════════════════════════════
+function renderMatchesByStatus() {
+  document.getElementById('liveDiv').innerHTML = renderMatchList(matches.filter(m=>m.status==='live'));
+  document.getElementById('todayDiv').innerHTML = renderMatchList(matches.filter(m=>m.status==='today'));
+  document.getElementById('finishedDiv').innerHTML = renderMatchList(matches.filter(m=>m.status==='finished'));
+}
+
+function renderMatchList(list) {
+  if(!list.length) return `<div class="empty-state">Sin partidos en esta categoria</div>`;
+  return list.map(m=>`
+    <div class="mcard ${m.status==='live'?'live':''}" onclick="openMatchModal('${m.id}')">
+      <div class="mcard-top">
+        <span class="mc-league">${m.lg}</span>
+        ${m.status==='live'
+          ? `<span class="live-badge">EN VIVO ${m.time}</span>`
+          : `<span class="mc-time">${m.status==='finished'?'FIN '+m.time:m.time}</span>`}
+      </div>
+      <div class="mcard-body">
+        <div class="mteam"><div class="mteam-name">${m.h}</div></div>
+        ${m.score ? `<div class="mscore">${m.score.h}-${m.score.a}</div>` : `<div class="mscore vs">VS</div>`}
+        <div class="mteam" style="text-align:right"><div class="mteam-name">${m.a}</div></div>
+      </div>
+      ${m.stats ? `
+      <div class="mcard-stats">
+        <div class="mst corners"><div class="mst-val">${m.stats.corners.h}-${m.stats.corners.a}</div><div class="mst-lbl">Corners</div></div>
+        <div class="mst cards"><div class="mst-val">${m.stats.cards.h}-${m.stats.cards.a}</div><div class="mst-lbl">Tarjetas</div></div>
+        <div class="mst goals"><div class="mst-val">${m.score?m.score.h+'-'+m.score.a:'—'}</div><div class="mst-lbl">Goles</div></div>
+        <div class="mst shots"><div class="mst-val">${m.stats.shotsT.h}-${m.stats.shotsT.a}</div><div class="mst-lbl">A Puerta</div></div>
+        <div class="mst poss"><div class="mst-val">${m.stats.pos.h}%</div><div class="mst-lbl">Posesion</div></div>
+      </div>` : ''}
+    </div>
+  `).join('');
+}
+
+// ═══════════════════════════════════════════════
+// MATCH MODAL
+// ═══════════════════════════════════════════════
+function openMatchModal(id) {
+  const m = matches.find(x=>x.id===id) || upcomingList.find(x=>x.id===id);
+  if(!m) return;
+  if(!matches.find(x=>x.id===id)) matches.push({...m, status:'upcoming', score:null, stats:null});
+
+  document.getElementById('mmTitle').textContent = m.h + ' vs ' + m.a;
+  let html = buildScoreBlock(m);
+  if(m.stats) html += buildStatBars(m, id);
+  html += buildBetTracker(id, m);
+  document.getElementById('mmBody').innerHTML = html;
+  document.getElementById('matchModal').classList.add('open');
+}
+
+function buildScoreBlock(m) {
+  if(m.score) {
+    return `<div class="score-block">
+      <div class="score-row">
+        <div class="score-team-name">${m.h}</div>
+        <div class="score-num">${m.score.h}-${m.score.a}</div>
+        <div class="score-team-name away">${m.a}</div>
+      </div>
+      <div class="score-meta">${m.lg} — ${m.date} — ${m.status==='live'?'EN VIVO '+m.time:'FIN '+m.time}</div>
+      ${m.ht?`<div class="ht-score">Descanso: ${m.ht.h}-${m.ht.a}</div>`:''}
+    </div>`;
+  }
+  return `<div class="score-block">
+    <div class="score-row">
+      <div class="score-team-name">${m.h}</div>
+      <div class="score-num" style="color:var(--text3);font-size:24px">VS</div>
+      <div class="score-team-name away">${m.a}</div>
+    </div>
+    <div class="score-meta">${m.lg} — ${m.date} — ${m.time}</div>
+  </div>`;
+}
+
+function buildStatBars(m, id) {
+  const s = m.stats;
+  return `
+  <div class="mtabs">
+    <button class="mtab active" onclick="switchTab('full',this,'${id}')">Partido</button>
+    <button class="mtab" onclick="switchTab('1h',this,'${id}')">1er Tiempo</button>
+    <button class="mtab" onclick="switchTab('2h',this,'${id}')">2do Tiempo</button>
+  </div>
+  <div id="sarea-${id}">${buildStatHtml(s, m.ht, m.score, 'full')}</div>`;
+}
+
+function buildStatHtml(s, ht, score, half) {
+  let cs, g;
+  if(half==='1h' && ht) { g={h:ht.h,a:ht.a}; cs={...s,pos:{h:s.pos.h,a:s.pos.a}}; }
+  else { g=score; cs=s; }
+  return `
+    <div class="sb-section">Estadisticas Principales</div>
+    ${sbar(s.xg.h, s.xg.a, 'Goles Esperados (xG)')}
+    ${sbar(s.pos.h, s.pos.a, 'Posesion', true, '%')}
+    ${sbar(s.shots.h, s.shots.a, 'Disparos Totales')}
+    ${sbar(s.shotsT.h, s.shotsT.a, 'Disparos a Puerta')}
+    ${s.bigChances!==undefined?sbar(s.bigChances.h,s.bigChances.a,'Grandes Ocasiones'):''}
+    <div class="sb-section">Corners y Tarjetas</div>
+    ${sbar(s.corners.h, s.corners.a, 'Corners')}
+    ${sbar(s.cards.h, s.cards.a, 'Tarjetas Amarillas')}
+    ${s.fouls?sbar(s.fouls.h,s.fouls.a,'Faltas'):''}
+    ${s.offsides?sbar(s.offsides.h,s.offsides.a,'Fueras de Juego'):''}
+    <div class="sb-section">Pases</div>
+    <div class="sb-row">
+      <div class="sb-nums">
+        <span class="sb-home">${s.passes.hPct}% (${s.passes.hAbs})</span>
+        <span class="sb-label">Pases</span>
+        <span class="sb-away">${s.passes.aPct}% (${s.passes.aAbs})</span>
+      </div>
+    </div>
+  `;
+}
+
+function sbar(h, a, label, isPct=false, unit='') {
+  const hn = parseFloat(h)||0, an = parseFloat(a)||0;
+  const total = hn+an||1;
+  const pw = Math.round(hn/total*100);
+  return `<div class="sb-row">
+    <div class="sb-nums">
+      <span class="sb-home">${h}${unit}</span>
+      <span class="sb-label">${label}</span>
+      <span class="sb-away">${a}${unit}</span>
+    </div>
+    <div class="sb-track">
+      <div class="sb-left" style="width:${pw}%"></div>
+      <div class="sb-right" style="width:${100-pw}%"></div>
+    </div>
+  </div>`;
+}
+
+function switchTab(half, btn, id) {
+  document.querySelectorAll('#sarea-'+id).forEach(()=>{});
+  document.querySelectorAll(`[onclick*="switchTab"]`).forEach(t=>{
+    if(t.closest('#mmBody')) t.classList.remove('active');
+  });
+  btn.classList.add('active');
+  const m = matches.find(x=>x.id===id);
+  if(!m||!m.stats) return;
+  document.getElementById('sarea-'+id).innerHTML = buildStatHtml(m.stats, m.ht, m.score, half);
+}
+
+// ═══════════════════════════════════════════════
+// BET TRACKER
+// ═══════════════════════════════════════════════
+function buildBetTracker(matchId, m) {
+  const myBets = bets.filter(b=>b.matchId===matchId);
+  let html = `<div class="bt-header">Mis Apuestas en este Partido</div>`;
+  html += myBets.map((b,i)=>buildBetEntryHtml(b,i)).join('');
+  html += buildBetWizard(matchId, m);
+  return html;
+}
+
+function buildBetEntryHtml(b, i) {
+  const ov = evalOverall(b);
+  return `
+  <div class="bet-entry">
+    <div class="bet-entry-h" onclick="toggleBetBody('bb-${b.id}', this)">
+      <div class="be-title">${b.desc||('Apuesta '+(i+1))}</div>
+      <div class="be-right">
+        <div class="be-badge ${ov}">${ov==='won'?'CUMPLIDA':ov==='lost'?'FALLIDA':ov==='partial'?'PARCIAL':'PENDIENTE'}</div>
+        <span class="be-chev">v</span>
+      </div>
+    </div>
+    <div class="bet-entry-b" id="bb-${b.id}">
+      ${b.conditions.map(c=>buildCondRow(c)).join('')}
+      ${b.status==='pending'?`<div class="btn-sm-row">
+        <button class="btn-sm g" onclick="setBetStatus('${b.id}','won')">Marcar Ganada</button>
+        <button class="btn-sm r" onclick="setBetStatus('${b.id}','lost')">Marcar Perdida</button>
+      </div>`:''}
+    </div>
+  </div>`;
+}
+
+function buildCondRow(c) {
+  const st = condStatus(c);
+  const pct = c.target>0 ? Math.min(100,Math.round(c.current/c.target*100)) : 0;
+  const icon = st==='ok'?'OK':st==='fail'?'NO':'--';
+  return `
+  <div class="cond-row">
+    <div class="cond-status-icon ${st}">${icon}</div>
+    <div class="cond-main">
+      <div class="cond-text">${c.mktName}</div>
+      <div class="cond-sub">${c.dirLabel} ${c.target}</div>
+      <div class="cond-prog-labels">
+        <span>Actual: ${c.current}</span>
+        <span>Necesita: ${c.target}</span>
+      </div>
+      <div class="cond-bar"><div class="cond-fill ${st}" style="width:${pct}%"></div></div>
+    </div>
+    <div class="cond-val ${st}">${c.current}<span style="font-size:10px;color:var(--text3)">/${c.target}</span></div>
+  </div>`;
+}
+
+function buildBetWizard(matchId, m) {
+  const wid = 'wiz-'+matchId;
+  // Group markets by category
+  const cats = {};
+  MARKETS.forEach(mk => {
+    if(!cats[mk.cat]) cats[mk.cat] = [];
+    cats[mk.cat].push(mk);
+  });
+
+  const groupsHtml = Object.entries(cats).map(([cat, mks]) => `
+    <div class="mkt-group">
+      <div class="mkt-group-header">${cat}</div>
+      <div class="mkt-opts-row">
+        ${mks.map(mk => {
+          // Each market shows its opts as buttons directly
+          if(mk.type === 'ou') {
+            // Over / Under shown as two buttons — clicking opens line selector
+            return `
+              <div class="mkt-opt-btn" onclick="selectMarketOpt('${matchId}','${mk.id}','over')">
+                <div>Over</div><span class="mkt-opt-sub">${mk.name}</span>
+              </div>
+              <div class="mkt-opt-btn" onclick="selectMarketOpt('${matchId}','${mk.id}','under')">
+                <div>Under</div><span class="mkt-opt-sub">${mk.name}</span>
+              </div>`;
+          } else if(mk.type === 'result') {
+            return `
+              <div class="mkt-opt-btn" onclick="selectMarketOpt('${matchId}','${mk.id}','local')">
+                <div>Local</div><span class="mkt-opt-sub">${mk.name}</span>
+              </div>
+              <div class="mkt-opt-btn" onclick="selectMarketOpt('${matchId}','${mk.id}','draw')">
+                <div>Empate</div><span class="mkt-opt-sub">${mk.name}</span>
+              </div>
+              <div class="mkt-opt-btn" onclick="selectMarketOpt('${matchId}','${mk.id}','visitante')">
+                <div>Visitante</div><span class="mkt-opt-sub">${mk.name}</span>
+              </div>`;
+          } else if(mk.type === 'yn') {
+            return `
+              <div class="mkt-opt-btn" onclick="selectMarketOpt('${matchId}','${mk.id}','si')">
+                <div>Si</div><span class="mkt-opt-sub">${mk.name}</span>
+              </div>
+              <div class="mkt-opt-btn" onclick="selectMarketOpt('${matchId}','${mk.id}','no')">
+                <div>No</div><span class="mkt-opt-sub">${mk.name}</span>
+              </div>`;
+          } else {
+            // dc, htft, player — list each option as a button
+            return (mk.opts||['Seleccionar']).map(opt =>
+              `<div class="mkt-opt-btn" onclick="selectMarketOpt('${matchId}','${mk.id}','${opt.replace(/'/g,"\\'")}')">
+                <div>${opt}</div><span class="mkt-opt-sub">${mk.name}</span>
+              </div>`).join('');
+          }
+        }).join('')}
+      </div>
+    </div>`).join('');
+
+  return `
+  <button class="btn-new-bet" onclick="toggleWizard('${wid}')">+ Registrar Nueva Apuesta</button>
+  <div class="bet-wizard" id="${wid}">
+    <label class="wiz-label" style="margin-bottom:6px">Descripcion (opcional)</label>
+    <input class="wiz-input" id="wdesc-${matchId}" placeholder="Ej: Combinada Bayern-corners">
+
+    <label class="wiz-label" style="margin-bottom:8px">Mercados</label>
+    ${groupsHtml}
+
+    <!-- Line selector: aparece flotante al elegir Over/Under -->
+    <div class="ou-picker" id="oupick-${matchId}">
+      <div class="ou-step-card">
+        <div class="ou-step-title" id="oupick-label-${matchId}">Configurar linea</div>
+        <div class="ou-row">
+          <button class="ou-btn" id="oubtn-over-${matchId}" onclick="setDir('${matchId}','over')">OVER</button>
+          <button class="ou-btn" id="oubtn-under-${matchId}" onclick="setDir('${matchId}','under')">UNDER</button>
+        </div>
+        <span class="ou-line-label">Linea — selecciona o escribe un numero</span>
+        <div class="ou-num-chips" id="ouchips-${matchId}"></div>
+        <div class="ou-custom-row">
+          <input class="wiz-input" id="ounum-${matchId}" type="number" step="0.5" placeholder="Ej: 9.5">
+        </div>
+        <button class="btn-add-cond" onclick="addCondToWizard('${matchId}')">Agregar Condicion</button>
+      </div>
+    </div>
+
+    <div class="added-cond-list" id="aclist-${matchId}"></div>
+    <button class="btn-save-bet" onclick="saveBetWizard('${matchId}','${m.h}','${m.a}','${m.lg||''}','${m.date||''}')">Guardar Apuesta</button>
+  </div>`;
+}
+
+function buildMktGrid(matchId) { return ''; } // legacy — no longer used
+
+// Called when user clicks any option button in the grouped market cards
+function selectMarketOpt(matchId, mktId, dir) {
+  const mkt = MARKETS.find(m=>m.id===mktId);
+  if(!mkt) return;
+  if(!wizardState[matchId]) wizardState[matchId] = {mkt:null, dir:null, num:null, conds:[]};
+  const ws = wizardState[matchId];
+  ws.mkt = mkt;
+  ws.dir = dir;
+
+  // Highlight clicked option
+  document.querySelectorAll(`#wiz-${matchId} .mkt-opt-btn`).forEach(b=>b.classList.remove('sel'));
+  event.currentTarget.classList.add('sel');
+
+  if(mkt.type === 'ou') {
+    // Show line selector
+    const picker = document.getElementById('oupick-'+matchId);
+    const label  = document.getElementById('oupick-label-'+matchId);
+    if(picker) {
+      picker.classList.add('open');
+      if(label) label.textContent = (dir==='over'?'Over':'Under') + ' — ' + mkt.name;
+      // Mark the right OU button
+      ['over','under'].forEach(d => {
+        const btn = document.getElementById(`oubtn-${d}-${matchId}`);
+        if(btn) btn.classList.toggle('sel', d===dir);
+      });
+      // Chips
+      const stat = mkt.stat||'default';
+      const sugs = OU_SUGGESTIONS[stat]||OU_SUGGESTIONS.default;
+      const chipsEl = document.getElementById('ouchips-'+matchId);
+      if(chipsEl) chipsEl.innerHTML = sugs.map(s=>`
+        <span class="num-chip" onclick="pickChip('${matchId}','${s}',this)">${s}</span>`).join('');
+      const numEl = document.getElementById('ounum-'+matchId);
+      if(numEl) numEl.value = '';
+    }
+  } else {
+    // Non-OU market: just add condition immediately (no line needed)
+    const m = matches.find(x=>x.id===matchId);
+    const current = m && m.stats ? readStat(m, mkt.stat, dir) : 0;
+    const dirLabels = {'local':'Local','visitante':'Visitante','draw':'Empate','si':'Si','no':'No'};
+    const dirLabel  = dirLabels[dir]||dir;
+    if(!ws.conds) ws.conds=[];
+    ws.conds.push({
+      mktId: mkt.id, mktName: mkt.name, dir, dirLabel, target:1, current, stat: mkt.stat||mkt.id,
+    });
+    renderAddedConds(matchId);
+    document.querySelectorAll(`#wiz-${matchId} .mkt-opt-btn`).forEach(b=>b.classList.remove('sel'));
+    toast('Condicion agregada');
+  }
+}
+
+function pickChip(matchId, val, el) {
+  el.closest('.ou-num-chips').querySelectorAll('.num-chip').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');
+  const numEl = document.getElementById('ounum-'+matchId);
+  if(numEl) numEl.value = val;
+  if(wizardState[matchId]) wizardState[matchId].num = val;
+}
+
+function selectMarket(matchId, mktId) { /* legacy shim */ }
+
+function toggleWizard(id) {
+  const el = document.getElementById(id);
+  if(el) { el.classList.toggle('open'); }
+}
+
+function selectMarket(matchId, mktId) {
+  const mkt = MARKETS.find(m=>m.id===mktId);
+  if(!mkt) return;
+  if(!wizardState[matchId]) wizardState[matchId] = {mkt:null, dir:null, num:null, conds:[]};
+  wizardState[matchId].mkt = mkt;
+  wizardState[matchId].dir = null;
+
+  // Highlight
+  document.querySelectorAll(`#mktgrid-${matchId} .mkt-btn`).forEach(b=>b.classList.remove('sel'));
+  event.currentTarget.classList.add('sel');
+
+  // Show OU picker
+  const picker = document.getElementById('oupick-'+matchId);
+  const label = document.getElementById('oupick-label-'+matchId);
+  if(picker) {
+    picker.classList.add('open');
+    if(label) label.textContent = 'Direccion para: ' + mkt.name;
+    // Suggestions
+    const stat = mkt.stat||'default';
+    const sugs = OU_SUGGESTIONS[stat]||OU_SUGGESTIONS.default;
+    const chipsEl = document.getElementById('ouchips-'+matchId);
+    if(chipsEl) chipsEl.innerHTML = sugs.map(s=>`<span class="num-chip" onclick="document.getElementById('ounum-${matchId}').value='${s}'">${s}</span>`).join('');
+
+    // Special types
+    if(mkt.type==='result'||mkt.type==='yn'||mkt.type==='htft'||mkt.type==='dc'||mkt.type==='player_spec') {
+      document.getElementById('oubtn-over-'+matchId).textContent = mkt.type==='yn'?'SI':'LOCAL';
+      document.getElementById('oubtn-under-'+matchId).textContent = mkt.type==='yn'?'NO':'VISITANTE';
+      if(mkt.type==='result') {
+        const row = document.querySelector(`#oupick-${matchId} .ou-row`);
+        if(row && !row.querySelector('.ou-btn-draw')) {
+          const extra = document.createElement('button');
+          extra.className='ou-btn'; extra.textContent='EMPATE';
+          extra.id=`oubtn-draw-${matchId}`;
+          extra.onclick=()=>setDir(matchId,'draw');
+          row.appendChild(extra);
+        }
+      }
+    } else {
+      document.getElementById('oubtn-over-'+matchId).textContent = 'OVER';
+      document.getElementById('oubtn-under-'+matchId).textContent = 'UNDER';
+      const extra = document.getElementById('oubtn-draw-'+matchId);
+      if(extra) extra.remove();
+    }
+  }
+}
+
+function setDir(matchId, dir) {
+  if(!wizardState[matchId]) return;
+  wizardState[matchId].dir = dir;
+  ['over','under','draw'].forEach(d=>{
+    const el = document.getElementById(`oubtn-${d}-${matchId}`);
+    if(el) el.classList.toggle('sel', d===dir);
+  });
+}
+
+function addCondToWizard(matchId) {
+  const ws = wizardState[matchId];
+  if(!ws||!ws.mkt) { toast('Seleccione un mercado'); return; }
+  if(!ws.dir) { toast('Seleccione Over o Under'); return; }
+  const numEl = document.getElementById('ounum-'+matchId);
+  const num = parseFloat(numEl?numEl.value:0)||0;
+  if(!num) { toast('Ingrese la linea numerica'); return; }
+
+  const dirLabels = {'over':'Over','under':'Under'};
+  const dirLabel  = (dirLabels[ws.dir]||ws.dir) + ' ' + num;
+  const m = matches.find(x=>x.id===matchId);
+  const current = m && m.stats ? readStat(m, ws.mkt.stat, ws.dir) : 0;
+
+  if(!ws.conds) ws.conds=[];
+  ws.conds.push({
+    mktId: ws.mkt.id, mktName: ws.mkt.name, dir: ws.dir, dirLabel,
+    target: num, current, stat: ws.mkt.stat||ws.mkt.id,
+  });
+
+  renderAddedConds(matchId);
+  // Reset picker
+  const picker = document.getElementById('oupick-'+matchId);
+  if(picker) picker.classList.remove('open');
+  if(numEl) numEl.value='';
+  document.getElementById('ouchips-'+matchId).querySelectorAll('.num-chip').forEach(c=>c.classList.remove('sel'));
+  ws.mkt=null; ws.dir=null;
+  document.querySelectorAll(`#wiz-${matchId} .mkt-opt-btn`).forEach(b=>b.classList.remove('sel'));
+  ['over','under'].forEach(d=>{
+    const el=document.getElementById(`oubtn-${d}-${matchId}`);
+    if(el) el.classList.remove('sel');
+  });
+  toast('Condicion agregada');
+}
+
+function readStat(m, stat, dir) {
+  if(!m||!m.stats) return 0;
+  const s=m.stats, sc=m.score;
+  const map = {
+    goals_total: sc?(sc.h+sc.a):0,
+    goals_home: sc?sc.h:0,
+    goals_away: sc?sc.a:0,
+    corners_total: s.corners.h+s.corners.a,
+    corners_home: s.corners.h,
+    corners_away: s.corners.a,
+    cards_total: s.cards.h+s.cards.a,
+    cards_home: s.cards.h,
+    cards_away: s.cards.a,
+    shots_on_total: s.shotsT.h+s.shotsT.a,
+    shots_on_h: s.shotsT.h,
+    shots_on_a: s.shotsT.a,
+    shots_total_h: s.shots.h,
+    shots_total_a: s.shots.a,
+    possession_h: s.pos.h,
+    xg_home: s.xg.h,
+    xg_total: s.xg.h+s.xg.a,
+    fouls_total: s.fouls?(s.fouls.h+s.fouls.a):0,
+    offsides_total: s.offsides?(s.offsides.h+s.offsides.a):0,
+    result: sc?(sc.h>sc.a?'local':sc.h===sc.a?'draw':'away'):null,
+  };
+  return map[stat]||0;
+}
+
+function renderAddedConds(matchId) {
+  const ws = wizardState[matchId];
+  const el = document.getElementById('aclist-'+matchId);
+  if(!el) return;
+  el.innerHTML = (ws&&ws.conds||[]).map((c,i)=>`
+    <div class="ac-chip">
+      <div class="ac-chip-info">
+        <div class="ac-chip-name">${c.mktName}</div>
+        <div class="ac-chip-pick">${c.dirLabel}</div>
+      </div>
+      <span class="ac-rm" onclick="removeCond('${matchId}',${i})">x</span>
+    </div>`).join('');
+}
+
+function removeCond(matchId, i) {
+  if(wizardState[matchId]&&wizardState[matchId].conds) {
+    wizardState[matchId].conds.splice(i,1);
+    renderAddedConds(matchId);
+  }
+}
+
+function saveBetWizard(matchId, h, a, lg, date) {
+  const ws = wizardState[matchId];
+  const desc = (document.getElementById('wdesc-'+matchId)||{}).value||`${h} vs ${a}`;
+  if(!ws||!ws.conds||!ws.conds.length) { toast('Agrega al menos una condicion'); return; }
+  const newBet = {
+    id: 'b'+Date.now(), matchId, h, a, lg, date, status:'pending', desc,
+    conditions: [...ws.conds],
+  };
+  bets.push(newBet);
+  wizardState[matchId] = {conds:[]};
+  // Cierra modal y muestra popup de confirmacion
+  document.getElementById('matchModal').classList.remove('open');
+  showBetSavedPopup(newBet, matches.find(x=>x.id===matchId));
+  renderBets(); renderSummary();
+}
+
+function showBetSavedPopup(bet, m) {
+  const ov = evalOverall(bet);
+  const score = m && m.score ? `${m.score.h} - ${m.score.a}` : 'Por jugar';
+  const div = document.createElement('div');
+  div.className = 'bet-saved-popup';
+  div.innerHTML = `
+    <span class="bsp-x" onclick="this.parentElement.remove()">x</span>
+    <div class="bsp-tag">Apuesta Registrada</div>
+    <div class="bsp-match">${bet.h} vs ${bet.a}</div>
+    <div class="bsp-score">${score}</div>
+    <div class="bsp-meta">${bet.lg}${bet.date?' — '+bet.date:''}</div>
+    <div class="bsp-conds">
+      ${bet.conditions.map(c=>{
+        const st = condStatus(c);
+        return `<div class="bsp-cond">
+          <div class="bsp-dot ${st}"></div>
+          ${c.mktName}: ${c.dirLabel}
+        </div>`;
+      }).join('')}
+    </div>
+    <div class="bsp-overall ${ov}">${ov==='won'?'CUMPLIDA':ov==='lost'?'FALLIDA':ov==='partial'?'PARCIAL':'PENDIENTE'}</div>`;
+  document.getElementById('popups').appendChild(div);
+  setTimeout(()=>{ div.style.transition='opacity .4s'; div.style.opacity='0'; setTimeout(()=>div.remove(),400); }, 8000);
+}
+
+// ═══════════════════════════════════════════════
+// BET LOGIC
+// ═══════════════════════════════════════════════
+function condStatus(c) {
+  const cur = c.current, tgt = c.target;
+  if(c.dir==='over') return cur>tgt?'ok':cur===tgt?'pending':'fail';
+  if(c.dir==='under') return cur<tgt?'ok':cur===tgt?'pending':'fail';
+  if(c.dir==='local'||c.dir==='result_home') return cur==='local'||cur===1?'ok':'fail';
+  if(c.dir==='visitante'||c.dir==='result_away') return cur==='away'||cur===0?'ok':'fail';
+  if(c.dir==='draw') return cur==='draw'||cur===0?'ok':'fail';
+  if(c.dir==='si') return cur===1||cur===true?'ok':'fail';
+  if(c.dir==='no') return cur===0||cur===false?'ok':'fail';
+  return cur>=tgt?'ok':'pending';
+}
+
+function evalOverall(b) {
+  if(!b.conditions.length) return 'pending';
+  const ss = b.conditions.map(condStatus);
+  if(ss.every(s=>s==='ok')) return 'won';
+  if(ss.some(s=>s==='fail')) return 'lost';
+  if(ss.some(s=>s==='ok')) return 'partial';
+  return 'pending';
+}
+
+function toggleBetBody(id, btn) {
+  const el = document.getElementById(id);
+  const chev = btn.querySelector('.be-chev');
+  if(el) { el.classList.toggle('open'); if(chev) chev.classList.toggle('open'); }
+}
+
+function setBetStatus(id, status) {
+  const b = bets.find(x=>x.id===id);
+  if(b) {
+    b.status = status;
+    renderBets(); renderSummary();
+    openMatchModal(b.matchId);
+    toast(status==='won'?'Apuesta marcada como ganada':'Apuesta marcada como perdida');
+  }
+}
+
+// ═══════════════════════════════════════════════
+// BETS SECTION
+// ═══════════════════════════════════════════════
+function renderSummary() {
+  const total=bets.length;
+  const won=bets.filter(b=>evalOverall(b)==='won').length;
+  const lost=bets.filter(b=>evalOverall(b)==='lost').length;
+  const pct=total>0?Math.round(won/total*100):0;
+  document.getElementById('sumDiv').innerHTML=`
+    <div class="sum-card"><div class="sum-val">${total}</div><div class="sum-lbl">Total Apuestas</div></div>
+    <div class="sum-card"><div class="sum-val g">${won}</div><div class="sum-lbl">Acertadas</div></div>
+    <div class="sum-card"><div class="sum-val r">${lost}</div><div class="sum-lbl">Fallidas</div></div>
+    <div class="sum-card"><div class="sum-val ${pct>=50?'g':'r'}">${pct}%</div><div class="sum-lbl">Efectividad</div></div>`;
+}
+
+function renderBets(f) {
+  const filter = f||currentBetFilter;
+  const el = document.getElementById('betsDiv');
+  let list = bets;
+  if(filter==='pending') list=bets.filter(b=>b.status==='pending');
+  else if(filter==='won') list=bets.filter(b=>evalOverall(b)==='won');
+  else if(filter==='lost') list=bets.filter(b=>evalOverall(b)==='lost');
+  if(!list.length) { el.innerHTML=`<div class="empty-state">Sin apuestas en este filtro</div>`; return; }
+  el.innerHTML = list.map(b=>{
+    const ov=evalOverall(b);
+    return `
+    <div class="acard ${ov}">
+      <div class="acard-h" onclick="this.nextElementSibling.classList.toggle('open')">
+        <div>
+          <div class="amatch">${b.h} vs ${b.a}</div>
+          <div class="ameta">${b.lg} — ${b.date}${b.desc?' — '+b.desc:''}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="be-badge ${ov}">${ov==='won'?'CUMPLIDA':ov==='lost'?'FALLIDA':ov==='partial'?'PARCIAL':'PENDIENTE'}</div>
+          <span style="font-family:var(--mono);color:var(--text3)">v</span>
+        </div>
+      </div>
+      <div class="acard-b">
+        ${b.conditions.map(c=>buildCondRow(c)).join('')}
+        <div class="btn-sm-row">
+          <button class="btn-sm b" onclick="openMatchModal('${b.matchId}')">Ver Partido</button>
+          ${b.status==='pending'?`
+          <button class="btn-sm g" onclick="setBetStatus('${b.id}','won')">Ganada</button>
+          <button class="btn-sm r" onclick="setBetStatus('${b.id}','lost')">Perdida</button>`:''}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function filterBets(f, btn) {
+  currentBetFilter = f;
+  document.querySelectorAll('#sec-apuestas .ftab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  renderBets(f);
+}
+
+// ═══════════════════════════════════════════════
+// UPCOMING
+// ═══════════════════════════════════════════════
+function renderUpcoming(f) {
+  const filter = f||currentUpFilter;
+  let list = upcomingList;
+  if(filter==='fav') list=upcomingList.filter(u=>u.fav||favIds.some(id=>TEAMS.find(t=>t.id===id&&(t.name===u.h||t.name===u.a))));
+  else if(filter!=='all') list=upcomingList.filter(u=>u.liga===filter);
+  document.getElementById('upcomingDiv').innerHTML = list.map(u=>`
+    <div class="urow" onclick="openUpcomingModal('${u.id}')">
+      <div style="flex:1">
+        <div class="uteams">${u.h} vs ${u.a}</div>
+        <div class="umeta">${u.lg}</div>
+      </div>
+      <div>
+        <div class="utime-big">${u.time}</div>
+        <div class="utime-date">${u.date}</div>
+      </div>
+      <button class="btn-track" onclick="event.stopPropagation();openUpcomingModal('${u.id}')">Registrar Apuesta</button>
+    </div>`).join('') || `<div class="empty-state">Sin partidos en este filtro</div>`;
+}
+
+function filterUp(f, btn) {
+  currentUpFilter = f;
+  document.querySelectorAll('#sec-proximos .ftab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  renderUpcoming(f);
+}
+
+function openUpcomingModal(id) {
+  const u = upcomingList.find(x=>x.id===id);
+  if(!u) return;
+  if(!matches.find(x=>x.id===id)) matches.push({...u, status:'upcoming', score:null, stats:null});
+  openMatchModal(id);
+}
+
+// ═══════════════════════════════════════════════
+// ADD TEAM MODAL
+// ═══════════════════════════════════════════════
+function openAddTeam() {
+  tempTeams = [...favIds];
+  document.getElementById('tsearch').value='';
+  renderTeamSearch();
+  document.getElementById('addTeamModal').classList.add('open');
+}
+function renderTeamSearch() {
+  const q = document.getElementById('tsearch').value.toLowerCase();
+  const list = TEAMS.filter(t=>t.name.toLowerCase().includes(q)||t.lg.toLowerCase().includes(q));
+  document.getElementById('tslist').innerHTML = list.map(t=>`
+    <div class="ats ${tempTeams.includes(t.id)?'sel':''}" onclick="toggleTT(${t.id})">
+      <div class="ti-abbr">${t.abbr}</div>
+      <div><div class="ti-name">${t.name}</div><div class="ti-lg">${t.lg}</div></div>
+      <span class="ats-check">OK</span>
+    </div>`).join('');
+}
+function toggleTT(id) {
+  const i=tempTeams.indexOf(id);
+  if(i>-1) tempTeams.splice(i,1); else tempTeams.push(id);
+  renderTeamSearch();
+}
+function confirmTeams() {
+  favIds=[...tempTeams];
+  closeModal('addTeamModal');
+  renderFavTeams();
+  toast('Equipos actualizados');
+}
+
+// ═══════════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════════
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+function toast(msg) {
+  const t=document.createElement('div'); t.className='toast'; t.textContent=msg;
+  document.body.appendChild(t); setTimeout(()=>t.remove(),2500);
+}
+document.querySelectorAll('.modal-ov').forEach(o=>{
+  o.addEventListener('click',e=>{ if(e.target===o) o.classList.remove('open'); });
+});
+
+function showPopups() {
+  const c=document.getElementById('popups');
+  [
+    {cls:'live-p',tag:'EN VIVO',match:'Bayern Munich 3 - 0 Dortmund',detail:"Corners: 8-2  |  Tarjetas: 1-4  |  58'"},
+    {cls:'',tag:'g',tagText:'HOY 18:30',match:'Arsenal vs Liverpool',detail:'Premier League — en 2 horas'},
+  ].forEach((p,i)=>{
+    setTimeout(()=>{
+      const d=document.createElement('div');
+      d.className=`popup ${p.cls}`;
+      d.innerHTML=`<div class="popup-tag ${p.tag==='EN VIVO'?'':p.tag}">${p.tag==='EN VIVO'?'EN VIVO':p.tagText}</div><div class="popup-match">${p.match}</div><div class="popup-detail">${p.detail}</div><span class="popup-x" onclick="event.stopPropagation();this.parentElement.remove()">x</span>`;
+      c.appendChild(d);
+      setTimeout(()=>d.remove(),10000);
+    },i*700);
+  });
+}
+</script>
+</body>
+</html>
