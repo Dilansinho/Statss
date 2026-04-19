@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STATSBET - Test</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#080b12;--bg2:#0e1119;--bg3:#131720;--card:#171d28;--border:#1f2840;--accent:#00d4ff;--green:#00e5a0;--red:#ff4560;--yellow:#f5c518;--text:#dce3f0;--text2:#6b7a99;--text3:#3a4560;--mono:'DM Mono',monospace;--head:'Syne',sans-serif;--body:'DM Sans',sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+html{font-size:14px}
+body{background:var(--bg);color:var(--text);font-family:var(--body);min-height:100vh;padding:20px}
+h1{font-family:var(--head);font-size:24px;margin-bottom:20px}
+h1 span{color:var(--accent)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:12px}
+.api-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.api-bar input{flex:1;min-width:200px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:10px;color:var(--text);font-family:var(--mono);font-size:11px}
+.btn{background:var(--accent);color:var(--bg);border:none;border-radius:6px;padding:10px 16px;font-family:var(--head);font-weight:700;cursor:pointer}
+.btn-out{background:none;border:1px solid var(--border);color:var(--text2)}
+.log{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;font-family:var(--mono);font-size:10px;max-height:300px;overflow-y:auto;margin-bottom:16px}
+.log-line{margin-bottom:4px}
+.log-success{color:var(--green)}
+.log-error{color:var(--red)}
+.log-info{color:var(--accent)}
+.match-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:8px}
+.match-league{font-family:var(--mono);font-size:9px;color:var(--text3);text-transform:uppercase}
+.match-teams{font-family:var(--head);font-size:16px;font-weight:800;margin:4px 0}
+.match-score{font-family:var(--mono);font-size:14px;color:var(--text2)}
+.match-status{font-size:10px;padding:2px 8px;border-radius:3px;display:inline-block}
+.status-live{background:rgba(255,69,96,.15);color:var(--red)}
+.status-finished{background:rgba(0,229,160,.08);color:var(--green)}
+.status-today{background:rgba(245,197,24,.08);color:var(--yellow)}
+.flex{display:flex;gap:8px;align-items:center;justify-content:space-between}
+</style>
+</head>
+<body>
+<h1>STATS<span>BET</span> <span style="font-size:12px;color:var(--text3)">Test Conexión</span></h1>
+
+<div class="api-bar">
+  <input id="apiKey" placeholder="API Key" value="e73341865409a265f5cb72e29722b2be">
+  <button class="btn" onclick="testConnection()">🔍 Test</button>
+  <button class="btn btn-out" onclick="loadMatches()">📊 Cargar Partidos</button>
+</div>
+
+<div id="log" class="log"></div>
+<div id="matches"></div>
+
+<script>
+const PROXY = 'https://stasts-proxy.vercel.app/api/football';
+const LEAGUES = [
+  { id: 140, name: 'LaLiga' },
+  { id: 39, name: 'Premier' },
+  { id: 78, name: 'Bundesliga' },
+  { id: 135, name: 'Serie A' },
+  { id: 61, name: 'Ligue 1' },
+  { id: 2, name: 'Champions' },
+];
+
+let apiKey = document.getElementById('apiKey').value;
+let debugLines = [];
+
+function log(msg, type = 'info') {
+  debugLines.push({ msg, type });
+  const logDiv = document.getElementById('log');
+  logDiv.innerHTML = debugLines.map(l => 
+    `<div class="log-line log-${l.type}">${new Date().toLocaleTimeString()} - ${l.msg}</div>`
+  ).join('');
+  logDiv.scrollTop = logDiv.scrollHeight;
+}
+
+function clearLog() { debugLines = []; document.getElementById('log').innerHTML = ''; }
+
+async function testConnection() {
+  clearLog();
+  apiKey = document.getElementById('apiKey').value;
+  log('🔍 Probando conexión...', 'info');
+  
+  try {
+    const url = `${PROXY}?path=status&token=${apiKey}`;
+    log(`URL: ${url.substring(0,60)}...`, 'info');
+    
+    const res = await fetch(url);
+    const text = await res.text();
+    
+    try {
+      const data = JSON.parse(text);
+      if(data.response) {
+        log(`✅ CONEXIÓN EXITOSA! Llamadas: ${data.response.requests.remaining}`, 'success');
+      } else {
+        log(`❌ Error: ${text}`, 'error');
+      }
+    } catch(e) {
+      log(`⚠️ Respuesta: ${text.substring(0,100)}`, 'info');
+    }
+  } catch(e) {
+    log(`❌ Error: ${e.message}`, 'error');
+  }
+}
+
+async function loadMatches() {
+  clearLog();
+  apiKey = document.getElementById('apiKey').value;
+  log('📊 Cargando partidos...', 'info');
+  
+  const today = new Date().toISOString().split('T')[0];
+  const SEASON = 2025;
+  
+  log(`📅 Fecha: ${today} | Temporada: ${SEASON}`, 'info');
+  
+  let allMatches = [];
+  
+  for(const league of LEAGUES) {
+    try {
+      const path = `fixtures?league=${league.id}&season=${SEASON}&date=${today}`;
+      const url = `${PROXY}?path=${encodeURIComponent(path)}&token=${apiKey}`;
+      
+      const res = await fetch(url);
+      const text = await res.text();
+      const data = JSON.parse(text);
+      
+      if(data.response?.length) {
+        log(`✅ ${league.name}: ${data.response.length} partidos`, 'success');
+        allMatches.push(...data.response.map(f => ({...f, leagueName: league.name})));
+      } else {
+        log(`⚠️ ${league.name}: 0 partidos`, 'info');
+      }
+    } catch(e) {
+      log(`❌ ${league.name}: error`, 'error');
+    }
+  }
+  
+  // Si no hay, probar ayer
+  if(allMatches.length === 0) {
+    const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+    log(`🔄 Probando ayer (${yesterday})...`, 'info');
+    
+    for(const league of LEAGUES) {
+      try {
+        const path = `fixtures?league=${league.id}&season=${SEASON}&date=${yesterday}`;
+        const url = `${PROXY}?path=${encodeURIComponent(path)}&token=${apiKey}`;
+        const res = await fetch(url);
+        const text = await res.text();
+        const data = JSON.parse(text);
+        if(data.response?.length) {
+          log(`✅ ${league.name}: ${data.response.length} partidos (ayer)`, 'success');
+          allMatches.push(...data.response.map(f => ({...f, leagueName: league.name})));
+        }
+      } catch(e) {}
+    }
+  }
+  
+  log(`📊 TOTAL: ${allMatches.length} partidos`, allMatches.length ? 'success' : 'error');
+  
+  // Mostrar partidos
+  const matchesDiv = document.getElementById('matches');
+  if(allMatches.length === 0) {
+    matchesDiv.innerHTML = '<div class="card" style="text-align:center">😕 No se encontraron partidos</div>';
+    return;
+  }
+  
+  matchesDiv.innerHTML = allMatches.slice(0, 20).map(f => {
+    const status = f.fixture.status.short;
+    const statusClass = status === 'FT' ? 'finished' : (status === 'NS' ? 'today' : 'live');
+    const statusText = status === 'FT' ? 'FINAL' : (status === 'NS' ? 'PROGRAMADO' : 'EN VIVO');
+    const score = f.goals.home !== null ? `${f.goals.home}-${f.goals.away}` : 'VS';
+    
+    return `
+      <div class="match-card">
+        <div class="flex">
+          <span class="match-league">${f.leagueName}</span>
+          <span class="match-status status-${statusClass}">${statusText}</span>
+        </div>
+        <div class="match-teams">${f.teams.home.name} vs ${f.teams.away.name}</div>
+        <div class="flex">
+          <span class="match-score">${score}</span>
+          <span style="color:var(--text3);font-size:11px">${new Date(f.fixture.date).toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'})}</span>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// Auto-test al cargar
+setTimeout(testConnection, 500);
+</script>
+</body>
+</html>
