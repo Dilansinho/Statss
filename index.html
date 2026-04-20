@@ -8,7 +8,7 @@
 <title>STATSBET — Tracker de Apuestas</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-/* ========== ESTILOS COMPLETOS (CONSERVADOS DE VERSIONES ANTERIORES) ========== */
+/* ========== ESTILOS COMPLETOS (CONSERVADOS) ========== */
 :root {
   --bg:#080b12; --bg2:#0e1119; --bg3:#131720; --card:#171d28; --card2:#1d2433;
   --border:#1f2840; --border2:#283350;
@@ -797,7 +797,7 @@ const TEAMS = [
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════
-// STATE (sin datos demo)
+// STATE
 // ═══════════════════════════════════════════════════════════════════════════
 let favIds = [1,4,5,7];
 let tempTeams = [];
@@ -883,7 +883,7 @@ function doLogout() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// API FOOTBALL-DATA.ORG (CORREGIDA CON FECHA LOCAL)
+// API FOOTBALL-DATA.ORG (MEJORADA PARA MÓVILES)
 // ═══════════════════════════════════════════════════════════════════════════
 const CORS_PROXY = 'https://corsproxy.io/?url=';
 
@@ -900,21 +900,36 @@ const FD_COMPS = [
   { code:'CL',  liga:'ucl',    name:'Champions League' },
 ];
 
-function getLocalDateString(date = new Date()) {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
+// Función para obtener fecha en zona horaria de Colombia (UTC-5) correctamente
+function getColombiaDateString(date = new Date()) {
+  // Ajustar a UTC-5 manualmente para evitar problemas con toLocaleDateString en diferentes navegadores
+  const offset = -5; // UTC-5
+  const localTime = date.getTime();
+  const localOffset = date.getTimezoneOffset() * 60000;
+  const utc = localTime + localOffset;
+  const colombiaTime = new Date(utc + (3600000 * offset));
+  
+  const year = colombiaTime.getFullYear();
+  const month = String(colombiaTime.getMonth() + 1).padStart(2, '0');
+  const day = String(colombiaTime.getDate()).padStart(2, '0');
   return `${year}-${month}-${day}`;
 }
 
 function today() {
-  return getLocalDateString(new Date());
+  return getColombiaDateString(new Date());
 }
 
 function nxtWeek() {
   const d = new Date();
   d.setDate(d.getDate() + 7);
-  return getLocalDateString(d);
+  return getColombiaDateString(d);
+}
+
+// Función para obtener fecha de hace N días
+function daysAgo(n) {
+  const d = new Date();
+  d.setDate(d.getDate() - n);
+  return getColombiaDateString(d);
 }
 
 async function connectAPI() {
@@ -928,13 +943,18 @@ async function connectAPI() {
 
   try {
     const testUrl = `${CORS_PROXY}${encodeURIComponent('https://api.football-data.org/v4/competitions/PL/matches')}`;
-    const res = await fetch(testUrl, { headers: { 'X-Auth-Token': apiKey } });
+    const res = await fetch(testUrl, { 
+      headers: { 
+        'X-Auth-Token': apiKey,
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+      } 
+    });
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const data = await res.json();
     if(data) {
       setApiStatus('live', 'Conectado vía proxy');
       saveApiKeyToStorage(apiKey);
-      toast('Conectado. Cargando partidos...');
+      toast('Conectado. Buscando partidos...');
       await loadRealMatches();
       await loadTeamStats();
       return;
@@ -948,7 +968,7 @@ async function connectAPI() {
     if(data) {
       setApiStatus('live', 'Conectado directamente');
       saveApiKeyToStorage(apiKey);
-      toast('Conectado. Cargando partidos...');
+      toast('Conectado. Buscando partidos...');
       await loadRealMatches();
       await loadTeamStats();
     } else {
@@ -963,13 +983,23 @@ async function connectAPI() {
 
 async function apiFetch(path) {
   const url = CORS_PROXY + encodeURIComponent('https://api.football-data.org/v4/' + path);
-  const res = await fetch(url, { headers: { 'X-Auth-Token': apiKey } });
+  const res = await fetch(url, { 
+    headers: { 
+      'X-Auth-Token': apiKey,
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+    } 
+  });
   if(!res.ok) throw new Error('HTTP ' + res.status);
   return res.json();
 }
 
 async function apiFetchDirect(path) {
-  const res = await fetch('https://api.football-data.org/v4/' + path, { headers: { 'X-Auth-Token': apiKey } });
+  const res = await fetch('https://api.football-data.org/v4/' + path, { 
+    headers: { 
+      'X-Auth-Token': apiKey,
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+    } 
+  });
   if(!res.ok) throw new Error('HTTP ' + res.status);
   return res.json();
 }
@@ -984,23 +1014,49 @@ function setApiStatus(state, msg) {
 
 async function loadRealMatches() {
   const allMatches = [];
-  const todayDate = new Date();
-  for (let offset = -2; offset <= 2; offset++) {
-    const searchDate = new Date(todayDate);
-    searchDate.setDate(todayDate.getDate() + offset);
-    const dateStr = getLocalDateString(searchDate);
+  
+  // Probar primero con hoy
+  const dateStr = today();
+  console.log('Buscando partidos para fecha Colombia:', dateStr);
+  
+  let found = false;
+  for (let offset = 0; offset <= 7; offset++) {
+    if (found) break;
+    const searchDate = daysAgo(offset);
+    console.log('Intentando fecha:', searchDate);
+    
     const promises = FD_COMPS.map(async ({ code, liga }) => {
       try {
-        const data = await apiFetch(`competitions/${code}/matches?dateFrom=${dateStr}&dateTo=${dateStr}`);
-        if(data.matches) return data.matches.map(m => ({...m, _liga: liga}));
-      } catch(e) { return []; }
+        const data = await apiFetch(`competitions/${code}/matches?dateFrom=${searchDate}&dateTo=${searchDate}`);
+        if(data.matches && data.matches.length > 0) {
+          found = true;
+          return data.matches.map(m => ({...m, _liga: liga}));
+        }
+      } catch(e) { 
+        try {
+          const data = await apiFetchDirect(`competitions/${code}/matches?dateFrom=${searchDate}&dateTo=${searchDate}`);
+          if(data.matches && data.matches.length > 0) {
+            found = true;
+            return data.matches.map(m => ({...m, _liga: liga}));
+          }
+        } catch(e2) {}
+      }
       return [];
     });
     const results = await Promise.all(promises);
     results.flat().forEach(m => allMatches.push(m));
   }
+  
   matches = allMatches.map(mapFD).filter(Boolean);
   renderMatchesByStatus();
+  
+  if (matches.length === 0) {
+    toast('No se encontraron partidos recientes. Intenta más tarde.');
+  } else {
+    toast(`${matches.length} partidos cargados`);
+  }
+  setApiStatus('live', `✅ ${matches.length} partidos`);
+  
   await loadUpcoming();
 }
 
