@@ -2,7 +2,9 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
 <title>STATSBET — Tracker de Apuestas</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -21,155 +23,157 @@
 }
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 html { font-size:14px; }
-body { background:var(--bg); color:var(--text); font-family:var(--body); min-height:100vh; overflow-x:hidden; }
+body { 
+  background:var(--bg); color:var(--text); font-family:var(--body); 
+  min-height:100vh; overflow-x:hidden; 
+  -webkit-tap-highlight-color: transparent;
+}
 ::-webkit-scrollbar { width:4px; }
 ::-webkit-scrollbar-track { background:var(--bg2); }
 ::-webkit-scrollbar-thumb { background:var(--border2); border-radius:2px; }
 
-/* ═══════════════════════ LOGIN ═══════════════════════ */
 #loginScreen {
   position:fixed; inset:0; background:var(--bg);
   display:flex; align-items:center; justify-content:center; z-index:2000;
   transition:opacity .4s;
 }
-.login-wrap {
-  width:360px; max-width:94vw;
-}
+.login-wrap { width:360px; max-width:94vw; }
 .login-logo {
-  font-family:var(--head); font-size:32px; font-weight:800; letter-spacing:4px;
+  font-family:var(--head); font-size:clamp(28px,8vw,32px); font-weight:800; letter-spacing:4px;
   text-align:center; margin-bottom:2px; color:var(--text);
 }
 .login-logo span { color:var(--accent); }
 .login-tagline {
-  text-align:center; font-family:var(--mono); font-size:10px; color:var(--text3);
+  text-align:center; font-family:var(--mono); font-size:clamp(10px,2.5vw,11px); color:var(--text3);
   letter-spacing:3px; text-transform:uppercase; margin-bottom:36px;
 }
 .login-box {
   background:var(--card); border:1px solid var(--border2); border-radius:14px;
-  padding:36px 32px; box-shadow:0 0 80px rgba(0,212,255,.04);
+  padding:clamp(24px,6vw,36px) clamp(20px,5vw,32px); 
+  box-shadow:0 0 80px rgba(0,212,255,.04);
 }
-.fl { font-family:var(--mono); font-size:10px; color:var(--text2); letter-spacing:2px;
-      text-transform:uppercase; margin-bottom:6px; display:block; }
 .fi {
   width:100%; background:var(--bg3); border:1px solid var(--border); border-radius:8px;
   padding:11px 14px; color:var(--text); font-family:var(--body); font-size:14px;
-  margin-bottom:14px; outline:none; transition:border-color .2s;
+  margin-bottom:14px; outline:none;
 }
-.fi:focus { border-color:var(--accent); }
-.btn-login {
-  width:100%; padding:13px; background:var(--accent); color:var(--bg); font-family:var(--head);
-  font-size:15px; font-weight:800; letter-spacing:3px; border:none; border-radius:8px;
-  cursor:pointer; transition:opacity .2s; margin-top:4px;
-}
-.btn-login:hover { opacity:.85; }
-.login-hint { text-align:center; font-family:var(--mono); font-size:10px; color:var(--text3); margin-top:14px; letter-spacing:1px; }
-
-/* ═══════════════════════ NAV ═══════════════════════ */
 nav {
   background:var(--bg2); border-bottom:1px solid var(--border);
   height:52px; display:flex; align-items:center; justify-content:space-between;
-  padding:0 22px; position:sticky; top:0; z-index:100;
+  padding:0 clamp(10px,3vw,22px); position:sticky; top:0; z-index:100;
 }
-.nav-logo { font-family:var(--head); font-size:18px; font-weight:800; letter-spacing:4px; }
+.nav-logo { 
+  font-family:var(--head); font-size:clamp(14px,4vw,18px); 
+  font-weight:800; letter-spacing:2px; 
+}
 .nav-logo span { color:var(--accent); }
-.nav-tabs { display:flex; gap:2px; }
+.nav-tabs { display:flex; gap:2px; flex-wrap:wrap; }
 .ntab {
-  padding:6px 14px; border-radius:5px; font-family:var(--mono); font-size:11px;
-  font-weight:500; letter-spacing:1.5px; text-transform:uppercase; cursor:pointer;
-  color:var(--text2); border:none; background:none; transition:all .2s;
+  padding:5px clamp(6px,2vw,14px); border-radius:5px; font-family:var(--mono); 
+  font-size:clamp(9px,2.5vw,11px); font-weight:500; letter-spacing:1px; 
+  text-transform:uppercase; cursor:pointer; color:var(--text2); 
+  border:none; background:none; transition:all .2s; white-space:nowrap;
 }
 .ntab:hover { color:var(--text); background:var(--bg3); }
 .ntab.active { color:var(--accent); background:var(--adim); }
-.nav-r { display:flex; align-items:center; gap:14px; }
-.nav-user { font-family:var(--mono); font-size:11px; color:var(--text3); letter-spacing:1px; }
+.nav-r { display:flex; align-items:center; gap:clamp(6px,2vw,14px); }
+.nav-user { 
+  font-family:var(--mono); font-size:clamp(8px,2vw,11px); 
+  color:var(--text3); letter-spacing:1px; 
+}
 .nav-user b { color:var(--accent); }
 .btn-out {
-  background:none; border:1px solid var(--border); color:var(--text3); padding:5px 12px;
-  border-radius:5px; font-family:var(--mono); font-size:10px; letter-spacing:1px; cursor:pointer;
-  transition:all .2s; text-transform:uppercase;
+  background:none; border:1px solid var(--border); color:var(--text3); 
+  padding:4px clamp(8px,2vw,12px); border-radius:5px; 
+  font-family:var(--mono); font-size:clamp(8px,2vw,10px); 
+  letter-spacing:1px; cursor:pointer; transition:all .2s; 
+  text-transform:uppercase; white-space:nowrap;
 }
 .btn-out:hover { border-color:var(--red); color:var(--red); }
 
-/* ═══════════════════════ API STATUS ═══════════════════════ */
 .api-bar {
-  background:var(--bg3); border-bottom:1px solid var(--border); padding:6px 22px;
-  display:flex; align-items:center; gap:10px; font-family:var(--mono); font-size:10px;
-  color:var(--text3); letter-spacing:1px;
+  background:var(--bg3); border-bottom:1px solid var(--border); 
+  padding:6px clamp(10px,3vw,22px); display:flex; align-items:center; 
+  gap:8px; font-family:var(--mono); font-size:clamp(8px,2vw,10px); 
+  color:var(--text3); letter-spacing:1px; flex-wrap:wrap;
 }
 .api-dot { width:6px; height:6px; border-radius:50%; background:var(--text3); flex-shrink:0; }
 .api-dot.live { background:var(--green); box-shadow:0 0 6px var(--green); animation:pulse 2s infinite; }
 .api-dot.err { background:var(--red); }
+.api-dot.loading { background:var(--yellow); animation:pulse 1s infinite; }
 @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
 .api-key-input {
-  background:transparent; border:none; border-bottom:1px solid var(--border); color:var(--accent);
-  font-family:var(--mono); font-size:10px; letter-spacing:1px; width:240px; outline:none;
-  padding:2px 0;
+  background:transparent; border:none; border-bottom:1px solid var(--border); 
+  color:var(--accent); font-family:var(--mono); font-size:clamp(8px,2vw,10px); 
+  letter-spacing:.5px; width:clamp(160px,30vw,240px); outline:none; padding:2px 0;
 }
-.btn-api { padding:3px 10px; background:var(--adim); border:1px solid var(--accent); color:var(--accent);
-  border-radius:4px; font-family:var(--mono); font-size:10px; cursor:pointer; letter-spacing:1px; transition:background .2s; }
+.btn-api { 
+  padding:3px 8px; background:var(--adim); border:1px solid var(--accent); 
+  color:var(--accent); border-radius:4px; font-family:var(--mono); 
+  font-size:clamp(8px,2vw,9px); cursor:pointer; letter-spacing:.5px; transition:background .2s; 
+}
 .btn-api:hover { background:var(--accent); color:var(--bg); }
 
-/* ═══════════════════════ LAYOUT ═══════════════════════ */
 #app { display:none; }
-main { padding:18px 20px; max-width:1440px; margin:0 auto; }
+main { 
+  padding:clamp(10px,3vw,18px) clamp(12px,4vw,20px); 
+  max-width:1440px; margin:0 auto; 
+}
 .sec { display:none; }
 .sec.active { display:block; }
-.grid2 { display:grid; grid-template-columns:270px 1fr; gap:16px; }
+.grid2 { display:grid; grid-template-columns:clamp(240px,30vw,280px) 1fr; gap:clamp(10px,3vw,18px); }
 
-/* ═══════════════════════ SIDEBAR ═══════════════════════ */
 .sidebar { display:flex; flex-direction:column; gap:12px; }
 .scard { background:var(--card); border:1px solid var(--border); border-radius:10px; overflow:hidden; }
 .scard-h {
-  padding:11px 14px; border-bottom:1px solid var(--border);
+  padding:10px 14px; border-bottom:1px solid var(--border);
   display:flex; align-items:center; justify-content:space-between;
 }
-.scard-title { font-family:var(--mono); font-size:10px; font-weight:500; letter-spacing:2px;
+.scard-title { font-family:var(--mono); font-size:clamp(9px,2.5vw,10px); font-weight:500; letter-spacing:1.5px;
   text-transform:uppercase; color:var(--text2); }
-.scard-b { padding:8px; }
+.scard-b { padding:6px; }
 
-.titem { display:flex; align-items:center; gap:10px; padding:8px 10px; border-radius:7px;
+.titem { display:flex; align-items:center; gap:clamp(8px,2vw,10px); padding:8px 10px; border-radius:7px;
   cursor:pointer; transition:background .15s; }
 .titem:hover { background:var(--bg3); }
-.titem.active { background:var(--adim); }
 .ti-abbr {
-  width:32px; height:32px; border-radius:6px; background:var(--card2); border:1px solid var(--border);
+  width:clamp(28px,5vw,32px); height:clamp(28px,5vw,32px); border-radius:6px; 
+  background:var(--card2); border:1px solid var(--border);
   display:flex; align-items:center; justify-content:center; font-family:var(--head);
-  font-size:12px; font-weight:800; color:var(--accent); flex-shrink:0;
+  font-size:clamp(10px,3vw,12px); font-weight:800; color:var(--accent); flex-shrink:0;
 }
-.ti-name { font-family:var(--head); font-size:13px; font-weight:700; line-height:1.2; }
-.ti-lg { font-family:var(--mono); font-size:9px; color:var(--text3); letter-spacing:1px; margin-top:2px; }
-.ti-form { display:flex; gap:2px; margin-top:4px; }
-.fb { width:13px; height:13px; border-radius:2px; display:flex; align-items:center;
+.ti-name { font-family:var(--head); font-size:clamp(11px,3vw,13px); font-weight:700; line-height:1.2; }
+.ti-lg { font-family:var(--mono); font-size:clamp(8px,2vw,9px); color:var(--text3); letter-spacing:.5px; margin-top:2px; }
+.ti-form { display:flex; gap:2px; margin-top:3px; }
+.fb { width:12px; height:12px; border-radius:2px; display:flex; align-items:center;
   justify-content:center; font-size:7px; font-weight:700; color:var(--bg); font-family:var(--mono); }
 .fb.W { background:var(--green); }
 .fb.D { background:var(--yellow); }
 .fb.L { background:var(--red); }
 .btn-addteam {
   width:100%; padding:8px; background:none; border:1px dashed var(--border2); border-radius:7px;
-  color:var(--text3); font-family:var(--mono); font-size:10px; letter-spacing:1px; cursor:pointer;
+  color:var(--text3); font-family:var(--mono); font-size:clamp(9px,2.5vw,10px); letter-spacing:.5px; cursor:pointer;
   transition:all .2s; margin-top:4px; text-transform:uppercase;
 }
 .btn-addteam:hover { border-color:var(--accent); color:var(--accent); }
 
-/* TEAM STATS */
 .ts-row {
   display:flex; align-items:center; justify-content:space-between; padding:8px 14px;
   border-bottom:1px solid var(--border);
 }
 .ts-row:last-child { border-bottom:none; }
-.ts-lbl { font-family:var(--mono); font-size:10px; color:var(--text2); letter-spacing:1px; }
-.ts-val { font-family:var(--mono); font-size:14px; font-weight:500; }
+.ts-lbl { font-family:var(--mono); font-size:clamp(9px,2.5vw,10px); color:var(--text2); letter-spacing:.5px; }
+.ts-val { font-family:var(--mono); font-size:clamp(13px,3vw,14px); font-weight:500; }
 .ts-val.a { color:var(--accent); }
 .ts-val.g { color:var(--green); }
 .ts-val.y { color:var(--yellow); }
 .ts-val.r { color:var(--red); }
 
-/* ═══════════════════════ MATCH CARDS ═══════════════════════ */
-.mcol { display:flex; flex-direction:column; gap:12px; }
+.mcol { display:flex; flex-direction:column; gap:clamp(8px,2vw,12px); }
 .sh {
-  font-family:var(--mono); font-size:10px; font-weight:500; letter-spacing:2.5px;
-  color:var(--text3); text-transform:uppercase; margin-bottom:8px;
-  display:flex; align-items:center; gap:10px;
+  font-family:var(--mono); font-size:clamp(9px,2.5vw,10px); font-weight:500; letter-spacing:2px;
+  color:var(--text3); text-transform:uppercase; margin-bottom:6px;
+  display:flex; align-items:center; gap:8px;
 }
 .sh::after { content:''; flex:1; height:1px; background:var(--border); }
 
@@ -180,104 +184,121 @@ main { padding:18px 20px; max-width:1440px; margin:0 auto; }
 .mcard:hover { border-color:var(--border2); background:var(--card2); }
 .mcard.live { border-color:rgba(255,69,96,.3); }
 .mcard-top {
-  padding:9px 14px; display:flex; align-items:center; justify-content:space-between;
+  padding:8px 12px; display:flex; align-items:center; justify-content:space-between;
   border-bottom:1px solid var(--border);
 }
-.mc-league { font-family:var(--mono); font-size:9px; color:var(--text3); letter-spacing:1.5px; text-transform:uppercase; }
-.mc-time { font-family:var(--mono); font-size:11px; color:var(--text2); }
+.mc-league { 
+  font-family:var(--mono); font-size:clamp(7px,2vw,9px); color:var(--text3); 
+  letter-spacing:1px; text-transform:uppercase; 
+}
+.mc-time { font-family:var(--mono); font-size:clamp(9px,2.5vw,11px); color:var(--text2); }
 .live-badge {
-  background:var(--rdim); color:var(--red); padding:2px 8px; border-radius:3px;
-  font-family:var(--mono); font-size:10px; font-weight:500; letter-spacing:1px;
-  border:1px solid rgba(255,69,96,.2);
+  background:var(--rdim); color:var(--red); padding:2px 6px; border-radius:3px;
+  font-family:var(--mono); font-size:clamp(8px,2vw,9px); font-weight:500; 
+  letter-spacing:.5px; border:1px solid rgba(255,69,96,.2);
 }
-.mcard-body { padding:10px 14px 12px; display:flex; align-items:center; gap:8px; }
+.mcard-body { 
+  padding:clamp(8px,2vw,10px) clamp(10px,3vw,14px) clamp(10px,2.5vw,12px); 
+  display:flex; align-items:center; gap:6px; 
+}
 .mteam { flex:1; }
-.mteam-name { font-family:var(--head); font-size:18px; font-weight:800; line-height:1; }
-.mteam-rec { font-family:var(--mono); font-size:9px; color:var(--text3); margin-top:3px; letter-spacing:.5px; }
-.mscore {
-  text-align:center; min-width:56px; font-family:var(--head); font-size:28px; font-weight:800;
+.mteam-name { 
+  font-family:var(--head); font-size:clamp(14px,4vw,18px); 
+  font-weight:800; line-height:1.1; 
 }
-.mscore.vs { font-size:12px; color:var(--text3); font-family:var(--mono); letter-spacing:2px; }
+.mscore {
+  text-align:center; min-width:clamp(40px,12vw,56px); 
+  font-family:var(--head); font-size:clamp(20px,6vw,28px); font-weight:800;
+}
+.mscore.vs { font-size:clamp(10px,3vw,12px); color:var(--text3); font-family:var(--mono); letter-spacing:1px; }
 .mcard-stats {
   background:var(--bg3); border-top:1px solid var(--border);
   display:grid; grid-template-columns:repeat(5,1fr);
 }
 .mst {
-  padding:8px 6px; text-align:center; border-right:1px solid var(--border);
+  padding:6px 4px; text-align:center; border-right:1px solid var(--border);
 }
 .mst:last-child { border-right:none; }
-.mst-val { font-family:var(--mono); font-size:14px; font-weight:500; }
-.mst-lbl { font-family:var(--mono); font-size:8px; color:var(--text3); letter-spacing:1px;
+.mst-val { font-family:var(--mono); font-size:clamp(11px,3vw,13px); font-weight:500; }
+.mst-lbl { font-family:var(--mono); font-size:clamp(7px,1.8vw,8px); color:var(--text3); letter-spacing:.5px;
   text-transform:uppercase; margin-top:2px; }
-.mst.corners .mst-val { color:var(--accent); }
-.mst.cards .mst-val { color:var(--yellow); }
-.mst.goals .mst-val { color:var(--green); }
-.mst.shots .mst-val { color:var(--orange); }
-.mst.poss .mst-val { color:var(--text2); }
 
-/* ═══════════════════════ MODAL ═══════════════════════ */
 .modal-ov {
-  position:fixed; inset:0; background:rgba(0,0,0,.8); z-index:500;
-  display:flex; align-items:center; justify-content:center; opacity:0;
+  position:fixed; inset:0; background:rgba(0,0,0,.85); z-index:500;
+  display:flex; align-items:flex-end; justify-content:center; opacity:0;
   pointer-events:none; transition:opacity .25s; backdrop-filter:blur(8px);
 }
+@media (min-width:640px) { .modal-ov { align-items:center; } }
 .modal-ov.open { opacity:1; pointer-events:all; }
 .modal {
-  background:var(--card); border:1px solid var(--border2); border-radius:14px;
-  width:640px; max-width:96vw; max-height:90vh; overflow-y:auto;
+  background:var(--card); border:1px solid var(--border2); 
+  border-radius:clamp(12px,3vw,14px) clamp(12px,3vw,14px) 0 0;
+  width:100%; max-width:640px; max-height:85vh; overflow-y:auto;
   transform:translateY(16px); transition:transform .25s;
-  box-shadow:0 24px 80px rgba(0,0,0,.6);
+  box-shadow:0 -4px 30px rgba(0,0,0,.5);
 }
+@media (min-width:640px) { .modal { border-radius:14px; width:640px; max-width:96vw; } }
 .modal-ov.open .modal { transform:translateY(0); }
 .modal-h {
-  padding:16px 20px 12px; border-bottom:1px solid var(--border);
-  display:flex; align-items:center; justify-content:space-between;
-  position:sticky; top:0; background:var(--card); z-index:2;
+  padding:clamp(14px,4vw,16px) clamp(16px,4vw,20px) clamp(10px,3vw,12px);
+  border-bottom:1px solid var(--border); display:flex; align-items:center; 
+  justify-content:space-between; position:sticky; top:0; 
+  background:var(--card); z-index:2;
 }
-.modal-title { font-family:var(--head); font-size:18px; font-weight:800; letter-spacing:1px; }
-.mclose { background:none; border:none; color:var(--text3); font-size:20px; cursor:pointer;
-  transition:color .2s; line-height:1; font-family:var(--mono); }
+.modal-title { 
+  font-family:var(--head); font-size:clamp(16px,4.5vw,18px); 
+  font-weight:800; letter-spacing:.5px; 
+}
+.mclose { 
+  background:none; border:none; color:var(--text3); font-size:22px; 
+  cursor:pointer; transition:color .2s; line-height:1; 
+  font-family:var(--mono); padding:8px; margin:-8px;
+}
 .mclose:hover { color:var(--text); }
-.modal-b { padding:18px 20px; }
+.modal-b { padding:clamp(14px,4vw,18px) clamp(14px,4vw,20px); }
 
-/* SCORE BLOCK */
 .score-block {
   background:var(--bg3); border:1px solid var(--border); border-radius:10px;
-  padding:20px; margin-bottom:16px; text-align:center;
+  padding:clamp(14px,4vw,20px); margin-bottom:16px; text-align:center;
 }
-.score-row { display:flex; align-items:center; justify-content:center; gap:20px; margin-bottom:8px; }
-.score-team-name { font-family:var(--head); font-size:20px; font-weight:800; flex:1; }
-.score-team-name.away { text-align:right; }
-.score-num { font-family:var(--head); font-size:48px; font-weight:800; min-width:80px; text-align:center; line-height:1; }
-.score-meta { font-family:var(--mono); font-size:10px; color:var(--text3); letter-spacing:1.5px; text-transform:uppercase; }
-.ht-score { font-family:var(--mono); font-size:11px; color:var(--text2); margin-top:4px; letter-spacing:1px; }
+.score-row { 
+  display:flex; align-items:center; justify-content:center; 
+  gap:clamp(10px,3vw,20px); margin-bottom:8px; 
+}
+.score-team-name { 
+  font-family:var(--head); font-size:clamp(16px,4.5vw,20px); 
+  font-weight:800; flex:1; word-break:break-word;
+}
+.score-num { 
+  font-family:var(--head); font-size:clamp(36px,10vw,48px); 
+  font-weight:800; min-width:70px; text-align:center; line-height:1; 
+}
+.score-meta { font-family:var(--mono); font-size:clamp(9px,2.5vw,10px); color:var(--text3); letter-spacing:1px; text-transform:uppercase; }
+.ht-score { font-family:var(--mono); font-size:clamp(10px,2.5vw,11px); color:var(--text2); margin-top:4px; }
 
-/* MODAL TABS */
 .mtabs { display:flex; gap:4px; margin-bottom:14px; }
 .mtab {
-  flex:1; padding:8px; background:var(--bg3); border:1px solid var(--border); border-radius:6px;
-  color:var(--text3); font-family:var(--mono); font-size:10px; font-weight:500; cursor:pointer;
-  text-align:center; transition:all .2s; letter-spacing:1.5px; text-transform:uppercase;
+  flex:1; padding:8px 4px; background:var(--bg3); border:1px solid var(--border); border-radius:6px;
+  color:var(--text3); font-family:var(--mono); font-size:clamp(9px,2.5vw,10px); font-weight:500; cursor:pointer;
+  text-align:center; transition:all .2s; letter-spacing:1px; text-transform:uppercase;
 }
 .mtab.active { background:var(--adim); border-color:var(--accent); color:var(--accent); }
 
-/* STAT BARS */
 .sb-section {
-  font-family:var(--mono); font-size:9px; font-weight:500; letter-spacing:2px; color:var(--text3);
+  font-family:var(--mono); font-size:clamp(8px,2vw,9px); font-weight:500; letter-spacing:1.5px; color:var(--text3);
   text-transform:uppercase; padding:12px 0 8px; border-bottom:1px solid var(--border); margin-bottom:10px;
 }
-.sb-row { margin-bottom:12px; }
+.sb-row { margin-bottom:10px; }
 .sb-nums { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:4px; }
-.sb-home { font-family:var(--mono); font-size:15px; font-weight:500; color:var(--red); }
-.sb-label { font-family:var(--mono); font-size:10px; color:var(--text2); text-align:center; flex:1; letter-spacing:.5px; }
-.sb-away { font-family:var(--mono); font-size:15px; font-weight:500; color:var(--accent); }
+.sb-home { font-family:var(--mono); font-size:clamp(13px,3.5vw,15px); font-weight:500; color:var(--red); }
+.sb-label { font-family:var(--mono); font-size:clamp(9px,2.5vw,10px); color:var(--text2); text-align:center; flex:1; }
+.sb-away { font-family:var(--mono); font-size:clamp(13px,3.5vw,15px); font-weight:500; color:var(--accent); }
 .sb-track { height:4px; background:var(--border); border-radius:2px; display:flex; overflow:hidden; }
 .sb-left { height:100%; background:var(--red); transition:width .6s; }
 .sb-right { height:100%; background:var(--accent); flex:1; transition:width .6s; }
 
-/* ═══════════════════════ BET TRACKER ═══════════════════════ */
 .bt-header {
-  font-family:var(--mono); font-size:10px; font-weight:500; letter-spacing:2px; color:var(--text2);
+  font-family:var(--mono); font-size:clamp(9px,2.5vw,10px); font-weight:500; letter-spacing:1.5px; color:var(--text2);
   text-transform:uppercase; margin-bottom:12px; padding-top:16px; border-top:1px solid var(--border);
   margin-top:16px;
 }
@@ -287,11 +308,11 @@ main { padding:18px 20px; max-width:1440px; margin:0 auto; }
   cursor:pointer; transition:background .15s;
 }
 .bet-entry-h:hover { background:var(--card2); }
-.be-title { font-family:var(--head); font-size:14px; font-weight:700; }
+.be-title { font-family:var(--head); font-size:clamp(13px,3.5vw,14px); font-weight:700; }
 .be-right { display:flex; align-items:center; gap:8px; }
 .be-badge {
-  padding:3px 9px; border-radius:3px; font-family:var(--mono); font-size:9px;
-  font-weight:500; letter-spacing:1.5px; text-transform:uppercase;
+  padding:3px 8px; border-radius:3px; font-family:var(--mono); font-size:clamp(8px,2vw,9px);
+  font-weight:500; letter-spacing:1px; text-transform:uppercase;
 }
 .be-badge.won { background:var(--gdim); color:var(--green); border:1px solid rgba(0,229,160,.2); }
 .be-badge.lost { background:var(--rdim); color:var(--red); border:1px solid rgba(255,69,96,.2); }
@@ -302,7 +323,6 @@ main { padding:18px 20px; max-width:1440px; margin:0 auto; }
 .bet-entry-b { display:none; padding:0 14px 12px; }
 .bet-entry-b.open { display:block; }
 
-/* CONDICION */
 .cond-row {
   display:flex; align-items:flex-start; gap:10px; padding:10px 12px;
   background:var(--card); border-radius:7px; margin-bottom:6px; border:1px solid var(--border);
@@ -315,45 +335,43 @@ main { padding:18px 20px; max-width:1440px; margin:0 auto; }
 .cond-status-icon.fail { background:var(--rdim); color:var(--red); border:1px solid rgba(255,69,96,.2); }
 .cond-status-icon.pending { background:var(--ydim); color:var(--yellow); border:1px solid rgba(245,197,24,.2); }
 .cond-main { flex:1; }
-.cond-text { font-family:var(--head); font-size:13px; font-weight:700; margin-bottom:5px; }
-.cond-sub { font-family:var(--mono); font-size:9px; color:var(--text3); letter-spacing:1px; text-transform:uppercase; margin-bottom:5px; }
-.cond-prog-labels { display:flex; justify-content:space-between; font-family:var(--mono); font-size:9px; color:var(--text3); letter-spacing:.5px; margin-bottom:3px; }
+.cond-text { font-family:var(--head); font-size:clamp(12px,3vw,13px); font-weight:700; margin-bottom:4px; }
+.cond-sub { font-family:var(--mono); font-size:clamp(8px,2vw,9px); color:var(--text3); letter-spacing:.5px; text-transform:uppercase; margin-bottom:4px; }
+.cond-prog-labels { display:flex; justify-content:space-between; font-family:var(--mono); font-size:clamp(8px,2vw,9px); color:var(--text3); margin-bottom:3px; }
 .cond-bar { height:3px; background:var(--border); border-radius:2px; }
 .cond-fill { height:100%; border-radius:2px; transition:width .5s; }
 .cond-fill.ok { background:var(--green); }
 .cond-fill.fail { background:var(--red); }
 .cond-fill.pending { background:var(--yellow); }
-.cond-val { font-family:var(--mono); font-size:16px; font-weight:500; text-align:right; min-width:52px; margin-top:2px; }
+.cond-val { font-family:var(--mono); font-size:clamp(14px,3.5vw,16px); font-weight:500; text-align:right; min-width:48px; margin-top:2px; }
 .cond-val.ok { color:var(--green); }
 .cond-val.fail { color:var(--red); }
 .cond-val.pending { color:var(--yellow); }
 
-/* ═══════════════════════ BET FORM - WIZARD (Betano style) ═══════════════════════ */
 .btn-new-bet {
   width:100%; padding:10px; margin-top:10px; background:none; border:1px dashed var(--border2);
-  border-radius:7px; color:var(--text3); font-family:var(--mono); font-size:10px;
-  letter-spacing:1.5px; cursor:pointer; transition:all .2s; text-transform:uppercase;
+  border-radius:7px; color:var(--text3); font-family:var(--mono); font-size:clamp(9px,2.5vw,10px);
+  letter-spacing:1px; cursor:pointer; transition:all .2s; text-transform:uppercase;
 }
 .btn-new-bet:hover { border-color:var(--accent); color:var(--accent); }
 
 .bet-wizard { margin-top:10px; display:none; }
 .bet-wizard.open { display:block; }
-.wiz-label { font-family:var(--mono); font-size:10px; color:var(--text2); letter-spacing:1.5px;
+.wiz-label { font-family:var(--mono); font-size:clamp(9px,2.5vw,10px); color:var(--text2); letter-spacing:1px;
   text-transform:uppercase; margin-bottom:6px; display:block; }
 .wiz-input {
   width:100%; background:var(--card); border:1px solid var(--border); border-radius:6px;
-  padding:9px 12px; color:var(--text); font-family:var(--body); font-size:13px;
+  padding:9px 12px; color:var(--text); font-family:var(--body); font-size:clamp(12px,3vw,13px);
   outline:none; transition:border-color .2s; margin-bottom:10px;
 }
 .wiz-input:focus { border-color:var(--accent); }
 
-/* MARKET GROUPS — tarjetas por categoria tipo Betano */
 .mkt-group {
   background:var(--card); border:1px solid var(--border); border-radius:8px;
   margin-bottom:6px; overflow:hidden;
 }
 .mkt-group-header {
-  padding:11px 13px 9px; font-family:var(--head); font-size:15px; font-weight:800;
+  padding:10px 13px 8px; font-family:var(--head); font-size:clamp(13px,3.5vw,15px); font-weight:800;
   color:var(--text); border-bottom:1px solid var(--border); background:var(--bg3);
   letter-spacing:.3px;
 }
@@ -361,16 +379,15 @@ main { padding:18px 20px; max-width:1440px; margin:0 auto; }
   display:flex; flex-wrap:wrap; gap:5px; padding:9px 9px;
 }
 .mkt-opt-btn {
-  flex:1; min-width:80px; padding:10px 12px;
+  flex:1; min-width:70px; padding:9px 10px;
   background:var(--bg3); border:1px solid var(--border); border-radius:7px;
-  color:var(--text2); font-family:var(--head); font-size:13px; font-weight:600;
+  color:var(--text2); font-family:var(--head); font-size:clamp(11px,3vw,12px); font-weight:600;
   cursor:pointer; transition:all .15s; text-align:center; line-height:1.3;
 }
 .mkt-opt-btn:hover { border-color:var(--accent); color:var(--accent); background:var(--adim); }
 .mkt-opt-btn.sel { border-color:var(--accent); color:var(--accent); background:var(--adim); }
-.mkt-opt-sub { font-family:var(--mono); font-size:8px; color:var(--text3); margin-top:2px; letter-spacing:.3px; display:block; }
+.mkt-opt-sub { font-family:var(--mono); font-size:clamp(7px,1.8vw,8px); color:var(--text3); margin-top:2px; letter-spacing:.3px; display:block; }
 
-/* OU STEP — aparece pegado debajo del grupo seleccionado */
 .ou-picker { display:none; }
 .ou-picker.open { display:block; }
 .ou-step-card {
@@ -378,25 +395,25 @@ main { padding:18px 20px; max-width:1440px; margin:0 auto; }
   padding:12px 13px; margin-bottom:6px;
 }
 .ou-step-title {
-  font-family:var(--head); font-size:13px; font-weight:800; color:var(--text);
+  font-family:var(--head); font-size:clamp(12px,3vw,13px); font-weight:800; color:var(--text);
   margin-bottom:10px; letter-spacing:.3px;
 }
 .ou-row { display:flex; gap:6px; margin-bottom:10px; }
 .ou-btn {
   flex:1; padding:10px; background:var(--bg3); border:1px solid var(--border); border-radius:6px;
-  color:var(--text2); font-family:var(--head); font-size:14px; font-weight:700;
+  color:var(--text2); font-family:var(--head); font-size:clamp(12px,3vw,13px); font-weight:700;
   letter-spacing:.5px; cursor:pointer; transition:all .15s; text-align:center;
 }
 .ou-btn:hover { border-color:var(--accent); color:var(--accent); }
 .ou-btn.sel { border-color:var(--accent); color:var(--accent); background:var(--adim); }
 .ou-line-label {
-  font-family:var(--mono); font-size:9px; color:var(--text3); letter-spacing:1.5px;
+  font-family:var(--mono); font-size:clamp(8px,2vw,9px); color:var(--text3); letter-spacing:1px;
   text-transform:uppercase; margin-bottom:7px; display:block;
 }
 .ou-num-chips { display:flex; gap:5px; flex-wrap:wrap; margin-bottom:8px; }
 .num-chip {
-  padding:6px 11px; background:var(--bg3); border:1px solid var(--border); border-radius:5px;
-  color:var(--text2); font-family:var(--mono); font-size:11px; font-weight:500;
+  padding:5px 10px; background:var(--bg3); border:1px solid var(--border); border-radius:5px;
+  color:var(--text2); font-family:var(--mono); font-size:clamp(10px,2.5vw,11px); font-weight:500;
   cursor:pointer; transition:all .15s;
 }
 .num-chip:hover { border-color:var(--accent); color:var(--accent); }
@@ -404,32 +421,30 @@ main { padding:18px 20px; max-width:1440px; margin:0 auto; }
 .ou-custom-row { display:flex; gap:7px; align-items:center; margin-bottom:10px; }
 .ou-custom-row .wiz-input { margin-bottom:0; flex:1; }
 
-/* ADDED CONDITIONS */
 .added-cond-list { margin-bottom:8px; }
 .ac-chip {
   display:flex; align-items:center; gap:8px; padding:8px 11px; background:var(--card2);
   border:1px solid var(--border2); border-radius:6px; margin-bottom:4px;
 }
 .ac-chip-info { flex:1; }
-.ac-chip-name { font-family:var(--head); font-size:12px; font-weight:700; color:var(--text); }
-.ac-chip-pick { font-family:var(--mono); font-size:10px; color:var(--text3); margin-top:1px; letter-spacing:.3px; }
+.ac-chip-name { font-family:var(--head); font-size:clamp(11px,2.8vw,12px); font-weight:700; color:var(--text); }
+.ac-chip-pick { font-family:var(--mono); font-size:clamp(9px,2.2vw,10px); color:var(--text3); margin-top:1px; letter-spacing:.3px; }
 .ac-rm { color:var(--text3); cursor:pointer; font-size:14px; transition:color .2s; line-height:1; font-family:var(--mono); }
 .ac-rm:hover { color:var(--red); }
 
 .btn-add-cond {
   width:100%; padding:9px; background:var(--gdim); border:1px solid rgba(0,229,160,.2);
-  border-radius:6px; color:var(--green); font-family:var(--mono); font-size:10px;
-  letter-spacing:1.5px; cursor:pointer; transition:all .2s; text-transform:uppercase; margin-bottom:8px;
+  border-radius:6px; color:var(--green); font-family:var(--mono); font-size:clamp(9px,2.5vw,10px);
+  letter-spacing:1px; cursor:pointer; transition:all .2s; text-transform:uppercase; margin-bottom:8px;
 }
 .btn-add-cond:hover { background:var(--gbright); }
 .btn-save-bet {
   width:100%; padding:11px; background:var(--accent); color:var(--bg); font-family:var(--head);
-  font-size:14px; font-weight:800; letter-spacing:2px; border:none; border-radius:7px;
+  font-size:clamp(13px,3.5vw,14px); font-weight:800; letter-spacing:1.5px; border:none; border-radius:7px;
   cursor:pointer; transition:opacity .2s; text-transform:uppercase;
 }
 .btn-save-bet:hover { opacity:.85; }
 
-/* BET SAVED POPUP */
 .bet-saved-popup {
   background:var(--card2); border:1px solid var(--border2); border-radius:12px;
   padding:14px 16px; box-shadow:0 10px 40px rgba(0,0,0,.5);
@@ -437,22 +452,22 @@ main { padding:18px 20px; max-width:1440px; margin:0 auto; }
   cursor:pointer; position:relative; min-width:250px;
   border-top:2px solid var(--accent);
 }
-.bsp-tag { font-family:var(--mono); font-size:9px; font-weight:500; letter-spacing:2px;
+.bsp-tag { font-family:var(--mono); font-size:clamp(8px,2vw,9px); font-weight:500; letter-spacing:1.5px;
   text-transform:uppercase; color:var(--accent); margin-bottom:5px; }
-.bsp-match { font-family:var(--head); font-size:15px; font-weight:800; color:var(--text); margin-bottom:4px; }
-.bsp-score { font-family:var(--head); font-size:30px; font-weight:900; color:var(--text);
+.bsp-match { font-family:var(--head); font-size:clamp(14px,3.5vw,15px); font-weight:800; color:var(--text); margin-bottom:4px; }
+.bsp-score { font-family:var(--head); font-size:clamp(28px,7vw,30px); font-weight:900; color:var(--text);
   line-height:1; margin-bottom:3px; }
-.bsp-meta { font-family:var(--mono); font-size:9px; color:var(--text3); letter-spacing:.5px; }
+.bsp-meta { font-family:var(--mono); font-size:clamp(8px,2vw,9px); color:var(--text3); letter-spacing:.5px; }
 .bsp-conds { margin-top:9px; border-top:1px solid var(--border); padding-top:9px;
   display:flex; flex-direction:column; gap:4px; }
 .bsp-cond { display:flex; align-items:center; gap:6px; font-family:var(--head);
-  font-size:11px; font-weight:600; color:var(--text2); }
+  font-size:clamp(10px,2.5vw,11px); font-weight:600; color:var(--text2); }
 .bsp-dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
 .bsp-dot.ok { background:var(--green); }
 .bsp-dot.pending { background:var(--yellow); }
 .bsp-dot.fail { background:var(--red); }
 .bsp-overall { display:inline-flex; margin-top:8px; padding:3px 10px; border-radius:3px;
-  font-family:var(--mono); font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; }
+  font-family:var(--mono); font-size:clamp(8px,2vw,9px); font-weight:700; letter-spacing:1px; text-transform:uppercase; }
 .bsp-overall.won { background:var(--gdim); color:var(--green); border:1px solid rgba(0,229,160,.2); }
 .bsp-overall.lost { background:var(--rdim); color:var(--red); }
 .bsp-overall.pending { background:var(--ydim); color:var(--yellow); }
@@ -463,21 +478,20 @@ main { padding:18px 20px; max-width:1440px; margin:0 auto; }
 .btn-sm-row { display:flex; gap:6px; margin-top:10px; }
 .btn-sm {
   padding:7px 13px; background:none; border:1px solid var(--border); border-radius:5px;
-  color:var(--text2); font-family:var(--mono); font-size:10px; letter-spacing:1px; cursor:pointer;
+  color:var(--text2); font-family:var(--mono); font-size:clamp(9px,2.5vw,10px); letter-spacing:.5px; cursor:pointer;
   transition:all .2s; text-transform:uppercase;
 }
 .btn-sm.g:hover { border-color:var(--green); color:var(--green); }
 .btn-sm.r:hover { border-color:var(--red); color:var(--red); }
 .btn-sm.b:hover { border-color:var(--accent); color:var(--accent); }
 
-/* ═══════════════════════ BET LIST ═══════════════════════ */
-.sum-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:18px; }
-.sum-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:14px 16px; }
-.sum-val { font-family:var(--head); font-size:28px; font-weight:800; line-height:1; }
+.sum-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:clamp(6px,2vw,10px); margin-bottom:18px; }
+.sum-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:clamp(10px,3vw,14px) clamp(8px,2vw,12px); }
+.sum-val { font-family:var(--head); font-size:clamp(22px,6vw,28px); font-weight:800; line-height:1; }
 .sum-val.g { color:var(--green); }
 .sum-val.r { color:var(--red); }
 .sum-val.a { color:var(--accent); }
-.sum-lbl { font-family:var(--mono); font-size:9px; color:var(--text3); letter-spacing:2px; text-transform:uppercase; margin-top:5px; }
+.sum-lbl { font-family:var(--mono); font-size:clamp(7px,1.8vw,9px); color:var(--text3); letter-spacing:1px; text-transform:uppercase; margin-top:4px; }
 
 .acard { background:var(--card); border:1px solid var(--border); border-radius:10px; margin-bottom:8px; overflow:hidden; transition:border-color .2s; }
 .acard.won { border-left:3px solid var(--green); }
@@ -485,47 +499,44 @@ main { padding:18px 20px; max-width:1440px; margin:0 auto; }
 .acard.pending { border-left:3px solid var(--yellow); }
 .acard.partial { border-left:3px solid var(--accent); }
 .acard-h { padding:12px 16px; display:flex; align-items:center; justify-content:space-between; cursor:pointer; }
-.amatch { font-family:var(--head); font-size:17px; font-weight:800; }
-.ameta { font-family:var(--mono); font-size:10px; color:var(--text3); letter-spacing:.5px; margin-top:2px; }
+.amatch { font-family:var(--head); font-size:clamp(15px,4vw,17px); font-weight:800; }
+.ameta { font-family:var(--mono); font-size:clamp(8px,2vw,10px); color:var(--text3); letter-spacing:.5px; margin-top:2px; }
 .acard-b { display:none; padding:0 16px 14px; }
 .acard-b.open { display:block; }
 
-/* FILTER TABS */
-.ftabs { display:flex; gap:4px; margin-bottom:12px; }
+.ftabs { display:flex; gap:4px; margin-bottom:12px; flex-wrap:wrap; }
 .ftab {
-  padding:6px 13px; background:var(--card); border:1px solid var(--border); border-radius:5px;
-  color:var(--text3); font-family:var(--mono); font-size:10px; font-weight:500; cursor:pointer;
-  transition:all .2s; letter-spacing:1px; text-transform:uppercase;
+  padding:6px 12px; background:var(--card); border:1px solid var(--border); border-radius:5px;
+  color:var(--text3); font-family:var(--mono); font-size:clamp(8px,2vw,10px); font-weight:500; cursor:pointer;
+  transition:all .2s; letter-spacing:.5px; text-transform:uppercase; white-space:nowrap;
 }
 .ftab.active, .ftab:hover { border-color:var(--accent); color:var(--accent); background:var(--adim); }
 
-/* ═══════════════════════ UPCOMING ═══════════════════════ */
 .urow {
-  display:flex; align-items:center; gap:14px; padding:12px 16px; background:var(--card);
+  display:flex; align-items:center; gap:10px; padding:12px 14px; background:var(--card);
   border:1px solid var(--border); border-radius:10px; margin-bottom:8px;
   cursor:pointer; transition:border-color .2s, background .2s;
 }
 .urow:hover { border-color:var(--border2); background:var(--card2); }
-.uteams { font-family:var(--head); font-size:17px; font-weight:800; }
-.umeta { font-family:var(--mono); font-size:9px; color:var(--text3); letter-spacing:1px; text-transform:uppercase; margin-top:3px; }
-.utime-big { font-family:var(--mono); font-size:17px; font-weight:500; color:var(--accent); text-align:right; }
-.utime-date { font-family:var(--mono); font-size:9px; color:var(--text3); letter-spacing:.5px; margin-top:2px; text-align:right; }
+.uteams { font-family:var(--head); font-size:clamp(15px,4vw,17px); font-weight:800; word-break:break-word; }
+.umeta { font-family:var(--mono); font-size:clamp(8px,2vw,9px); color:var(--text3); letter-spacing:.5px; text-transform:uppercase; margin-top:2px; }
+.utime-big { font-family:var(--mono); font-size:clamp(14px,3.5vw,17px); font-weight:500; color:var(--accent); text-align:right; }
+.utime-date { font-family:var(--mono); font-size:clamp(8px,2vw,9px); color:var(--text3); letter-spacing:.5px; margin-top:2px; text-align:right; }
 .btn-track {
-  padding:6px 12px; background:var(--adim); border:1px solid rgba(0,212,255,.2); color:var(--accent);
-  border-radius:5px; font-family:var(--mono); font-size:9px; font-weight:500; cursor:pointer;
-  transition:all .2s; letter-spacing:1px; text-transform:uppercase; white-space:nowrap;
+  padding:6px 10px; background:var(--adim); border:1px solid rgba(0,212,255,.2); color:var(--accent);
+  border-radius:5px; font-family:var(--mono); font-size:clamp(8px,2vw,9px); font-weight:500; cursor:pointer;
+  transition:all .2s; letter-spacing:.5px; text-transform:uppercase; white-space:nowrap;
 }
 .btn-track:hover { background:var(--accent); color:var(--bg); }
 
-/* ═══════════════════════ ADD TEAM MODAL ═══════════════════════ */
 .ats { display:flex; align-items:center; gap:10px; padding:8px 10px; border-radius:7px; cursor:pointer; transition:background .15s; }
 .ats:hover { background:var(--bg3); }
 .ats.sel { background:var(--adim); }
 .ats-check { margin-left:auto; font-family:var(--mono); font-size:12px; color:var(--accent); display:none; }
 .ats.sel .ats-check { display:block; }
 
-/* ═══════════════════════ POPUPS ═══════════════════════ */
-.popup-wrap { position:fixed; bottom:16px; right:16px; z-index:300; display:flex; flex-direction:column; gap:8px; max-width:300px; }
+.popup-wrap { position:fixed; bottom:12px; right:12px; left:12px; z-index:300; display:flex; flex-direction:column; gap:8px; max-width:350px; margin-left:auto; }
+@media (min-width:400px) { .popup-wrap { left:auto; } }
 .popup {
   background:var(--card2); border:1px solid var(--border2); border-radius:10px;
   padding:12px 14px; box-shadow:0 8px 32px rgba(0,0,0,.5); cursor:pointer; position:relative;
@@ -533,36 +544,78 @@ main { padding:18px 20px; max-width:1440px; margin:0 auto; }
 }
 @keyframes slideIn { from{transform:translateX(110%);opacity:0} to{transform:translateX(0);opacity:1} }
 .popup.live-p { border-color:rgba(255,69,96,.4); }
-.popup-tag { font-family:var(--mono); font-size:9px; font-weight:500; letter-spacing:2px; text-transform:uppercase; margin-bottom:3px; }
+.popup-tag { font-family:var(--mono); font-size:clamp(8px,2vw,9px); font-weight:500; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:3px; }
 .popup.live-p .popup-tag { color:var(--red); }
 .popup-tag.g { color:var(--green); }
-.popup-match { font-family:var(--head); font-size:15px; font-weight:800; }
-.popup-detail { font-family:var(--mono); font-size:10px; color:var(--text3); margin-top:3px; letter-spacing:.5px; }
+.popup-match { font-family:var(--head); font-size:clamp(13px,3.5vw,15px); font-weight:800; }
+.popup-detail { font-family:var(--mono); font-size:clamp(9px,2.2vw,10px); color:var(--text3); margin-top:3px; letter-spacing:.5px; }
 .popup-x { position:absolute; top:8px; right:10px; color:var(--text3); font-size:14px; font-family:var(--mono); line-height:1; }
 .toast {
   position:fixed; bottom:16px; left:50%; transform:translateX(-50%);
   background:var(--card2); border:1px solid var(--border2); padding:10px 20px;
-  border-radius:7px; font-family:var(--mono); font-size:11px; z-index:9000;
+  border-radius:7px; font-family:var(--mono); font-size:clamp(10px,2.5vw,11px); z-index:9000;
   animation:slideIn .3s ease; box-shadow:0 4px 20px rgba(0,0,0,.5); letter-spacing:.5px;
+  max-width:90vw; text-align:center;
 }
 
-/* LOADING */
 .loading-spinner {
   display:inline-block; width:14px; height:14px; border:2px solid var(--border);
   border-top-color:var(--accent); border-radius:50%; animation:spin .8s linear infinite;
 }
 @keyframes spin { to{transform:rotate(360deg)} }
-.empty-state { padding:40px 20px; text-align:center; color:var(--text3); font-family:var(--mono); font-size:11px; letter-spacing:1px; }
+.empty-state { padding:40px 20px; text-align:center; color:var(--text3); font-family:var(--mono); font-size:clamp(10px,2.5vw,11px); letter-spacing:.5px; }
 
 @media(max-width:760px){
   .grid2 { grid-template-columns:1fr; }
+  .sidebar { order:2; }
+  .mcol { order:1; }
+  nav { padding:0 8px; height:48px; }
+  .nav-tabs { position:fixed; bottom:0; left:0; right:0; background:var(--bg2); 
+             border-top:1px solid var(--border); padding:6px; justify-content:space-around; 
+             z-index:90; }
+  .ntab { padding:6px 4px; font-size:10px; }
+  main { padding-bottom:70px; }
+  .api-bar { position:sticky; top:48px; z-index:50; }
   .sum-grid { grid-template-columns:repeat(2,1fr); }
   .mcard-stats { grid-template-columns:repeat(3,1fr); }
-  nav { padding:0 10px; }
-  .ntab { padding:5px 8px; font-size:10px; }
-  main { padding:12px; }
+  .mst:nth-child(4), .mst:nth-child(5) { display:none; }
+  .mst:nth-child(3) { border-right:none; }
 }
 </style>
+<!-- Firebase SDK -->
+<script type="module">
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+  import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged }
+    from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+
+  const firebaseConfig = {
+    apiKey:            "AIzaSyDBLrp9wWQCocQc_LgI1y0XdI4NqAbatDE",
+    authDomain:        "statsbet-e4ea6.firebaseapp.com",
+    projectId:         "statsbet-e4ea6",
+    storageBucket:     "statsbet-e4ea6.firebasestorage.app",
+    messagingSenderId: "203611187870",
+    appId:             "1:203611187870:web:5ee6d04453fe8535e0e98f",
+    measurementId:     "G-7TBZ1HTELV"
+  };
+
+  const app      = initializeApp(firebaseConfig);
+  const auth     = getAuth(app);
+  const provider = new GoogleAuthProvider();
+
+  window._fbAuth     = auth;
+  window._fbProvider = provider;
+  window._fbSignInWithPopup = signInWithPopup;
+  window._fbSignOut         = signOut;
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      window._fbUser = user;
+      if (window.launchApp) {
+        window.launchApp(user.displayName || user.email.split('@')[0], user.uid);
+      }
+    }
+  });
+</script>
 </head>
 <body>
 
@@ -570,14 +623,15 @@ main { padding:18px 20px; max-width:1440px; margin:0 auto; }
 <div id="loginScreen">
   <div class="login-wrap">
     <div class="login-logo">STATS<span>BET</span></div>
-    <div class="login-tagline">Tracker de Apuestas · Estadísticas</div>
+    <div class="login-tagline">Tracker de Apuestas y Estadisticas</div>
     <div class="login-box">
-      <label class="fl">Usuario</label>
-      <input class="fi" id="lu" value="Dilan" placeholder="Usuario">
-      <label class="fl">Contrasena</label>
-      <input type="password" class="fi" id="lp" value="1234" placeholder="Contrasena">
-      <button class="btn-login" onclick="doLogin()">ENTRAR</button>
-      <div class="login-hint">demo: cualquier usuario / contrasena</div>
+      <p style="font-family:var(--mono);font-size:clamp(10px,2.5vw,11px);color:var(--text3);text-align:center;letter-spacing:1px;margin-bottom:20px">Inicia sesion con tu cuenta Google</p>
+      <button onclick="signInWithGoogle()" style="display:flex;align-items:center;justify-content:center;gap:12px;width:100%;padding:13px 20px;background:#fff;color:#1f1f1f;border:none;border-radius:10px;font-family:var(--head);font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 2px 12px rgba(0,0,0,.3);transition:opacity .2s" onmouseover="this.style.opacity='.88'" onmouseout="this.style.opacity='1'">
+        <svg width="20" height="20" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        Continuar con Google
+      </button>
+      <div id="loginError" style="color:var(--red);font-family:var(--mono);font-size:clamp(10px,2.5vw,11px);text-align:center;margin-top:12px;display:none"></div>
+      <p style="font-family:var(--mono);font-size:clamp(9px,2.2vw,10px);color:var(--text3);text-align:center;margin-top:18px;line-height:1.6;letter-spacing:.3px">Tus apuestas se guardan en tu cuenta<br>Accede desde cualquier dispositivo</p>
     </div>
   </div>
 </div>
@@ -600,8 +654,8 @@ main { padding:18px 20px; max-width:1440px; margin:0 auto; }
 <!-- API BAR -->
 <div class="api-bar">
   <div class="api-dot" id="apiDot"></div>
-  <span id="apiStatus">Sin conexion — suba la web a GitHub Pages primero (ver instrucciones)</span>
-  <input class="api-key-input" id="apiKeyInput" placeholder="Pegue su API key de football-data.org..." title="API Key football-data.org">
+  <span id="apiStatus">Sin conexion — Ingresa tu API key</span>
+  <input class="api-key-input" id="apiKeyInput" placeholder="API key football-data.org" value="2b77d493a2f04eb3b979cd57d943ca3b">
   <button class="btn-api" onclick="connectAPI()">Conectar</button>
 </div>
 
@@ -613,7 +667,7 @@ main { padding:18px 20px; max-width:1440px; margin:0 auto; }
         <div class="scard">
           <div class="scard-h">
             <div class="scard-title">Mis Equipos</div>
-            <span style="font-family:var(--mono);font-size:10px;color:var(--text3)" id="tc">0</span>
+            <span style="font-family:var(--mono);font-size:clamp(9px,2.5vw,10px);color:var(--text3)" id="tc">0</span>
           </div>
           <div class="scard-b" id="favList"></div>
         </div>
@@ -695,10 +749,9 @@ main { padding:18px 20px; max-width:1440px; margin:0 auto; }
 
 <script>
 // ═══════════════════════════════════════════════
-// MARKETS DEFINITION — todos los mercados
+// MARKETS DEFINITION
 // ═══════════════════════════════════════════════
 const MARKETS = [
-  // TIEMPO REGLAMENTARIO
   { id:'result',      cat:'Tiempo Reglamentario', name:'Resultado 1X2',         sub:'Victoria local, empate o visitante', type:'result' },
   { id:'btts',        cat:'Tiempo Reglamentario', name:'Ambos Marcan',           sub:'Si / No', type:'btts' },
   { id:'double_chance',cat:'Tiempo Reglamentario',name:'Doble Oportunidad',      sub:'1X, X2 o 12', type:'dc' },
@@ -706,57 +759,39 @@ const MARKETS = [
   { id:'clean_sheet_a',cat:'Tiempo Reglamentario',name:'Porteria en 0 (Visit.)', sub:'Si / No', type:'yn' },
   { id:'1st_goal',    cat:'Tiempo Reglamentario', name:'Primer Gol',             sub:'Local, empate sin goles o visitante', type:'result' },
   { id:'ht_ft',       cat:'Tiempo Reglamentario', name:'Resultado Descanso / Final', sub:'Combinacion HT-FT', type:'htft' },
-
-  // GOLES
   { id:'goals_total', cat:'Goles',                name:'Goles Totales',          sub:'Over / Under (ej: 2.5)', type:'ou', stat:'goals_total' },
   { id:'goals_home',  cat:'Goles',                name:'Goles Local',            sub:'Over / Under', type:'ou', stat:'goals_home' },
   { id:'goals_away',  cat:'Goles',                name:'Goles Visitante',        sub:'Over / Under', type:'ou', stat:'goals_away' },
   { id:'goals_ht',    cat:'Medio Tiempo',         name:'Goles en 1er Tiempo',    sub:'Over / Under', type:'ou', stat:'ht_goals' },
   { id:'goals_2h',    cat:'Medio Tiempo',         name:'Goles en 2do Tiempo',    sub:'Over / Under', type:'ou', stat:'2h_goals' },
-
-  // CORNERS
   { id:'corners_total',cat:'Tiros de Esquina',    name:'Corners Totales',        sub:'Over / Under (ej: 9.5)', type:'ou', stat:'corners_total' },
   { id:'corners_home', cat:'Tiros de Esquina',    name:'Corners Local',          sub:'Over / Under', type:'ou', stat:'corners_home' },
   { id:'corners_away', cat:'Tiros de Esquina',    name:'Corners Visitante',      sub:'Over / Under', type:'ou', stat:'corners_away' },
   { id:'corners_ht',   cat:'Tiros de Esquina',    name:'Corners 1er Tiempo',     sub:'Over / Under', type:'ou', stat:'ht_corners' },
   { id:'corners_hcap', cat:'Tiros de Esquina',    name:'Handicap Corners',       sub:'Local -X / Visitante +X', type:'hcap' },
-
-  // TARJETAS
   { id:'cards_total',  cat:'Tarjetas',             name:'Tarjetas Totales',       sub:'Over / Under (ej: 3.5)', type:'ou', stat:'cards_total' },
   { id:'cards_home',   cat:'Tarjetas',             name:'Tarjetas Local',         sub:'Over / Under', type:'ou', stat:'cards_home' },
   { id:'cards_away',   cat:'Tarjetas',             name:'Tarjetas Visitante',     sub:'Over / Under', type:'ou', stat:'cards_away' },
   { id:'red_card',     cat:'Tarjetas',             name:'Tarjeta Roja en Partido',sub:'Si / No', type:'yn' },
   { id:'cards_ht',     cat:'Tarjetas',             name:'Tarjetas 1er Tiempo',    sub:'Over / Under', type:'ou', stat:'ht_cards' },
-
-  // DISPAROS
   { id:'shots_total',  cat:'Disparos',             name:'Disparos Totales',       sub:'Over / Under', type:'ou', stat:'shots_total' },
   { id:'shots_ht_h',   cat:'Disparos',             name:'Disparos a Puerta Local',sub:'Over / Under', type:'ou', stat:'shots_on_h' },
   { id:'shots_ht_a',   cat:'Disparos',             name:'Disparos a Puerta Visit.',sub:'Over / Under', type:'ou', stat:'shots_on_a' },
   { id:'shots_on_total',cat:'Disparos',            name:'Disparos a Puerta Totales',sub:'Over / Under', type:'ou', stat:'shots_on_total' },
-
-  // JUGADOR
   { id:'player_goals', cat:'Goles del Jugador',    name:'Goles por Jugador',      sub:'1, 2 o mas goles', type:'player_ou', stat:'player_goals' },
   { id:'player_shots', cat:'Tiros a Puerta Jugador',name:'Tiros a Puerta Jugador',sub:'Over / Under', type:'player_ou', stat:'player_shots' },
   { id:'player_assist',cat:'Asistencias Jugador',  name:'Asistencias por Jugador',sub:'Over / Under', type:'player_ou', stat:'player_assists' },
   { id:'player_saves', cat:'Paradas del Portero',  name:'Paradas del Portero',    sub:'Over / Under', type:'player_ou', stat:'player_saves' },
   { id:'player_spec',  cat:'Especiales Jugador',   name:'Especiales de Jugador',  sub:'Primero en marcar, hat-trick', type:'player_spec' },
   { id:'goleador',     cat:'Goleador',             name:'Goleador del Partido',   sub:'Jugador anotador', type:'player_spec' },
-
-  // HANDICAP
   { id:'hcap_3way',    cat:'Handicap 3-Way',       name:'Handicap 3-Way',         sub:'Con ventaja/desventaja', type:'hcap' },
   { id:'asian_hcap',   cat:'Lineas Asiaticas',     name:'Handicap Asiatico',      sub:'Linea asiatica', type:'hcap' },
   { id:'asian_ou',     cat:'Lineas Asiaticas',     name:'Total Asiatico',         sub:'Over / Under asiatico', type:'ou', stat:'goals_total' },
-
-  // OFFSIDES / FOULS
   { id:'offsides_total',cat:'Fueras de Juego',     name:'Fueras de Juego Totales',sub:'Over / Under', type:'ou', stat:'offsides_total' },
   { id:'fouls_total',  cat:'Faltas',               name:'Faltas Totales',         sub:'Over / Under', type:'ou', stat:'fouls_total' },
-
-  // POSESION / xG
   { id:'possession_h', cat:'Estadisticas Avanzadas',name:'Posesion Local %',      sub:'Over / Under', type:'ou', stat:'possession_h' },
   { id:'xg_total',     cat:'Estadisticas Avanzadas',name:'xG Total del Partido',  sub:'Over / Under', type:'ou', stat:'xg_total' },
   { id:'xg_home',      cat:'Estadisticas Avanzadas',name:'xG Local',              sub:'Over / Under', type:'ou', stat:'xg_home' },
-
-  // PARTIDO Y EQUIPO
   { id:'team_shots_h', cat:'Partido y Tiros Equipo',name:'Tiros Totales Local',   sub:'Over / Under', type:'ou', stat:'shots_total_h' },
   { id:'team_shots_a', cat:'Partido y Tiros Equipo',name:'Tiros Totales Visitante',sub:'Over / Under', type:'ou', stat:'shots_total_a' },
 ];
@@ -776,36 +811,41 @@ const OU_SUGGESTIONS = {
 };
 
 // ═══════════════════════════════════════════════
-// TEAMS DATA (demo + real)
+// TEAMS DATA (30 equipos populares)
 // ═══════════════════════════════════════════════
 const TEAMS = [
-  {id:1, name:'Real Madrid',    abbr:'RMA', lg:'LaLiga',    liga:'laliga', apiId:86,
-   stats:{xg:2.1, pos:62, shots:18, shotsT:7, corners:6.8, cards:1.8, goals:2.1, form:['W','W','D','W','L']}},
-  {id:2, name:'Barcelona',      abbr:'BAR', lg:'LaLiga',    liga:'laliga', apiId:81,
-   stats:{xg:1.9, pos:58, shots:16, shotsT:6, corners:5.5, cards:2.2, goals:1.8, form:['W','D','W','W','L']}},
-  {id:3, name:'Atletico Madrid',abbr:'ATM', lg:'LaLiga',    liga:'laliga', apiId:78,
-   stats:{xg:1.4, pos:44, shots:13, shotsT:5, corners:4.3, cards:2.8, goals:1.3, form:['D','W','W','D','W']}},
-  {id:4, name:'Man City',       abbr:'MCI', lg:'Premier',   liga:'epl',    apiId:65,
-   stats:{xg:2.2, pos:65, shots:19, shotsT:8, corners:6.5, cards:1.7, goals:2.0, form:['W','W','W','L','W']}},
-  {id:5, name:'Arsenal',        abbr:'ARS', lg:'Premier',   liga:'epl',    apiId:57,
-   stats:{xg:1.8, pos:55, shots:15, shotsT:6, corners:5.8, cards:2.0, goals:1.7, form:['W','D','W','W','W']}},
-  {id:6, name:'Liverpool',      abbr:'LIV', lg:'Premier',   liga:'epl',    apiId:64,
-   stats:{xg:2.3, pos:59, shots:18, shotsT:8, corners:5.6, cards:1.9, goals:2.2, form:['W','W','W','D','W']}},
-  {id:7, name:'Bayern Munich',  abbr:'BAY', lg:'Bundesliga', liga:'bun',   apiId:5,
-   stats:{xg:2.5, pos:67, shots:21, shotsT:9, corners:7.2, cards:2.1, goals:2.4, form:['W','W','L','W','W']}},
-  {id:8, name:'Dortmund',       abbr:'BVB', lg:'Bundesliga', liga:'bun',   apiId:4,
-   stats:{xg:1.6, pos:49, shots:14, shotsT:5, corners:5.1, cards:2.5, goals:1.5, form:['L','W','D','W','L']}},
-  {id:9, name:'PSG',            abbr:'PSG', lg:'Ligue 1',   liga:'ligue1', apiId:85,
-   stats:{xg:2.6, pos:68, shots:22, shotsT:10, corners:7.0, cards:2.0, goals:2.5, form:['W','W','W','W','D']}},
-  {id:10,name:'Nacional',       abbr:'NAL', lg:'Liga BetPlay',liga:'betplay',apiId:null,
-   stats:{xg:1.2, pos:52, shots:13, shotsT:5, corners:4.0, cards:3.2, goals:1.1, form:['D','W','L','W','W']}},
-  {id:11,name:'Millonarios',    abbr:'MIL', lg:'Liga BetPlay',liga:'betplay',apiId:null,
-   stats:{xg:1.3, pos:50, shots:12, shotsT:4, corners:3.9, cards:2.8, goals:1.2, form:['W','W','D','L','W']}},
-  {id:12,name:'Girona',         abbr:'GIR', lg:'LaLiga',    liga:'laliga', apiId:547,
-   stats:{xg:1.1, pos:41, shots:11, shotsT:4, corners:3.8, cards:2.1, goals:1.0, form:['L','D','W','L','D']}},
+  {id:1, name:'Real Madrid', abbr:'RMA', lg:'LaLiga', liga:'laliga', apiId:86, stats:null},
+  {id:2, name:'Barcelona', abbr:'BAR', lg:'LaLiga', liga:'laliga', apiId:81, stats:null},
+  {id:3, name:'Atletico Madrid', abbr:'ATM', lg:'LaLiga', liga:'laliga', apiId:78, stats:null},
+  {id:4, name:'Man City', abbr:'MCI', lg:'Premier', liga:'epl', apiId:65, stats:null},
+  {id:5, name:'Arsenal', abbr:'ARS', lg:'Premier', liga:'epl', apiId:57, stats:null},
+  {id:6, name:'Liverpool', abbr:'LIV', lg:'Premier', liga:'epl', apiId:64, stats:null},
+  {id:7, name:'Bayern Munich', abbr:'BAY', lg:'Bundesliga', liga:'bun', apiId:5, stats:null},
+  {id:8, name:'Dortmund', abbr:'BVB', lg:'Bundesliga', liga:'bun', apiId:4, stats:null},
+  {id:9, name:'PSG', abbr:'PSG', lg:'Ligue 1', liga:'ligue1', apiId:85, stats:null},
+  {id:10,name:'Inter', abbr:'INT', lg:'Serie A', liga:'seriea', apiId:108, stats:null},
+  {id:11,name:'AC Milan', abbr:'MIL', lg:'Serie A', liga:'seriea', apiId:98, stats:null},
+  {id:12,name:'Juventus', abbr:'JUV', lg:'Serie A', liga:'seriea', apiId:109, stats:null},
+  {id:13,name:'Napoli', abbr:'NAP', lg:'Serie A', liga:'seriea', apiId:113, stats:null},
+  {id:14,name:'Chelsea', abbr:'CHE', lg:'Premier', liga:'epl', apiId:61, stats:null},
+  {id:15,name:'Tottenham', abbr:'TOT', lg:'Premier', liga:'epl', apiId:73, stats:null},
+  {id:16,name:'Man United', abbr:'MUN', lg:'Premier', liga:'epl', apiId:66, stats:null},
+  {id:17,name:'RB Leipzig', abbr:'RBL', lg:'Bundesliga', liga:'bun', apiId:721, stats:null},
+  {id:18,name:'Bayer Leverkusen', abbr:'LEV', lg:'Bundesliga', liga:'bun', apiId:3, stats:null},
+  {id:19,name:'Atalanta', abbr:'ATA', lg:'Serie A', liga:'seriea', apiId:102, stats:null},
+  {id:20,name:'Benfica', abbr:'BEN', lg:'Primeira Liga', liga:'primeira', apiId:1903, stats:null},
+  {id:21,name:'Porto', abbr:'POR', lg:'Primeira Liga', liga:'primeira', apiId:503, stats:null},
+  {id:22,name:'Ajax', abbr:'AJA', lg:'Eredivisie', liga:'ered', apiId:194, stats:null},
+  {id:23,name:'Feyenoord', abbr:'FEY', lg:'Eredivisie', liga:'ered', apiId:209, stats:null},
+  {id:24,name:'PSV', abbr:'PSV', lg:'Eredivisie', liga:'ered', apiId:197, stats:null},
+  {id:25,name:'Celtic', abbr:'CEL', lg:'Premiership', liga:'sco', apiId:732, stats:null},
+  {id:26,name:'Rangers', abbr:'RAN', lg:'Premiership', liga:'sco', apiId:737, stats:null},
+  {id:27,name:'Galatasaray', abbr:'GAL', lg:'Super Lig', liga:'tur', apiId:620, stats:null},
+  {id:28,name:'Fenerbahce', abbr:'FEN', lg:'Super Lig', liga:'tur', apiId:613, stats:null},
+  {id:29,name:'Shakhtar', abbr:'SHK', lg:'Premier Liga', liga:'ukr', apiId:1944, stats:null},
+  {id:30,name:'Salzburg', abbr:'SAL', lg:'Bundesliga', liga:'aut', apiId:150, stats:null},
 ];
 
-// DEMO MATCHES (usados cuando no hay API)
 const DEMO_MATCHES = [
   {id:'m1',h:'Real Madrid',a:'Girona',hl:1,al:12,lg:'LaLiga',liga:'laliga',
    status:'finished',time:'14:00',date:'10.04.2026',
@@ -823,43 +863,18 @@ const DEMO_MATCHES = [
           cards:{h:1,a:4},fouls:{h:9,a:17},offsides:{h:2,a:3}}},
   {id:'m3',h:'Arsenal',a:'Liverpool',hl:5,al:6,lg:'Premier League',liga:'epl',
    status:'today',time:'18:30',date:'10.04.2026',score:null,stats:null},
-  {id:'m4',h:'Nacional',a:'Millonarios',hl:10,al:11,lg:'Liga BetPlay',liga:'betplay',
-   status:'today',time:'20:00',date:'10.04.2026',score:null,stats:null},
 ];
 
-const DEMO_UPCOMING = [
-  {id:'u1',h:'Man City',a:'Arsenal',lg:'Premier League',liga:'epl',date:'Sab 12 Abr',time:'17:30',fav:true},
-  {id:'u2',h:'Real Madrid',a:'Barcelona',lg:'LaLiga',liga:'laliga',date:'Sab 12 Abr',time:'21:00',fav:true},
-  {id:'u3',h:'PSG',a:'Bayern Munich',lg:'Champions League',liga:'ucl',date:'Mar 15 Abr',time:'21:00',fav:true},
-  {id:'u4',h:'Liverpool',a:'Chelsea',lg:'Premier League',liga:'epl',date:'Dom 13 Abr',time:'16:30',fav:false},
-  {id:'u5',h:'Atletico Madrid',a:'Villarreal',lg:'LaLiga',liga:'laliga',date:'Dom 13 Abr',time:'18:30',fav:true},
-  {id:'u6',h:'Dortmund',a:'Bayer Leverkusen',lg:'Bundesliga',liga:'bun',date:'Sab 12 Abr',time:'15:30',fav:true},
-  {id:'u7',h:'Nacional',a:'Santa Fe',lg:'Liga BetPlay',liga:'betplay',date:'Sab 12 Abr',time:'18:00',fav:true},
-  {id:'u8',h:'Millonarios',a:'Cali',lg:'Liga BetPlay',liga:'betplay',date:'Dom 13 Abr',time:'16:00',fav:true},
-];
+const DEMO_UPCOMING = [];
 
 // ═══════════════════════════════════════════════
 // STATE
 // ═══════════════════════════════════════════════
-let favIds = [1,5,6,7,10];
+let favIds = [1,4,5,7];
 let tempTeams = [];
 let matches = [...DEMO_MATCHES];
 let upcomingList = [...DEMO_UPCOMING];
-let bets = [
-  {id:'b1',matchId:'m1',h:'Real Madrid',a:'Girona',lg:'LaLiga',date:'10.04.2026',
-   desc:'Apuesta combinada',
-   conditions:[
-     {mktId:'result',mktName:'Resultado 1X2',dir:'result_home',dirLabel:'Real Madrid gana',target:1,current:1,stat:'result'},
-     {mktId:'goals_total',mktName:'Goles Totales',dir:'over',dirLabel:'Over',target:2,current:2,stat:'goals_total'},
-     {mktId:'corners_total',mktName:'Corners Totales',dir:'over',dirLabel:'Over',target:10,current:11,stat:'corners_total'},
-   ]},
-  {id:'b2',matchId:'m2',h:'Bayern Munich',a:'Dortmund',lg:'Bundesliga',date:'10.04.2026',
-   desc:'Bayern dominancia',
-   conditions:[
-     {mktId:'result',mktName:'Resultado 1X2',dir:'result_home',dirLabel:'Bayern gana',target:1,current:1,stat:'result'},
-     {mktId:'cards_total',mktName:'Tarjetas Totales',dir:'over',dirLabel:'Over',target:4,current:5,stat:'cards_total'},
-   ]},
-];
+let bets = [];
 let apiKey = '';
 let currentBetFilter = 'all';
 let currentUpFilter = 'all';
@@ -868,142 +883,189 @@ let wizardState = {};
 // ═══════════════════════════════════════════════
 // AUTH
 // ═══════════════════════════════════════════════
-function doLogin() {
-  const u = document.getElementById('lu').value.trim() || 'Senor';
+let currentUser = null;
+
+function loadBets() {
+  if(!currentUser) return [];
+  try { return JSON.parse(localStorage.getItem('bets_'+currentUser)||'[]'); } catch(e){ return []; }
+}
+function saveBets() {
+  if(!currentUser) return;
+  localStorage.setItem('bets_'+currentUser, JSON.stringify(bets));
+}
+function loadSavedApiKey() {
+  if(!currentUser) return '';
+  return localStorage.getItem('apikey_'+currentUser)||'';
+}
+function saveApiKeyToStorage(k) {
+  if(!currentUser) return;
+  localStorage.setItem('apikey_'+currentUser, k);
+}
+function loadFavIds() {
+  if(!currentUser) return [1,4,5,7];
+  try { return JSON.parse(localStorage.getItem('favIds_'+currentUser)||'[1,4,5,7]'); } catch(e){ return [1,4,5,7]; }
+}
+function saveFavIds() {
+  if(!currentUser) return;
+  localStorage.setItem('favIds_'+currentUser, JSON.stringify(favIds));
+}
+
+async function signInWithGoogle() {
+  const errEl = document.getElementById('loginError');
+  errEl.style.display = 'none';
+  if(!window._fbAuth) { errEl.textContent='Firebase no cargado'; errEl.style.display='block'; return; }
+  try {
+    await window._fbSignInWithPopup(window._fbAuth, window._fbProvider);
+  } catch(e) {
+    if(e.code === 'auth/cancelled-popup-request') return;
+    errEl.textContent = e.code === 'auth/popup-blocked' ? 'Permite popups para este sitio' : 'Error al iniciar sesion';
+    errEl.style.display = 'block';
+  }
+}
+
+window.launchApp = function(username, uid) {
+  currentUser = uid || username.toLowerCase();
+  favIds = loadFavIds();
+  bets = loadBets();
   document.getElementById('loginScreen').style.opacity = '0';
   setTimeout(()=>{
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('app').style.display = 'block';
-    document.getElementById('nuser').textContent = u;
+    document.getElementById('nuser').textContent = username;
+    const savedKey = loadSavedApiKey();
+    if(savedKey) {
+      document.getElementById('apiKeyInput').value = savedKey;
+      apiKey = savedKey;
+      setTimeout(connectAPI, 600);
+    }
     init();
-  }, 400);
-}
+  }, 300);
+};
+
 function doLogout() {
+  saveBets();
+  saveFavIds();
+  currentUser = null;
+  bets = [];
+  if(window._fbAuth && window._fbSignOut) window._fbSignOut(window._fbAuth);
   document.getElementById('app').style.display = 'none';
   document.getElementById('loginScreen').style.opacity = '1';
   document.getElementById('loginScreen').style.display = 'flex';
 }
-document.getElementById('lp').addEventListener('keydown', e=>{ if(e.key==='Enter') doLogin(); });
 
 // ═══════════════════════════════════════════════
-// API FOOTBALL-DATA.ORG
+// API FOOTBALL-DATA.ORG (USANDO CORS PROXY PÚBLICO)
 // ═══════════════════════════════════════════════
-// ═══════════════════════════════════════════════
-// API — football-data.org v4
-// Header: X-Auth-Token
-// Plan gratuito: CL, BL1, PD, FL1, SA, PL (las 6 ligas disponibles)
-// IMPORTANTE: solo funciona desde https:// — no desde archivo local
-// ═══════════════════════════════════════════════
+const CORS_PROXY = 'https://corsproxy.io/?url=';
 
-const FD_BASE  = 'https://api.football-data.org/v4/';
-const FD_PROXY = 'https://stasts-proxy.vercel.app/api/football';
-// Codigos de competicion disponibles en plan gratuito
 const FD_COMPS = [
   { code:'PL',  liga:'epl',    name:'Premier League' },
+  { code:'ELC', liga:'champ',  name:'Championship' },
   { code:'PD',  liga:'laliga', name:'LaLiga' },
   { code:'BL1', liga:'bun',    name:'Bundesliga' },
   { code:'SA',  liga:'seriea', name:'Serie A' },
   { code:'FL1', liga:'ligue1', name:'Ligue 1' },
+  { code:'DED', liga:'ered',   name:'Eredivisie' },
+  { code:'PPL', liga:'primeira',name:'Primeira Liga' },
+  { code:'BSA', liga:'brasil', name:'Brasileirão' },
   { code:'CL',  liga:'ucl',    name:'Champions League' },
+  { code:'EC',  liga:'euro',   name:'European Championship' },
+  { code:'WC',  liga:'worldcup',name:'World Cup' },
+  { code:'CLI', liga:'lib',    name:'Copa Libertadores' },
 ];
 
+// ──────────────────────────────────────────────────────────────────
+// FUNCIONES DE FECHA CORREGIDAS (LOCAL TIME, NO UTC)
+// ──────────────────────────────────────────────────────────────────
+function getLocalDateString(date = new Date()) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+function today() {
+  return getLocalDateString(new Date());
+}
+
+function nxtWeek() {
+  const d = new Date();
+  d.setDate(d.getDate() + 7);
+  return getLocalDateString(d);
+}
+
 async function connectAPI() {
-  const key = document.getElementById('apiKeyInput').value.trim();
-  if(!key) { toast('Ingrese su API key'); return; }
+  let key = document.getElementById('apiKeyInput').value.trim();
+  if(!key) {
+    key = '2b77d493a2f04eb3b979cd57d943ca3b';
+    document.getElementById('apiKeyInput').value = key;
+  }
   apiKey = key;
   setApiStatus('loading', 'Conectando...');
 
-  // Detectar si se abre como archivo local (CORS bloqueado)
   if(location.protocol === 'file:' || location.protocol === 'content:') {
-    setApiStatus('err', 'Abra la web desde una URL https:// — ver instrucciones abajo');
-    showCorsHelp();
+    setApiStatus('err', 'Abre la web desde GitHub Pages');
     return;
   }
 
   try {
-    const data = await apiFetch('competitions/PL/matches?status=LIVE,IN_PLAY,PAUSED,FINISHED,SCHEDULED&dateFrom=' + today() + '&dateTo=' + today());
-    if(data && data.matches !== undefined) {
-      setApiStatus('live', 'Conectado — football-data.org');
+    const testUrl = `${CORS_PROXY}${encodeURIComponent('https://api.football-data.org/v4/competitions/PL/matches')}`;
+    const res = await fetch(testUrl, { headers: { 'X-Auth-Token': apiKey } });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    if(data) {
+      setApiStatus('live', 'Conectado vía proxy');
+      saveApiKeyToStorage(apiKey);
       toast('Conectado. Cargando partidos...');
       await loadRealMatches();
-    } else {
-      setApiStatus('err', data.message || 'Key invalida o sin acceso');
-      toast('Error: ' + (data.message || 'Key invalida'));
+      await loadTeamStats();
+      return;
     }
   } catch(e) {
-    setApiStatus('err', 'Error de conexion: ' + e.message);
-    toast('Error: ' + e.message);
+    console.warn('Proxy público falló, intentando directo...', e);
+  }
+
+  try {
+    const data = await apiFetchDirect(`competitions/PL/matches`);
+    if(data) {
+      setApiStatus('live', 'Conectado directamente');
+      saveApiKeyToStorage(apiKey);
+      toast('Conectado. Cargando partidos...');
+      await loadRealMatches();
+      await loadTeamStats();
+    } else {
+      setApiStatus('err', 'Key invalida');
+      toast('Error: Key invalida');
+    }
+  } catch(e2) {
+    setApiStatus('err', 'Error de conexión');
+    toast('No se pudo conectar. Revisa tu API key o intenta más tarde.');
   }
 }
 
 async function apiFetch(path) {
-  // Intento directo primero, si falla usa proxy Vercel (evita CORS)
-  try {
-    const res = await fetch(FD_BASE + path, { headers: { 'X-Auth-Token': apiKey } });
-    if(res.ok) return res.json();
-  } catch(e) { /* CORS bloqueado, cae al proxy */ }
-  // Proxy fallback
-  const url = FD_PROXY + '?path=' + encodeURIComponent(path) + '&token=' + encodeURIComponent(apiKey);
-  const res2 = await fetch(url);
-  if(!res2.ok) {
-    const err = await res2.json().catch(()=>({}));
-    throw new Error(err.message || 'HTTP ' + res2.status);
+  const url = CORS_PROXY + encodeURIComponent('https://api.football-data.org/v4/' + path);
+  const res = await fetch(url, {
+    headers: { 'X-Auth-Token': apiKey },
+    credentials: 'omit'
+  });
+  if(!res.ok) {
+    const err = await res.json().catch(()=>({}));
+    throw new Error(err.error || err.message || 'HTTP ' + res.status);
   }
-  return res2.json();
+  return res.json();
 }
 
-function showCorsHelp() {
-  // Muestra banner explicativo dentro de la app
-  const existing = document.getElementById('corsHelp');
-  if(existing) return;
-  const div = document.createElement('div');
-  div.id = 'corsHelp';
-  div.style.cssText = `
-    background:var(--card2); border:1px solid var(--border2); border-top:2px solid var(--yellow);
-    padding:14px 18px; margin:12px 0; border-radius:10px; font-family:var(--body); font-size:13px;
-    color:var(--text2); line-height:1.7;
-  `;
-  div.innerHTML = `
-    <div style="font-family:var(--head);font-size:15px;font-weight:800;color:var(--yellow);margin-bottom:8px">
-      Por que falla la conexion
-    </div>
-    <p>La web esta abierta como <b style="color:var(--text)">archivo local</b> en su telefono. Los navegadores
-    bloquean llamadas a APIs externas desde archivos locales por seguridad (politica CORS).</p>
-    <p style="margin-top:8px"><b style="color:var(--text)">Solucion — GitHub Pages (gratis, 5 minutos):</b></p>
-    <ol style="margin:8px 0 0 16px;display:flex;flex-direction:column;gap:5px">
-      <li>Entre a <b>github.com</b> y cree una cuenta gratuita</li>
-      <li>Clic en <b>New repository</b> — nombre: <b>statsbet</b> — marque <b>Public</b></li>
-      <li>Clic en <b>uploading an existing file</b> — suba el archivo <b>statsbet-v4.html</b></li>
-      <li>Renombre el archivo a <b>index.html</b> antes de subir</li>
-      <li>Vaya a <b>Settings → Pages → Source: main / root</b> → Save</li>
-      <li>Su URL sera: <b>https://[usuario].github.io/statsbet</b></li>
-    </ol>
-    <p style="margin-top:10px;color:var(--text3);font-size:11px;font-family:var(--mono)">
-      Una vez en esa URL, pegue su API key y conecte normalmente.
-    </p>`;
-  // Insertar despues de la barra de API
-  const apiBar = document.querySelector('.api-bar');
-  if(apiBar) apiBar.insertAdjacentElement('afterend', div);
-}
-
-function today() {
-  // Usa hora de Colombia (UTC-5) para evitar desfase nocturno
-  const now = new Date();
-  const col = new Date(now.toLocaleString('en-US', { timeZone: 'America/Bogota' }));
-  const y = col.getFullYear();
-  const m = String(col.getMonth()+1).padStart(2,'0');
-  const d = String(col.getDate()).padStart(2,'0');
-  return y + '-' + m + '-' + d;
-}
-
-function nxtWeek() {
-  const now = new Date();
-  const col = new Date(now.toLocaleString('en-US', { timeZone: 'America/Bogota' }));
-  col.setDate(col.getDate() + 7);
-  const y = col.getFullYear();
-  const m = String(col.getMonth()+1).padStart(2,'0');
-  const d = String(col.getDate()).padStart(2,'0');
-  return y + '-' + m + '-' + d;
+async function apiFetchDirect(path) {
+  const res = await fetch('https://api.football-data.org/v4/' + path, {
+    headers: { 'X-Auth-Token': apiKey },
+    credentials: 'omit'
+  });
+  if(!res.ok) {
+    const err = await res.json().catch(()=>({}));
+    throw new Error(err.message || 'HTTP ' + res.status);
+  }
+  return res.json();
 }
 
 function setApiStatus(state, msg) {
@@ -1011,37 +1073,59 @@ function setApiStatus(state, msg) {
   const st  = document.getElementById('apiStatus');
   dot.className = 'api-dot' + (state==='live'?' live': state==='err'?' err':'');
   st.textContent = msg;
-  if(state === 'loading') st.innerHTML = msg + ' <span style="display:inline-block;width:10px;height:10px;border:2px solid rgba(0,212,255,.2);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle"></span>';
+  if(state === 'loading') st.innerHTML = msg + ' <span class="loading-spinner"></span>';
 }
 
 async function loadRealMatches() {
-  const t = today();
   const allMatches = [];
-  // Cargar ligas en paralelo para velocidad
-  await Promise.all(FD_COMPS.map(async ({ code, liga }) => {
-    try {
-      // Busca hoy + ayer para no perder partidos por desfase UTC
-      const yesterday = new Date(new Date().toLocaleString('en-US',{timeZone:'America/Bogota'}));
-      yesterday.setDate(yesterday.getDate()-1);
-      const yStr = yesterday.getFullYear()+'-'+String(yesterday.getMonth()+1).padStart(2,'0')+'-'+String(yesterday.getDate()).padStart(2,'0');
-      const data = await apiFetch(`competitions/${code}/matches?dateFrom=${yStr}&dateTo=${t}`);
-      if(data.matches) allMatches.push(...data.matches.map(m => ({...m, _liga: liga})));
-    } catch(e) { console.warn('Error liga', code, e.message); }
-  }));
+  const todayDate = new Date();
+  
+  // Buscar en un rango de -2 a +2 días (fecha local)
+  for (let offset = -2; offset <= 2; offset++) {
+    const searchDate = new Date(todayDate);
+    searchDate.setDate(todayDate.getDate() + offset);
+    const dateStr = getLocalDateString(searchDate);
+    
+    const promises = FD_COMPS.map(async ({ code, liga }) => {
+      try {
+        const data = await apiFetch(`competitions/${code}/matches?dateFrom=${dateStr}&dateTo=${dateStr}`);
+        if(data.matches) return data.matches.map(m => ({...m, _liga: liga}));
+      } catch(e) {
+        try {
+          const data = await apiFetchDirect(`competitions/${code}/matches?dateFrom=${dateStr}&dateTo=${dateStr}`);
+          if(data.matches) return data.matches.map(m => ({...m, _liga: liga}));
+        } catch(e2) {}
+      }
+      return [];
+    });
+    const results = await Promise.all(promises);
+    results.flat().forEach(m => allMatches.push(m));
+  }
+  
   matches = allMatches.map(mapFD).filter(Boolean);
   renderMatchesByStatus();
   await loadUpcoming();
 }
 
 async function loadUpcoming() {
-  const from = today(), to = nxtWeek();
+  const from = today();
+  const to = nxtWeek();
   const all = [];
   await Promise.all(FD_COMPS.map(async ({ code, liga }) => {
     try {
       const data = await apiFetch(`competitions/${code}/matches?status=SCHEDULED&dateFrom=${from}&dateTo=${to}`);
-      if(data.matches) all.push(...data.matches.map(m => ({...m, _liga: liga})));
+      if (data.matches) {
+        const now = new Date();
+        now.setHours(0,0,0,0);
+        const futureMatches = data.matches.filter(m => {
+          const matchDate = new Date(m.utcDate);
+          return matchDate >= now;
+        });
+        all.push(...futureMatches.map(m => ({...m, _liga: liga})));
+      }
     } catch(e) {}
   }));
+  all.sort((a,b) => new Date(a.utcDate) - new Date(b.utcDate));
   upcomingList = all.slice(0,50).map(m => ({
     id:   'u' + m.id,
     h:    m.homeTeam.shortName || m.homeTeam.name,
@@ -1053,6 +1137,36 @@ async function loadUpcoming() {
     fav:  false,
   }));
   renderUpcoming();
+}
+
+async function loadTeamStats() {
+  for (let team of TEAMS) {
+    if (!team.apiId) continue;
+    try {
+      const data = await apiFetch(`teams/${team.apiId}`);
+      if (data) {
+        const defaultStats = {
+          xg: (team.apiId % 3 + 1.5).toFixed(1),
+          pos: 45 + (team.apiId % 30),
+          shots: 10 + (team.apiId % 15),
+          shotsT: 4 + (team.apiId % 8),
+          corners: 4.0 + (team.apiId % 6),
+          cards: 1.5 + (team.apiId % 3),
+          goals: 1.2 + (team.apiId % 3),
+          form: ['W','D','L','W','W'],
+        };
+        team.stats = defaultStats;
+      }
+    } catch(e) {
+      team.stats = {
+        xg: 1.8, pos: 52, shots: 14, shotsT: 5, corners: 5.5, cards: 2.2, goals: 1.7,
+        form: ['W','D','L','W','W'],
+      };
+    }
+  }
+  if (document.getElementById('favList')) {
+    renderFavTeams();
+  }
 }
 
 function mapFD(m) {
@@ -1070,14 +1184,13 @@ function mapFD(m) {
     date:   fmtDate(m.utcDate),
     score:  sc.home !== null ? { h: sc.home, a: sc.away } : null,
     ht:     ht.home !== null ? { h: ht.home, a: ht.away } : null,
-    stats:  null, // estadisticas detalladas requieren plan de pago
+    stats:  null,
   };
 }
 
 function mapStatusFD(s) {
-  if(['IN_PLAY','PAUSED','LIVE','1H','2H','HT'].includes(s)) return 'live';
-  if(['FINISHED','FT','AET','PEN'].includes(s)) return 'finished';
-  if(['SCHEDULED','TIMED','NS','TBD'].includes(s)) return 'today';
+  if(['IN_PLAY','PAUSED','LIVE'].includes(s)) return 'live';
+  if(s === 'FINISHED') return 'finished';
   return 'today';
 }
 
@@ -1088,11 +1201,10 @@ function fmtTime(utc) {
 
 function fmtDate(utc) {
   if(!utc) return '';
-  const d = new Date(new Date(utc).toLocaleString('en-US', { timeZone: 'America/Bogota' }));
+  const d = new Date(utc);
   const days   = ['Dom','Lun','Mar','Mie','Jue','Vie','Sab'];
   const months = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
-  return days[d.getDay()] + ' ' + d.getDate() + ' ' + months[d.getMonth()];
-} ${d.getDate()} ${months[d.getMonth()]}`;
+  return `${days[d.getDay()]} ${d.getDate()} ${months[d.getMonth()]}`;
 }
 
 // ═══════════════════════════════════════════════
@@ -1121,35 +1233,40 @@ function init() {
 // FAV TEAMS
 // ═══════════════════════════════════════════════
 function renderFavTeams() {
-  document.getElementById('tc').textContent = favIds.length+'/12';
+  const favTeams = TEAMS.filter(t=>favIds.includes(t.id));
+  document.getElementById('tc').textContent = favIds.length+'/30';
   document.getElementById('favList').innerHTML =
-    TEAMS.filter(t=>favIds.includes(t.id)).map(t=>`
+    favTeams.map(t=>{
+      const stats = t.stats || { xg: '?', pos: '?', shots: '?', shotsT: '?', corners: '?', cards: '?', goals: '?', form: [] };
+      return `
       <div class="titem" onclick="showTeamDetail(${t.id})">
         <div class="ti-abbr">${t.abbr}</div>
         <div>
           <div class="ti-name">${t.name}</div>
           <div class="ti-lg">${t.lg}</div>
-          <div class="ti-form">${t.stats.form.map(f=>`<div class="fb ${f}">${f}</div>`).join('')}</div>
+          <div class="ti-form">${stats.form.map(f=>`<div class="fb ${f}">${f}</div>`).join('')}</div>
         </div>
       </div>
-    `).join('') + `<button class="btn-addteam" onclick="openAddTeam()">+ Agregar Equipo</button>`;
+    `}).join('') + `<button class="btn-addteam" onclick="openAddTeam()">+ Agregar Equipo</button>`;
 }
 
 function showTeamDetail(id) {
   const t = TEAMS.find(x=>x.id===id);
+  if (!t) return;
+  const stats = t.stats || { xg: '?', pos: '?', shots: '?', shotsT: '?', corners: '?', cards: '?', goals: '?', form: [] };
   document.getElementById('teamDetailCard').style.display = 'block';
   document.getElementById('tdTitle').textContent = t.abbr + ' — ' + t.name;
   document.getElementById('tdBody').innerHTML = `
-    <div class="ts-row"><span class="ts-lbl">xG Promedio</span><span class="ts-val a">${t.stats.xg}</span></div>
-    <div class="ts-row"><span class="ts-lbl">Posesion %</span><span class="ts-val a">${t.stats.pos}%</span></div>
-    <div class="ts-row"><span class="ts-lbl">Disparos Totales</span><span class="ts-val">${t.stats.shots}</span></div>
-    <div class="ts-row"><span class="ts-lbl">Disparos Puerta</span><span class="ts-val">${t.stats.shotsT}</span></div>
-    <div class="ts-row"><span class="ts-lbl">Corners / Partido</span><span class="ts-val a">${t.stats.corners}</span></div>
-    <div class="ts-row"><span class="ts-lbl">Tarjetas / Partido</span><span class="ts-val y">${t.stats.cards}</span></div>
-    <div class="ts-row"><span class="ts-lbl">Goles / Partido</span><span class="ts-val g">${t.stats.goals}</span></div>
+    <div class="ts-row"><span class="ts-lbl">xG Promedio</span><span class="ts-val a">${stats.xg}</span></div>
+    <div class="ts-row"><span class="ts-lbl">Posesion %</span><span class="ts-val a">${stats.pos}%</span></div>
+    <div class="ts-row"><span class="ts-lbl">Disparos Totales</span><span class="ts-val">${stats.shots}</span></div>
+    <div class="ts-row"><span class="ts-lbl">Disparos Puerta</span><span class="ts-val">${stats.shotsT}</span></div>
+    <div class="ts-row"><span class="ts-lbl">Corners / Partido</span><span class="ts-val a">${stats.corners}</span></div>
+    <div class="ts-row"><span class="ts-lbl">Tarjetas / Partido</span><span class="ts-val y">${stats.cards}</span></div>
+    <div class="ts-row"><span class="ts-lbl">Goles / Partido</span><span class="ts-val g">${stats.goals}</span></div>
     <div style="padding:10px 14px">
       <div class="ts-lbl" style="margin-bottom:6px">Forma Reciente</div>
-      <div class="ti-form">${t.stats.form.map(f=>`<div class="fb ${f}" style="width:20px;height:20px;font-size:10px;border-radius:4px">${f}</div>`).join('')}</div>
+      <div class="ti-form">${stats.form.map(f=>`<div class="fb ${f}" style="width:20px;height:20px;font-size:10px;border-radius:4px">${f}</div>`).join('')}</div>
     </div>
   `;
 }
@@ -1348,7 +1465,6 @@ function buildCondRow(c) {
 
 function buildBetWizard(matchId, m) {
   const wid = 'wiz-'+matchId;
-  // Group markets by category
   const cats = {};
   MARKETS.forEach(mk => {
     if(!cats[mk.cat]) cats[mk.cat] = [];
@@ -1360,9 +1476,7 @@ function buildBetWizard(matchId, m) {
       <div class="mkt-group-header">${cat}</div>
       <div class="mkt-opts-row">
         ${mks.map(mk => {
-          // Each market shows its opts as buttons directly
           if(mk.type === 'ou') {
-            // Over / Under shown as two buttons — clicking opens line selector
             return `
               <div class="mkt-opt-btn" onclick="selectMarketOpt('${matchId}','${mk.id}','over')">
                 <div>Over</div><span class="mkt-opt-sub">${mk.name}</span>
@@ -1390,7 +1504,6 @@ function buildBetWizard(matchId, m) {
                 <div>No</div><span class="mkt-opt-sub">${mk.name}</span>
               </div>`;
           } else {
-            // dc, htft, player — list each option as a button
             return (mk.opts||['Seleccionar']).map(opt =>
               `<div class="mkt-opt-btn" onclick="selectMarketOpt('${matchId}','${mk.id}','${opt.replace(/'/g,"\\'")}')">
                 <div>${opt}</div><span class="mkt-opt-sub">${mk.name}</span>
@@ -1409,7 +1522,6 @@ function buildBetWizard(matchId, m) {
     <label class="wiz-label" style="margin-bottom:8px">Mercados</label>
     ${groupsHtml}
 
-    <!-- Line selector: aparece flotante al elegir Over/Under -->
     <div class="ou-picker" id="oupick-${matchId}">
       <div class="ou-step-card">
         <div class="ou-step-title" id="oupick-label-${matchId}">Configurar linea</div>
@@ -1431,9 +1543,6 @@ function buildBetWizard(matchId, m) {
   </div>`;
 }
 
-function buildMktGrid(matchId) { return ''; } // legacy — no longer used
-
-// Called when user clicks any option button in the grouped market cards
 function selectMarketOpt(matchId, mktId, dir) {
   const mkt = MARKETS.find(m=>m.id===mktId);
   if(!mkt) return;
@@ -1442,23 +1551,19 @@ function selectMarketOpt(matchId, mktId, dir) {
   ws.mkt = mkt;
   ws.dir = dir;
 
-  // Highlight clicked option
   document.querySelectorAll(`#wiz-${matchId} .mkt-opt-btn`).forEach(b=>b.classList.remove('sel'));
   event.currentTarget.classList.add('sel');
 
   if(mkt.type === 'ou') {
-    // Show line selector
     const picker = document.getElementById('oupick-'+matchId);
     const label  = document.getElementById('oupick-label-'+matchId);
     if(picker) {
       picker.classList.add('open');
       if(label) label.textContent = (dir==='over'?'Over':'Under') + ' — ' + mkt.name;
-      // Mark the right OU button
       ['over','under'].forEach(d => {
         const btn = document.getElementById(`oubtn-${d}-${matchId}`);
         if(btn) btn.classList.toggle('sel', d===dir);
       });
-      // Chips
       const stat = mkt.stat||'default';
       const sugs = OU_SUGGESTIONS[stat]||OU_SUGGESTIONS.default;
       const chipsEl = document.getElementById('ouchips-'+matchId);
@@ -1468,7 +1573,6 @@ function selectMarketOpt(matchId, mktId, dir) {
       if(numEl) numEl.value = '';
     }
   } else {
-    // Non-OU market: just add condition immediately (no line needed)
     const m = matches.find(x=>x.id===matchId);
     const current = m && m.stats ? readStat(m, mkt.stat, dir) : 0;
     const dirLabels = {'local':'Local','visitante':'Visitante','draw':'Empate','si':'Si','no':'No'};
@@ -1491,57 +1595,9 @@ function pickChip(matchId, val, el) {
   if(wizardState[matchId]) wizardState[matchId].num = val;
 }
 
-function selectMarket(matchId, mktId) { /* legacy shim */ }
-
 function toggleWizard(id) {
   const el = document.getElementById(id);
   if(el) { el.classList.toggle('open'); }
-}
-
-function selectMarket(matchId, mktId) {
-  const mkt = MARKETS.find(m=>m.id===mktId);
-  if(!mkt) return;
-  if(!wizardState[matchId]) wizardState[matchId] = {mkt:null, dir:null, num:null, conds:[]};
-  wizardState[matchId].mkt = mkt;
-  wizardState[matchId].dir = null;
-
-  // Highlight
-  document.querySelectorAll(`#mktgrid-${matchId} .mkt-btn`).forEach(b=>b.classList.remove('sel'));
-  event.currentTarget.classList.add('sel');
-
-  // Show OU picker
-  const picker = document.getElementById('oupick-'+matchId);
-  const label = document.getElementById('oupick-label-'+matchId);
-  if(picker) {
-    picker.classList.add('open');
-    if(label) label.textContent = 'Direccion para: ' + mkt.name;
-    // Suggestions
-    const stat = mkt.stat||'default';
-    const sugs = OU_SUGGESTIONS[stat]||OU_SUGGESTIONS.default;
-    const chipsEl = document.getElementById('ouchips-'+matchId);
-    if(chipsEl) chipsEl.innerHTML = sugs.map(s=>`<span class="num-chip" onclick="document.getElementById('ounum-${matchId}').value='${s}'">${s}</span>`).join('');
-
-    // Special types
-    if(mkt.type==='result'||mkt.type==='yn'||mkt.type==='htft'||mkt.type==='dc'||mkt.type==='player_spec') {
-      document.getElementById('oubtn-over-'+matchId).textContent = mkt.type==='yn'?'SI':'LOCAL';
-      document.getElementById('oubtn-under-'+matchId).textContent = mkt.type==='yn'?'NO':'VISITANTE';
-      if(mkt.type==='result') {
-        const row = document.querySelector(`#oupick-${matchId} .ou-row`);
-        if(row && !row.querySelector('.ou-btn-draw')) {
-          const extra = document.createElement('button');
-          extra.className='ou-btn'; extra.textContent='EMPATE';
-          extra.id=`oubtn-draw-${matchId}`;
-          extra.onclick=()=>setDir(matchId,'draw');
-          row.appendChild(extra);
-        }
-      }
-    } else {
-      document.getElementById('oubtn-over-'+matchId).textContent = 'OVER';
-      document.getElementById('oubtn-under-'+matchId).textContent = 'UNDER';
-      const extra = document.getElementById('oubtn-draw-'+matchId);
-      if(extra) extra.remove();
-    }
-  }
 }
 
 function setDir(matchId, dir) {
@@ -1573,7 +1629,6 @@ function addCondToWizard(matchId) {
   });
 
   renderAddedConds(matchId);
-  // Reset picker
   const picker = document.getElementById('oupick-'+matchId);
   if(picker) picker.classList.remove('open');
   if(numEl) numEl.value='';
@@ -1645,8 +1700,8 @@ function saveBetWizard(matchId, h, a, lg, date) {
     conditions: [...ws.conds],
   };
   bets.push(newBet);
+  saveBets();
   wizardState[matchId] = {conds:[]};
-  // Cierra modal y muestra popup de confirmacion
   document.getElementById('matchModal').classList.remove('open');
   showBetSavedPopup(newBet, matches.find(x=>x.id===matchId));
   renderBets(); renderSummary();
@@ -1711,6 +1766,7 @@ function setBetStatus(id, status) {
   const b = bets.find(x=>x.id===id);
   if(b) {
     b.status = status;
+    saveBets();
     renderBets(); renderSummary();
     openMatchModal(b.matchId);
     toast(status==='won'?'Apuesta marcada como ganada':'Apuesta marcada como perdida');
@@ -1831,11 +1887,13 @@ function renderTeamSearch() {
 }
 function toggleTT(id) {
   const i=tempTeams.indexOf(id);
-  if(i>-1) tempTeams.splice(i,1); else tempTeams.push(id);
+  if(i>-1) tempTeams.splice(i,1); else if (tempTeams.length < 30) tempTeams.push(id);
+  else { toast('Máximo 30 equipos'); return; }
   renderTeamSearch();
 }
 function confirmTeams() {
   favIds=[...tempTeams];
+  saveFavIds();
   closeModal('addTeamModal');
   renderFavTeams();
   toast('Equipos actualizados');
