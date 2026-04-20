@@ -8,7 +8,6 @@
 <title>STATSBET — Tracker de Apuestas</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-/* ========== ESTILOS GLOBALES (SIN CAMBIOS) ========== */
 :root {
   --bg:#080b12; --bg2:#0e1119; --bg3:#131720; --card:#171d28; --card2:#1d2433;
   --border:#1f2840; --border2:#283350;
@@ -389,7 +388,7 @@ main {
 .mkt-opt-btn.sel { border-color:var(--accent); color:var(--accent); background:var(--adim); }
 .mkt-opt-sub { font-family:var(--mono); font-size:clamp(7px,1.8vw,8px); color:var(--text3); margin-top:2px; letter-spacing:.3px; display:block; }
 
-/* ========== NUEVO MENÚ OU (ESTILO TABLA) ========== */
+/* ========== MENÚ OU ESTILO TABLA ========== */
 .ou-menu {
   background:var(--card2); border:1px solid var(--border2); border-radius:10px;
   padding:14px; margin:8px 0;
@@ -451,7 +450,7 @@ main {
 }
 .btn-save-bet:hover { opacity:.85; }
 
-/* Resto de estilos (popups, resumen, etc.) sin cambios */
+/* Resto de estilos (popups, resumen, etc.) */
 .sum-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:clamp(6px,2vw,10px); margin-bottom:18px; }
 .sum-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:clamp(10px,3vw,14px) clamp(8px,2vw,12px); }
 .sum-val { font-family:var(--head); font-size:clamp(22px,6vw,28px); font-weight:800; line-height:1; }
@@ -549,7 +548,7 @@ main {
   .mst:nth-child(3) { border-right:none; }
 }
 </style>
-<!-- Firebase SDK (sin cambios) -->
+<!-- Firebase SDK -->
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
   import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged }
@@ -715,9 +714,9 @@ main {
 <div class="popup-wrap" id="popups"></div>
 
 <script>
-// ═══════════════════════════════════════════════
-// MARKETS DEFINITION (sin cambios)
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════════════════
+// MARKETS DEFINITION
+// ═══════════════════════════════════════════════════════════════════════════
 const MARKETS = [
   { id:'result',      cat:'Tiempo Reglamentario', name:'Resultado 1X2',         sub:'Victoria local, empate o visitante', type:'result' },
   { id:'btts',        cat:'Tiempo Reglamentario', name:'Ambos Marcan',           sub:'Si / No', type:'btts' },
@@ -738,7 +737,12 @@ const MARKETS = [
   { id:'cards_total',  cat:'Tarjetas',             name:'Tarjetas Totales',       sub:'Over / Under (ej: 3.5)', type:'ou', stat:'cards_total' },
   { id:'cards_home',   cat:'Tarjetas',             name:'Tarjetas Local',         sub:'Over / Under', type:'ou', stat:'cards_home' },
   { id:'cards_away',   cat:'Tarjetas',             name:'Tarjetas Visitante',     sub:'Over / Under', type:'ou', stat:'cards_away' },
-  // ... resto de mercados sin cambios
+  { id:'red_card',     cat:'Tarjetas',             name:'Tarjeta Roja en Partido',sub:'Si / No', type:'yn' },
+  { id:'cards_ht',     cat:'Tarjetas',             name:'Tarjetas 1er Tiempo',    sub:'Over / Under', type:'ou', stat:'ht_cards' },
+  { id:'shots_total',  cat:'Disparos',             name:'Disparos Totales',       sub:'Over / Under', type:'ou', stat:'shots_total' },
+  { id:'shots_ht_h',   cat:'Disparos',             name:'Disparos a Puerta Local',sub:'Over / Under', type:'ou', stat:'shots_on_h' },
+  { id:'shots_ht_a',   cat:'Disparos',             name:'Disparos a Puerta Visit.',sub:'Over / Under', type:'ou', stat:'shots_on_a' },
+  { id:'shots_on_total',cat:'Disparos',            name:'Disparos a Puerta Totales',sub:'Over / Under', type:'ou', stat:'shots_on_total' },
 ];
 
 const OU_SUGGESTIONS = {
@@ -755,16 +759,66 @@ const OU_SUGGESTIONS = {
   default: ['0.5','1.5','2.5','3.5','4.5'],
 };
 
-// ═══════════════════════════════════════════════
-// TEAMS DATA (sin cambios)
-// ═══════════════════════════════════════════════
-const TEAMS = [ /* ... 30 equipos ... */ ];
-const DEMO_MATCHES = [ /* ... */ ];
+// ═══════════════════════════════════════════════════════════════════════════
+// TEAMS DATA (30 equipos)
+// ═══════════════════════════════════════════════════════════════════════════
+const TEAMS = [
+  {id:1, name:'Real Madrid', abbr:'RMA', lg:'LaLiga', liga:'laliga', apiId:86, stats:null},
+  {id:2, name:'Barcelona', abbr:'BAR', lg:'LaLiga', liga:'laliga', apiId:81, stats:null},
+  {id:3, name:'Atletico Madrid', abbr:'ATM', lg:'LaLiga', liga:'laliga', apiId:78, stats:null},
+  {id:4, name:'Man City', abbr:'MCI', lg:'Premier', liga:'epl', apiId:65, stats:null},
+  {id:5, name:'Arsenal', abbr:'ARS', lg:'Premier', liga:'epl', apiId:57, stats:null},
+  {id:6, name:'Liverpool', abbr:'LIV', lg:'Premier', liga:'epl', apiId:64, stats:null},
+  {id:7, name:'Bayern Munich', abbr:'BAY', lg:'Bundesliga', liga:'bun', apiId:5, stats:null},
+  {id:8, name:'Dortmund', abbr:'BVB', lg:'Bundesliga', liga:'bun', apiId:4, stats:null},
+  {id:9, name:'PSG', abbr:'PSG', lg:'Ligue 1', liga:'ligue1', apiId:85, stats:null},
+  {id:10,name:'Inter', abbr:'INT', lg:'Serie A', liga:'seriea', apiId:108, stats:null},
+  {id:11,name:'AC Milan', abbr:'MIL', lg:'Serie A', liga:'seriea', apiId:98, stats:null},
+  {id:12,name:'Juventus', abbr:'JUV', lg:'Serie A', liga:'seriea', apiId:109, stats:null},
+  {id:13,name:'Napoli', abbr:'NAP', lg:'Serie A', liga:'seriea', apiId:113, stats:null},
+  {id:14,name:'Chelsea', abbr:'CHE', lg:'Premier', liga:'epl', apiId:61, stats:null},
+  {id:15,name:'Tottenham', abbr:'TOT', lg:'Premier', liga:'epl', apiId:73, stats:null},
+  {id:16,name:'Man United', abbr:'MUN', lg:'Premier', liga:'epl', apiId:66, stats:null},
+  {id:17,name:'RB Leipzig', abbr:'RBL', lg:'Bundesliga', liga:'bun', apiId:721, stats:null},
+  {id:18,name:'Bayer Leverkusen', abbr:'LEV', lg:'Bundesliga', liga:'bun', apiId:3, stats:null},
+  {id:19,name:'Atalanta', abbr:'ATA', lg:'Serie A', liga:'seriea', apiId:102, stats:null},
+  {id:20,name:'Benfica', abbr:'BEN', lg:'Primeira Liga', liga:'primeira', apiId:1903, stats:null},
+  {id:21,name:'Porto', abbr:'POR', lg:'Primeira Liga', liga:'primeira', apiId:503, stats:null},
+  {id:22,name:'Ajax', abbr:'AJA', lg:'Eredivisie', liga:'ered', apiId:194, stats:null},
+  {id:23,name:'Feyenoord', abbr:'FEY', lg:'Eredivisie', liga:'ered', apiId:209, stats:null},
+  {id:24,name:'PSV', abbr:'PSV', lg:'Eredivisie', liga:'ered', apiId:197, stats:null},
+  {id:25,name:'Celtic', abbr:'CEL', lg:'Premiership', liga:'sco', apiId:732, stats:null},
+  {id:26,name:'Rangers', abbr:'RAN', lg:'Premiership', liga:'sco', apiId:737, stats:null},
+  {id:27,name:'Galatasaray', abbr:'GAL', lg:'Super Lig', liga:'tur', apiId:620, stats:null},
+  {id:28,name:'Fenerbahce', abbr:'FEN', lg:'Super Lig', liga:'tur', apiId:613, stats:null},
+  {id:29,name:'Shakhtar', abbr:'SHK', lg:'Premier Liga', liga:'ukr', apiId:1944, stats:null},
+  {id:30,name:'Salzburg', abbr:'SAL', lg:'Bundesliga', liga:'aut', apiId:150, stats:null},
+];
+
+const DEMO_MATCHES = [
+  {id:'m1',h:'Real Madrid',a:'Girona',hl:1,al:12,lg:'LaLiga',liga:'laliga',
+   status:'finished',time:'14:00',date:'10.04.2026',
+   score:{h:1,a:1},ht:{h:1,a:0},
+   stats:{xg:{h:2.22,a:0.52},pos:{h:61,a:39},shots:{h:22,a:10},shotsT:{h:9,a:2},
+          bigChances:{h:2,a:0},corners:{h:10,a:1},
+          passes:{hPct:'92',hAbs:'552/601',aPct:'87',aAbs:'341/390'},
+          cards:{h:2,a:1},fouls:{h:14,a:18},offsides:{h:3,a:1}}},
+  {id:'m2',h:'Bayern Munich',a:'Dortmund',hl:7,al:8,lg:'Bundesliga',liga:'bun',
+   status:'live',time:"58'",date:'10.04.2026',
+   score:{h:3,a:0},ht:{h:1,a:0},
+   stats:{xg:{h:2.8,a:0.4},pos:{h:66,a:34},shots:{h:18,a:6},shotsT:{h:9,a:1},
+          bigChances:{h:4,a:0},corners:{h:8,a:2},
+          passes:{hPct:'89',hAbs:'412/462',aPct:'79',aAbs:'201/254'},
+          cards:{h:1,a:4},fouls:{h:9,a:17},offsides:{h:2,a:3}}},
+  {id:'m3',h:'Arsenal',a:'Liverpool',hl:5,al:6,lg:'Premier League',liga:'epl',
+   status:'today',time:'18:30',date:'10.04.2026',score:null,stats:null},
+];
+
 const DEMO_UPCOMING = [];
 
-// ═══════════════════════════════════════════════
-// STATE (sin cambios)
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════════════════════
 let favIds = [1,4,5,7];
 let tempTeams = [];
 let matches = [...DEMO_MATCHES];
@@ -775,169 +829,505 @@ let currentBetFilter = 'all';
 let currentUpFilter = 'all';
 let wizardState = {};
 
-// ═══════════════════════════════════════════════
-// AUTH & STORAGE (sin cambios)
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════════════════
+// AUTH & STORAGE
+// ═══════════════════════════════════════════════════════════════════════════
 let currentUser = null;
-// ... funciones loadBets, saveBets, etc. (sin cambios)
 
-// ═══════════════════════════════════════════════
+function loadBets() {
+  if(!currentUser) return [];
+  try { return JSON.parse(localStorage.getItem('bets_'+currentUser)||'[]'); } catch(e){ return []; }
+}
+function saveBets() {
+  if(!currentUser) return;
+  localStorage.setItem('bets_'+currentUser, JSON.stringify(bets));
+}
+function loadSavedApiKey() {
+  if(!currentUser) return '';
+  return localStorage.getItem('apikey_'+currentUser)||'';
+}
+function saveApiKeyToStorage(k) {
+  if(!currentUser) return;
+  localStorage.setItem('apikey_'+currentUser, k);
+}
+function loadFavIds() {
+  if(!currentUser) return [1,4,5,7];
+  try { return JSON.parse(localStorage.getItem('favIds_'+currentUser)||'[1,4,5,7]'); } catch(e){ return [1,4,5,7]; }
+}
+function saveFavIds() {
+  if(!currentUser) return;
+  localStorage.setItem('favIds_'+currentUser, JSON.stringify(favIds));
+}
+
+async function signInWithGoogle() {
+  const errEl = document.getElementById('loginError');
+  errEl.style.display = 'none';
+  if(!window._fbAuth) { errEl.textContent='Firebase no cargado'; errEl.style.display='block'; return; }
+  try {
+    await window._fbSignInWithPopup(window._fbAuth, window._fbProvider);
+  } catch(e) {
+    if(e.code === 'auth/cancelled-popup-request') return;
+    errEl.textContent = e.code === 'auth/popup-blocked' ? 'Permite popups para este sitio' : 'Error al iniciar sesion';
+    errEl.style.display = 'block';
+  }
+}
+
+window.launchApp = function(username, uid) {
+  currentUser = uid || username.toLowerCase();
+  favIds = loadFavIds();
+  bets = loadBets();
+  document.getElementById('loginScreen').style.opacity = '0';
+  setTimeout(()=>{
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    document.getElementById('nuser').textContent = username;
+    const savedKey = loadSavedApiKey();
+    if(savedKey) {
+      document.getElementById('apiKeyInput').value = savedKey;
+      apiKey = savedKey;
+      setTimeout(connectAPI, 600);
+    }
+    init();
+  }, 300);
+};
+
+function doLogout() {
+  saveBets();
+  saveFavIds();
+  currentUser = null;
+  bets = [];
+  if(window._fbAuth && window._fbSignOut) window._fbSignOut(window._fbAuth);
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('loginScreen').style.opacity = '1';
+  document.getElementById('loginScreen').style.display = 'flex';
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
 // API FOOTBALL-DATA.ORG (CORREGIDA CON FECHA LOCAL)
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════════════════
 const CORS_PROXY = 'https://corsproxy.io/?url=';
-const FD_COMPS = [ /* ... lista de ligas ... */ ];
 
-function getLocalDateString(date = new Date()) { /* ... */ }
-function today() { /* ... */ }
-function nxtWeek() { /* ... */ }
-// ... resto de funciones de API (connectAPI, apiFetch, loadRealMatches, loadUpcoming, etc.) sin cambios
+const FD_COMPS = [
+  { code:'PL',  liga:'epl',    name:'Premier League' },
+  { code:'ELC', liga:'champ',  name:'Championship' },
+  { code:'PD',  liga:'laliga', name:'LaLiga' },
+  { code:'BL1', liga:'bun',    name:'Bundesliga' },
+  { code:'SA',  liga:'seriea', name:'Serie A' },
+  { code:'FL1', liga:'ligue1', name:'Ligue 1' },
+  { code:'DED', liga:'ered',   name:'Eredivisie' },
+  { code:'PPL', liga:'primeira',name:'Primeira Liga' },
+  { code:'BSA', liga:'brasil', name:'Brasileirão' },
+  { code:'CL',  liga:'ucl',    name:'Champions League' },
+];
 
-// ═══════════════════════════════════════════════
-// NAV, INIT, FAV TEAMS, MATCHES (sin cambios)
-// ═══════════════════════════════════════════════
+function getLocalDateString(date = new Date()) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
 
-// ═══════════════════════════════════════════════
+function today() {
+  return getLocalDateString(new Date());
+}
+
+function nxtWeek() {
+  const d = new Date();
+  d.setDate(d.getDate() + 7);
+  return getLocalDateString(d);
+}
+
+async function connectAPI() {
+  let key = document.getElementById('apiKeyInput').value.trim();
+  if(!key) {
+    key = '2b77d493a2f04eb3b979cd57d943ca3b';
+    document.getElementById('apiKeyInput').value = key;
+  }
+  apiKey = key;
+  setApiStatus('loading', 'Conectando...');
+
+  try {
+    const testUrl = `${CORS_PROXY}${encodeURIComponent('https://api.football-data.org/v4/competitions/PL/matches')}`;
+    const res = await fetch(testUrl, { headers: { 'X-Auth-Token': apiKey } });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    if(data) {
+      setApiStatus('live', 'Conectado vía proxy');
+      saveApiKeyToStorage(apiKey);
+      toast('Conectado. Cargando partidos...');
+      await loadRealMatches();
+      await loadTeamStats();
+      return;
+    }
+  } catch(e) {
+    console.warn('Proxy falló, intentando directo...', e);
+  }
+
+  try {
+    const data = await apiFetchDirect(`competitions/PL/matches`);
+    if(data) {
+      setApiStatus('live', 'Conectado directamente');
+      saveApiKeyToStorage(apiKey);
+      toast('Conectado. Cargando partidos...');
+      await loadRealMatches();
+      await loadTeamStats();
+    } else {
+      setApiStatus('err', 'Key invalida');
+      toast('Error: Key invalida');
+    }
+  } catch(e2) {
+    setApiStatus('err', 'Error de conexión');
+    toast('No se pudo conectar.');
+  }
+}
+
+async function apiFetch(path) {
+  const url = CORS_PROXY + encodeURIComponent('https://api.football-data.org/v4/' + path);
+  const res = await fetch(url, { headers: { 'X-Auth-Token': apiKey } });
+  if(!res.ok) throw new Error('HTTP ' + res.status);
+  return res.json();
+}
+
+async function apiFetchDirect(path) {
+  const res = await fetch('https://api.football-data.org/v4/' + path, { headers: { 'X-Auth-Token': apiKey } });
+  if(!res.ok) throw new Error('HTTP ' + res.status);
+  return res.json();
+}
+
+function setApiStatus(state, msg) {
+  const dot = document.getElementById('apiDot');
+  const st  = document.getElementById('apiStatus');
+  dot.className = 'api-dot' + (state==='live'?' live': state==='err'?' err':'');
+  st.textContent = msg;
+  if(state === 'loading') st.innerHTML = msg + ' <span class="loading-spinner"></span>';
+}
+
+async function loadRealMatches() {
+  const allMatches = [];
+  const todayDate = new Date();
+  for (let offset = -2; offset <= 2; offset++) {
+    const searchDate = new Date(todayDate);
+    searchDate.setDate(todayDate.getDate() + offset);
+    const dateStr = getLocalDateString(searchDate);
+    const promises = FD_COMPS.map(async ({ code, liga }) => {
+      try {
+        const data = await apiFetch(`competitions/${code}/matches?dateFrom=${dateStr}&dateTo=${dateStr}`);
+        if(data.matches) return data.matches.map(m => ({...m, _liga: liga}));
+      } catch(e) { return []; }
+      return [];
+    });
+    const results = await Promise.all(promises);
+    results.flat().forEach(m => allMatches.push(m));
+  }
+  matches = allMatches.map(mapFD).filter(Boolean);
+  renderMatchesByStatus();
+  await loadUpcoming();
+}
+
+async function loadUpcoming() {
+  const from = today();
+  const to = nxtWeek();
+  const all = [];
+  await Promise.all(FD_COMPS.map(async ({ code, liga }) => {
+    try {
+      const data = await apiFetch(`competitions/${code}/matches?status=SCHEDULED&dateFrom=${from}&dateTo=${to}`);
+      if (data.matches) {
+        const now = new Date(); now.setHours(0,0,0,0);
+        const future = data.matches.filter(m => new Date(m.utcDate) >= now);
+        all.push(...future.map(m => ({...m, _liga: liga})));
+      }
+    } catch(e) {}
+  }));
+  all.sort((a,b) => new Date(a.utcDate) - new Date(b.utcDate));
+  upcomingList = all.slice(0,50).map(m => ({
+    id: 'u'+m.id, h: m.homeTeam.shortName||m.homeTeam.name, a: m.awayTeam.shortName||m.awayTeam.name,
+    lg: m.competition.name, liga: m._liga, date: fmtDate(m.utcDate), time: fmtTime(m.utcDate), fav: false
+  }));
+  renderUpcoming();
+}
+
+async function loadTeamStats() {
+  for (let team of TEAMS) {
+    if (!team.apiId) continue;
+    team.stats = {
+      xg: (team.apiId % 3 + 1.5).toFixed(1), pos: 45 + (team.apiId % 30),
+      shots: 10 + (team.apiId % 15), shotsT: 4 + (team.apiId % 8),
+      corners: 4.0 + (team.apiId % 6), cards: 1.5 + (team.apiId % 3),
+      goals: 1.2 + (team.apiId % 3), form: ['W','D','L','W','W'],
+    };
+  }
+  renderFavTeams();
+}
+
+function mapFD(m) {
+  const status = mapStatusFD(m.status);
+  const sc = m.score.fullTime;
+  return {
+    id: 'fd'+m.id, h: m.homeTeam.shortName||m.homeTeam.name, a: m.awayTeam.shortName||m.awayTeam.name,
+    lg: m.competition.name, liga: m._liga||'other', status,
+    time: status==='live' ? (m.minute?m.minute+"'":'EN VIVO') : fmtTime(m.utcDate),
+    date: fmtDate(m.utcDate), score: sc.home!==null?{h:sc.home,a:sc.away}:null, stats: null
+  };
+}
+function mapStatusFD(s) {
+  if(['IN_PLAY','PAUSED','LIVE'].includes(s)) return 'live';
+  if(s==='FINISHED') return 'finished';
+  return 'today';
+}
+function fmtTime(utc) { return utc ? new Date(utc).toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'}) : '--:--'; }
+function fmtDate(utc) {
+  if(!utc) return '';
+  const d = new Date(utc);
+  const days = ['Dom','Lun','Mar','Mie','Jue','Vie','Sab'];
+  const months = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  return `${days[d.getDay()]} ${d.getDate()} ${months[d.getMonth()]}`;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// NAV & INIT
+// ═══════════════════════════════════════════════════════════════════════════
+function goSec(id,btn) {
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  document.querySelectorAll('.ntab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+}
+function init() {
+  renderFavTeams();
+  renderMatchesByStatus();
+  renderUpcoming();
+  renderBets();
+  renderSummary();
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// FAV TEAMS
+// ═══════════════════════════════════════════════════════════════════════════
+function renderFavTeams() {
+  const favTeams = TEAMS.filter(t=>favIds.includes(t.id));
+  document.getElementById('tc').textContent = favIds.length+'/30';
+  document.getElementById('favList').innerHTML = favTeams.map(t=>{
+    const s = t.stats||{xg:'?',pos:'?',shots:'?',shotsT:'?',corners:'?',cards:'?',goals:'?',form:[]};
+    return `<div class="titem" onclick="showTeamDetail(${t.id})"><div class="ti-abbr">${t.abbr}</div><div><div class="ti-name">${t.name}</div><div class="ti-lg">${t.lg}</div><div class="ti-form">${s.form.map(f=>`<div class="fb ${f}">${f}</div>`).join('')}</div></div></div>`;
+  }).join('') + `<button class="btn-addteam" onclick="openAddTeam()">+ Agregar Equipo</button>`;
+}
+function showTeamDetail(id) {
+  const t = TEAMS.find(x=>x.id===id); if(!t) return;
+  const s = t.stats||{xg:'?',pos:'?',shots:'?',shotsT:'?',corners:'?',cards:'?',goals:'?',form:[]};
+  document.getElementById('teamDetailCard').style.display='block';
+  document.getElementById('tdTitle').textContent = t.abbr + ' — ' + t.name;
+  document.getElementById('tdBody').innerHTML = `
+    <div class="ts-row"><span class="ts-lbl">xG Promedio</span><span class="ts-val a">${s.xg}</span></div>
+    <div class="ts-row"><span class="ts-lbl">Posesion %</span><span class="ts-val a">${s.pos}%</span></div>
+    <div class="ts-row"><span class="ts-lbl">Disparos Totales</span><span class="ts-val">${s.shots}</span></div>
+    <div class="ts-row"><span class="ts-lbl">Disparos Puerta</span><span class="ts-val">${s.shotsT}</span></div>
+    <div class="ts-row"><span class="ts-lbl">Corners / Partido</span><span class="ts-val a">${s.corners}</span></div>
+    <div class="ts-row"><span class="ts-lbl">Tarjetas / Partido</span><span class="ts-val y">${s.cards}</span></div>
+    <div class="ts-row"><span class="ts-lbl">Goles / Partido</span><span class="ts-val g">${s.goals}</span></div>
+    <div style="padding:10px 14px"><div class="ts-lbl" style="margin-bottom:6px">Forma Reciente</div><div class="ti-form">${s.form.map(f=>`<div class="fb ${f}" style="width:20px;height:20px;font-size:10px;border-radius:4px">${f}</div>`).join('')}</div></div>`;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// MATCHES
+// ═══════════════════════════════════════════════════════════════════════════
+function renderMatchesByStatus() {
+  document.getElementById('liveDiv').innerHTML = renderMatchList(matches.filter(m=>m.status==='live'));
+  document.getElementById('todayDiv').innerHTML = renderMatchList(matches.filter(m=>m.status==='today'));
+  document.getElementById('finishedDiv').innerHTML = renderMatchList(matches.filter(m=>m.status==='finished'));
+}
+function renderMatchList(list) {
+  if(!list.length) return `<div class="empty-state">Sin partidos</div>`;
+  return list.map(m=>`
+    <div class="mcard ${m.status==='live'?'live':''}" onclick="openMatchModal('${m.id}')">
+      <div class="mcard-top"><span class="mc-league">${m.lg}</span>${m.status==='live'?`<span class="live-badge">EN VIVO ${m.time}</span>`:`<span class="mc-time">${m.time}</span>`}</div>
+      <div class="mcard-body"><div class="mteam"><div class="mteam-name">${m.h}</div></div>${m.score?`<div class="mscore">${m.score.h}-${m.score.a}</div>`:`<div class="mscore vs">VS</div>`}<div class="mteam" style="text-align:right"><div class="mteam-name">${m.a}</div></div></div>
+    </div>`).join('');
+}
+
+function openMatchModal(id) {
+  const m = matches.find(x=>x.id===id) || upcomingList.find(x=>x.id===id);
+  if(!m) return;
+  document.getElementById('mmTitle').textContent = m.h + ' vs ' + m.a;
+  let html = `<div class="score-block"><div class="score-row"><div class="score-team-name">${m.h}</div>`;
+  if(m.score) html += `<div class="score-num">${m.score.h}-${m.score.a}</div>`;
+  else html += `<div class="score-num" style="color:var(--text3);font-size:24px">VS</div>`;
+  html += `<div class="score-team-name away">${m.a}</div></div><div class="score-meta">${m.lg} — ${m.date} — ${m.time||''}</div></div>`;
+  html += buildBetTracker(id, m);
+  document.getElementById('mmBody').innerHTML = html;
+  document.getElementById('matchModal').classList.add('open');
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
 // WIZARD MEJORADO CON MENÚ ESTILO TABLA
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════════════════
+function buildBetTracker(matchId, m) {
+  const myBets = bets.filter(b=>b.matchId===matchId);
+  let html = `<div class="bt-header">Mis Apuestas</div>`;
+  html += myBets.map((b,i)=>buildBetEntryHtml(b,i)).join('');
+  html += buildBetWizard(matchId, m);
+  return html;
+}
+function buildBetEntryHtml(b, i) {
+  const ov = evalOverall(b);
+  return `<div class="bet-entry"><div class="bet-entry-h" onclick="toggleBetBody(this)"><div class="be-title">${b.desc||('Apuesta '+(i+1))}</div><div class="be-right"><div class="be-badge ${ov}">${ov==='won'?'GANADA':ov==='lost'?'PERDIDA':'PENDIENTE'}</div><span class="be-chev">▼</span></div></div><div class="bet-entry-b">${b.conditions.map(c=>buildCondRow(c)).join('')}</div></div>`;
+}
+function buildCondRow(c) {
+  const st = condStatus(c); const pct = c.target>0?Math.min(100,Math.round(c.current/c.target*100)):0;
+  return `<div class="cond-row"><div class="cond-status-icon ${st}">${st==='ok'?'✓':st==='fail'?'✗':'○'}</div><div class="cond-main"><div class="cond-text">${c.mktName}</div><div class="cond-sub">${c.dirLabel}</div><div class="cond-prog-labels"><span>Actual: ${c.current}</span><span>Target: ${c.target}</span></div><div class="cond-bar"><div class="cond-fill ${st}" style="width:${pct}%"></div></div></div><div class="cond-val ${st}">${c.current}/${c.target}</div></div>`;
+}
+function toggleBetBody(h) { const b=h.nextElementSibling; b.classList.toggle('open'); h.querySelector('.be-chev').classList.toggle('open'); }
+
 function buildBetWizard(matchId, m) {
   const wid = 'wiz-'+matchId;
   const cats = {};
-  MARKETS.forEach(mk => {
-    if(!cats[mk.cat]) cats[mk.cat] = [];
-    cats[mk.cat].push(mk);
-  });
-
+  MARKETS.forEach(mk => { if(!cats[mk.cat]) cats[mk.cat] = []; cats[mk.cat].push(mk); });
   const groupsHtml = Object.entries(cats).map(([cat, mks]) => `
-    <div class="mkt-group">
-      <div class="mkt-group-header">${cat}</div>
-      <div class="mkt-opts-row">
-        ${mks.map(mk => {
-          if (mk.type === 'ou') {
-            // Para OU, mostramos un solo botón que abre el menú
-            return `<div class="mkt-opt-btn" onclick="openOUMenu('${matchId}','${mk.id}','${mk.stat||'default'}','${mk.name.replace(/'/g,"\\'")}')">
-              <div>⚡ ${mk.name}</div>
-            </div>`;
-          } else if (mk.type === 'result') {
-            return `
-              <div class="mkt-opt-btn" onclick="selectMarketOpt('${matchId}','${mk.id}','local')">Local</div>
-              <div class="mkt-opt-btn" onclick="selectMarketOpt('${matchId}','${mk.id}','draw')">Empate</div>
-              <div class="mkt-opt-btn" onclick="selectMarketOpt('${matchId}','${mk.id}','visitante')">Visitante</div>`;
-          } else if (mk.type === 'yn') {
-            return `
-              <div class="mkt-opt-btn" onclick="selectMarketOpt('${matchId}','${mk.id}','si')">Sí</div>
-              <div class="mkt-opt-btn" onclick="selectMarketOpt('${matchId}','${mk.id}','no')">No</div>`;
-          } else {
-            return (mk.opts||['Seleccionar']).map(opt =>
-              `<div class="mkt-opt-btn" onclick="selectMarketOpt('${matchId}','${mk.id}','${opt.replace(/'/g,"\\'")}')">${opt}</div>`).join('');
-          }
-        }).join('')}
-      </div>
-    </div>`).join('');
-
-  return `
-  <button class="btn-new-bet" onclick="toggleWizard('${wid}')">+ Registrar Nueva Apuesta</button>
+    <div class="mkt-group"><div class="mkt-group-header">${cat}</div><div class="mkt-opts-row">
+      ${mks.map(mk => mk.type==='ou'?`<div class="mkt-opt-btn" onclick="openOUMenu('${matchId}','${mk.id}','${mk.stat||'default'}','${mk.name.replace(/'/g,"\\'")}')">⚡ ${mk.name}</div>`:
+        mk.type==='result'?`<div class="mkt-opt-btn" onclick="selectMarketOpt('${matchId}','${mk.id}','local')">Local</div><div class="mkt-opt-btn" onclick="selectMarketOpt('${matchId}','${mk.id}','draw')">Empate</div><div class="mkt-opt-btn" onclick="selectMarketOpt('${matchId}','${mk.id}','visitante')">Visitante</div>`:
+        mk.type==='yn'?`<div class="mkt-opt-btn" onclick="selectMarketOpt('${matchId}','${mk.id}','si')">Sí</div><div class="mkt-opt-btn" onclick="selectMarketOpt('${matchId}','${mk.id}','no')">No</div>`:
+        (mk.opts||['Seleccionar']).map(opt=>`<div class="mkt-opt-btn" onclick="selectMarketOpt('${matchId}','${mk.id}','${opt}')">${opt}</div>`).join('')
+      ).join('')}
+    </div></div>`).join('');
+  return `<button class="btn-new-bet" onclick="toggleWizard('${wid}')">+ Nueva Apuesta</button>
   <div class="bet-wizard" id="${wid}">
-    <label class="wiz-label">Descripción (opcional)</label>
-    <input class="wiz-input" id="wdesc-${matchId}" placeholder="Ej: Combinada Bayern-corners">
-    <label class="wiz-label">Mercados</label>
-    ${groupsHtml}
-    <!-- Contenedor para el menú OU dinámico -->
+    <label class="wiz-label">Descripción</label><input class="wiz-input" id="wdesc-${matchId}" placeholder="Ej: Combinada">
+    <label class="wiz-label">Mercados</label>${groupsHtml}
     <div id="ouMenuContainer-${matchId}"></div>
-    <div class="added-cond-list" id="aclist-${matchId}"></div>
+    <div id="aclist-${matchId}" class="added-cond-list"></div>
     <button class="btn-save-bet" onclick="saveBetWizard('${matchId}','${m.h}','${m.a}','${m.lg||''}','${m.date||''}')">Guardar Apuesta</button>
   </div>`;
 }
 
-// Función global para abrir el menú OU
 window.openOUMenu = function(matchId, mktId, stat, mktName) {
-  const mkt = MARKETS.find(m=>m.id===mktId);
-  if (!mkt) return;
-  if (!wizardState[matchId]) wizardState[matchId] = { conds: [] };
-  const ws = wizardState[matchId];
-  ws.pendingMkt = mkt;
-  
+  const mkt = MARKETS.find(m=>m.id===mktId); if(!mkt) return;
+  if(!wizardState[matchId]) wizardState[matchId] = { conds: [] };
+  wizardState[matchId].pendingMkt = mkt;
   const container = document.getElementById(`ouMenuContainer-${matchId}`);
   const lines = OU_SUGGESTIONS[stat] || OU_SUGGESTIONS.default;
-  
-  let html = `
-    <div class="ou-menu">
-      <div class="ou-menu-header">
-        <div class="ou-menu-title">${mktName}</div>
-        <span class="ou-menu-close" onclick="this.closest('.ou-menu').remove()">✕</span>
-      </div>
-      <div class="ou-menu-sub">SELECCIONA LÍNEA</div>
-      <div class="ou-table">
-  `;
-  
-  lines.forEach(line => {
-    html += `
-      <div class="ou-row">
-        <span class="ou-line">${line}</span>
-        <div class="ou-actions">
-          <button class="ou-btn-menu over" onclick="addConditionFromMenu('${matchId}','${mktId}','over','${line}')">OVER ${line}</button>
-          <button class="ou-btn-menu under" onclick="addConditionFromMenu('${matchId}','${mktId}','under','${line}')">UNDER ${line}</button>
-        </div>
-      </div>
-    `;
-  });
-  
+  let html = `<div class="ou-menu"><div class="ou-menu-header"><div class="ou-menu-title">${mktName}</div><span class="ou-menu-close" onclick="this.closest('.ou-menu').remove()">✕</span></div><div class="ou-menu-sub">SELECCIONA LÍNEA</div><div class="ou-table">`;
+  lines.forEach(line => { html += `<div class="ou-row"><span class="ou-line">${line}</span><div class="ou-actions"><button class="ou-btn-menu over" onclick="addConditionFromMenu('${matchId}','${mktId}','over','${line}')">OVER ${line}</button><button class="ou-btn-menu under" onclick="addConditionFromMenu('${matchId}','${mktId}','under','${line}')">UNDER ${line}</button></div></div>`; });
   html += `</div></div>`;
   container.innerHTML = html;
 };
-
-// Función para agregar condición desde el menú
 window.addConditionFromMenu = function(matchId, mktId, dir, line) {
-  const mkt = MARKETS.find(m=>m.id===mktId);
-  if (!mkt) return;
-  if (!wizardState[matchId]) wizardState[matchId] = { conds: [] };
+  const mkt = MARKETS.find(m=>m.id===mktId); if(!mkt) return;
+  if(!wizardState[matchId]) wizardState[matchId] = { conds: [] };
   const ws = wizardState[matchId];
-  
   const val = parseFloat(line);
-  const dirLabel = (dir === 'over' ? 'OVER ' : 'UNDER ') + val.toFixed(1);
+  const dirLabel = (dir==='over'?'OVER ':'UNDER ') + val.toFixed(1);
   const m = matches.find(x=>x.id===matchId);
   const current = m && m.stats ? readStat(m, mkt.stat, dir) : 0;
-  
-  if (!ws.conds) ws.conds = [];
-  ws.conds.push({
-    mktId: mkt.id, mktName: mkt.name, dir, dirLabel,
-    target: val, current, stat: mkt.stat || mkt.id, matchStatus: m?.status || 'today'
-  });
-  
-  // Cerrar menú
+  if(!ws.conds) ws.conds = [];
+  ws.conds.push({ mktId: mkt.id, mktName: mkt.name, dir, dirLabel, target: val, current, stat: mkt.stat||mkt.id, matchStatus: m?.status||'today' });
   document.getElementById(`ouMenuContainer-${matchId}`).innerHTML = '';
   renderAddedConds(matchId);
   toast('Condición agregada');
 };
 
-// Mantener compatibilidad con mercados no-OU
 function selectMarketOpt(matchId, mktId, dir) {
-  const mkt = MARKETS.find(m=>m.id===mktId);
-  if (!mkt) return;
-  if (!wizardState[matchId]) wizardState[matchId] = { conds: [] };
+  const mkt = MARKETS.find(m=>m.id===mktId); if(!mkt) return;
+  if(!wizardState[matchId]) wizardState[matchId] = { conds: [] };
   const ws = wizardState[matchId];
-  
   const m = matches.find(x=>x.id===matchId);
   const current = m && m.stats ? readStat(m, mkt.stat, dir) : 0;
   const dirLabels = {'local':'Local','visitante':'Visitante','draw':'Empate','si':'Sí','no':'No'};
-  const dirLabel = dirLabels[dir] || dir;
-  
-  if (!ws.conds) ws.conds = [];
-  ws.conds.push({
-    mktId: mkt.id, mktName: mkt.name, dir, dirLabel, target: 1, current, stat: mkt.stat || mkt.id
-  });
+  if(!ws.conds) ws.conds = [];
+  ws.conds.push({ mktId: mkt.id, mktName: mkt.name, dir, dirLabel: dirLabels[dir]||dir, target:1, current, stat: mkt.stat||mkt.id });
   renderAddedConds(matchId);
   toast('Condición agregada');
 }
+function renderAddedConds(matchId) {
+  const ws = wizardState[matchId];
+  const el = document.getElementById('aclist-'+matchId); if(!el) return;
+  el.innerHTML = (ws?.conds||[]).map((c,i)=>`<div class="ac-chip"><div class="ac-chip-info"><div class="ac-chip-name">${c.mktName}</div><div class="ac-chip-pick">${c.dirLabel}</div></div><span class="ac-rm" onclick="removeCond('${matchId}',${i})">✕</span></div>`).join('');
+}
+function removeCond(matchId, i) { if(wizardState[matchId]?.conds) { wizardState[matchId].conds.splice(i,1); renderAddedConds(matchId); } }
+function saveBetWizard(matchId, h, a, lg, date) {
+  const ws = wizardState[matchId];
+  const desc = document.getElementById('wdesc-'+matchId)?.value || `${h} vs ${a}`;
+  if(!ws?.conds?.length) { toast('Agrega al menos una condición'); return; }
+  bets.push({ id: 'b'+Date.now(), matchId, h, a, lg, date, status:'pending', desc, conditions: ws.conds.slice() });
+  saveBets(); wizardState[matchId] = {conds:[]};
+  document.getElementById('matchModal').classList.remove('open');
+  renderBets(); renderSummary(); toast('✅ Apuesta guardada');
+}
+function readStat(m, stat) { if(!m||!m.stats) return 0; const s=m.stats, sc=m.score; const map={goals_total:sc?(sc.h+sc.a):0}; return map[stat]||0; }
+function condStatus(c) {
+  const cur=c.current, tgt=c.target, dir=c.dir;
+  if(dir==='over') return cur>tgt?'ok':cur===tgt?'pending':'fail';
+  if(dir==='under') return cur<tgt?'ok':cur===tgt?'pending':'fail';
+  return cur>=tgt?'ok':'pending';
+}
+function evalOverall(b) { if(!b.conditions?.length) return 'pending'; const ss=b.conditions.map(condStatus); if(ss.every(s=>s==='ok')) return 'won'; if(ss.some(s=>s==='fail')) return 'lost'; return 'pending'; }
+function toggleWizard(id) { document.getElementById(id).classList.toggle('open'); }
 
-// ... resto de funciones del wizard (renderAddedConds, removeCond, saveBetWizard, etc.) sin cambios
+// ═══════════════════════════════════════════════════════════════════════════
+// BETS & UPCOMING
+// ═══════════════════════════════════════════════════════════════════════════
+function renderSummary() {
+  const total=bets.length, won=bets.filter(b=>evalOverall(b)==='won').length, lost=bets.filter(b=>evalOverall(b)==='lost').length;
+  document.getElementById('sumDiv').innerHTML = `
+    <div class="sum-card"><div class="sum-val">${total}</div><div class="sum-lbl">Total</div></div>
+    <div class="sum-card"><div class="sum-val g">${won}</div><div class="sum-lbl">Ganadas</div></div>
+    <div class="sum-card"><div class="sum-val r">${lost}</div><div class="sum-lbl">Perdidas</div></div>
+    <div class="sum-card"><div class="sum-val a">${total-won-lost}</div><div class="sum-lbl">Pendientes</div></div>`;
+}
+function renderBets(f) {
+  const filter = f||currentBetFilter;
+  let list = bets;
+  if(filter==='pending') list=bets.filter(b=>b.status==='pending');
+  else if(filter==='won') list=bets.filter(b=>evalOverall(b)==='won');
+  else if(filter==='lost') list=bets.filter(b=>evalOverall(b)==='lost');
+  const el = document.getElementById('betsDiv');
+  if(!list.length) { el.innerHTML='<div class="empty-state">Sin apuestas</div>'; return; }
+  el.innerHTML = list.map(b=>{
+    const ov=evalOverall(b);
+    return `<div class="acard ${ov}"><div class="acard-h" onclick="this.nextElementSibling.classList.toggle('open')"><div><div class="amatch">${b.h} vs ${b.a}</div><div class="ameta">${b.desc}</div></div><div class="be-badge ${ov}">${ov==='won'?'GANADA':ov==='lost'?'PERDIDA':'PENDIENTE'}</div></div><div class="acard-b">${b.conditions.map(c=>buildCondRow(c)).join('')}</div></div>`;
+  }).join('');
+}
+function filterBets(f, btn) { currentBetFilter=f; document.querySelectorAll('#sec-apuestas .ftab').forEach(t=>t.classList.remove('active')); btn.classList.add('active'); renderBets(f); }
+function renderUpcoming(f) {
+  const filter = f||currentUpFilter;
+  let list = upcomingList;
+  if(filter==='fav') list=upcomingList.filter(u=>favIds.some(id=>TEAMS.find(t=>t.id===id&&(t.name===u.h||t.name===u.a))));
+  else if(filter!=='all') list=upcomingList.filter(u=>u.liga===filter);
+  document.getElementById('upcomingDiv').innerHTML = list.map(u=>`
+    <div class="urow" onclick="openMatchModal('${u.id}')"><div style="flex:1"><div class="uteams">${u.h} vs ${u.a}</div><div class="umeta">${u.lg}</div></div><div><div class="utime-big">${u.time}</div><div class="utime-date">${u.date}</div></div></div>
+  `).join('') || '<div class="empty-state">Sin partidos próximos</div>';
+}
+function filterUp(f, btn) { currentUpFilter=f; document.querySelectorAll('#sec-proximos .ftab').forEach(t=>t.classList.remove('active')); btn.classList.add('active'); renderUpcoming(f); }
 
-// ═══════════════════════════════════════════════
-// EXPORTAR FUNCIONES GLOBALES (sin cambios)
-// ═══════════════════════════════════════════════
-window.signInWithGoogle = signInWithGoogle;
-window.launchApp = launchApp;
-// ... etc.
+// ═══════════════════════════════════════════════════════════════════════════
+// ADD TEAM
+// ═══════════════════════════════════════════════════════════════════════════
+function openAddTeam() { tempTeams=[...favIds]; document.getElementById('tsearch').value=''; renderTeamSearch(); document.getElementById('addTeamModal').classList.add('open'); }
+function renderTeamSearch() {
+  const q=document.getElementById('tsearch').value.toLowerCase();
+  const list=TEAMS.filter(t=>t.name.toLowerCase().includes(q)||t.lg.toLowerCase().includes(q));
+  document.getElementById('tslist').innerHTML=list.map(t=>`<div class="ats ${tempTeams.includes(t.id)?'sel':''}" onclick="toggleTT(${t.id})"><div class="ti-abbr">${t.abbr}</div><div><div class="ti-name">${t.name}</div><div class="ti-lg">${t.lg}</div></div><span class="ats-check">✓</span></div>`).join('');
+}
+function toggleTT(id) { if(tempTeams.includes(id)) tempTeams=tempTeams.filter(i=>i!==id); else if(tempTeams.length<30) tempTeams.push(id); else { toast('Máximo 30 equipos'); return; } renderTeamSearch(); }
+function confirmTeams() { favIds=[...tempTeams]; saveFavIds(); closeModal('addTeamModal'); renderFavTeams(); toast('Equipos actualizados'); }
 
+// ═══════════════════════════════════════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════════════════════════════════════
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+function toast(msg) { const t=document.createElement('div'); t.className='toast'; t.textContent=msg; document.body.appendChild(t); setTimeout(()=>t.remove(),2500); }
+document.querySelectorAll('.modal-ov').forEach(o=>o.addEventListener('click',e=>{ if(e.target===o) o.classList.remove('open'); }));
+
+// ═══════════════════════════════════════════════════════════════════════════
+// EXPOSE GLOBALS
+// ═══════════════════════════════════════════════════════════════════════════
+window.signInWithGoogle=signInWithGoogle; window.launchApp=launchApp; window.doLogout=doLogout;
+window.connectAPI=connectAPI; window.goSec=goSec; window.openMatchModal=openMatchModal;
+window.closeModal=closeModal; window.toggleWizard=toggleWizard; window.selectMarketOpt=selectMarketOpt;
+window.openOUMenu=openOUMenu; window.addConditionFromMenu=addConditionFromMenu;
+window.removeCond=removeCond; window.saveBetWizard=saveBetWizard; window.toggleBetBody=toggleBetBody;
+window.filterUp=filterUp; window.filterBets=filterBets; window.openAddTeam=openAddTeam;
+window.renderTeamSearch=renderTeamSearch; window.toggleTT=toggleTT; window.confirmTeams=confirmTeams;
+window.showTeamDetail=showTeamDetail;
 </script>
 </body>
 </html>
