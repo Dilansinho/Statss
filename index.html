@@ -8,6 +8,7 @@
 <title>STATSBET — Tracker de Apuestas</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
+/* ========== ESTILOS COMPLETOS (CONSERVADOS DE VERSIONES ANTERIORES) ========== */
 :root {
   --bg:#080b12; --bg2:#0e1119; --bg3:#131720; --card:#171d28; --card2:#1d2433;
   --border:#1f2840; --border2:#283350;
@@ -450,7 +451,7 @@ main {
 }
 .btn-save-bet:hover { opacity:.85; }
 
-/* Resto de estilos (popups, resumen, etc.) */
+/* Resto de estilos */
 .sum-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:clamp(6px,2vw,10px); margin-bottom:18px; }
 .sum-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:clamp(10px,3vw,14px) clamp(8px,2vw,12px); }
 .sum-val { font-family:var(--head); font-size:clamp(22px,6vw,28px); font-weight:800; line-height:1; }
@@ -795,34 +796,13 @@ const TEAMS = [
   {id:30,name:'Salzburg', abbr:'SAL', lg:'Bundesliga', liga:'aut', apiId:150, stats:null},
 ];
 
-const DEMO_MATCHES = [
-  {id:'m1',h:'Real Madrid',a:'Girona',hl:1,al:12,lg:'LaLiga',liga:'laliga',
-   status:'finished',time:'14:00',date:'10.04.2026',
-   score:{h:1,a:1},ht:{h:1,a:0},
-   stats:{xg:{h:2.22,a:0.52},pos:{h:61,a:39},shots:{h:22,a:10},shotsT:{h:9,a:2},
-          bigChances:{h:2,a:0},corners:{h:10,a:1},
-          passes:{hPct:'92',hAbs:'552/601',aPct:'87',aAbs:'341/390'},
-          cards:{h:2,a:1},fouls:{h:14,a:18},offsides:{h:3,a:1}}},
-  {id:'m2',h:'Bayern Munich',a:'Dortmund',hl:7,al:8,lg:'Bundesliga',liga:'bun',
-   status:'live',time:"58'",date:'10.04.2026',
-   score:{h:3,a:0},ht:{h:1,a:0},
-   stats:{xg:{h:2.8,a:0.4},pos:{h:66,a:34},shots:{h:18,a:6},shotsT:{h:9,a:1},
-          bigChances:{h:4,a:0},corners:{h:8,a:2},
-          passes:{hPct:'89',hAbs:'412/462',aPct:'79',aAbs:'201/254'},
-          cards:{h:1,a:4},fouls:{h:9,a:17},offsides:{h:2,a:3}}},
-  {id:'m3',h:'Arsenal',a:'Liverpool',hl:5,al:6,lg:'Premier League',liga:'epl',
-   status:'today',time:'18:30',date:'10.04.2026',score:null,stats:null},
-];
-
-const DEMO_UPCOMING = [];
-
 // ═══════════════════════════════════════════════════════════════════════════
-// STATE
+// STATE (sin datos demo)
 // ═══════════════════════════════════════════════════════════════════════════
 let favIds = [1,4,5,7];
 let tempTeams = [];
-let matches = [...DEMO_MATCHES];
-let upcomingList = [...DEMO_UPCOMING];
+let matches = [];
+let upcomingList = [];
 let bets = [];
 let apiKey = '';
 let currentBetFilter = 'all';
